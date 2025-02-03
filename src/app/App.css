@@ -1,0 +1,54 @@
+.mysection {
+    /* border: 0.5px solid red; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.mycontainer {
+    /* border: 0.5px solid blue; */
+    padding: 24px;
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+}
+
+
+/* Font Size */
+.fs-h1 {
+    font-size: clamp(2.25rem, 0.9499rem + 5.547vw, 4.5rem);
+    font-weight: 500;
+    line-height: 1;
+}
+.fs-h2 {
+    font-size: clamp(1.6rem, 1.4411rem + 0.678vw, 1.875rem);
+    font-weight: 500;
+    line-height: 1.2;
+}
+.fs-h3 {
+    font-size: clamp(1.25rem, 1.1055rem + 0.6163vw, 1.5rem);
+    line-height: 1.3;
+}
+.fs-base {
+    font-size: clamp(0.875rem, 0.7305rem + 0.6163vw, 1.125rem);
+    line-height: 1.5;
+}
+.fs-caption {
+    font-size: clamp(0.625rem, 0.5528rem + 0.3082vw, 0.75rem);
+    line-height: 1.5;
+}
+
+/* Buttons */
+button, input {
+    box-shadow: none !important;
+}   
+input {
+    border: 1px solid var(--color-border);
+}
+.calendar button {
+    border: none !important;
+}
+button {
+    border: 1px solid var(--color-text) !important;
+}

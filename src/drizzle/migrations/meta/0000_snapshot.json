@@ -1,0 +1,286 @@
+{
+  "id": "b0fa32fc-d61c-42e4-a01f-34aac5f7a6fa",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.user_categories": {
+      "name": "user_categories",
+      "schema": "",
+      "columns": {
+        "category_id": {
+          "name": "category_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "clerk_user_id": {
+          "name": "clerk_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category_name": {
+          "name": "category_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category_budget": {
+          "name": "category_budget",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category_type": {
+          "name": "category_type",
+          "type": "type_20",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expense_method": {
+          "name": "expense_method",
+          "type": "expense_type_20",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "Category Type is Expense / Value expected": {
+          "name": "Category Type is Expense / Value expected",
+          "value": "\"user_categories\".\"category_type\" != 'Expenses' OR \"user_categories\".\"expense_method\" IS NOT NULL"
+        },
+        "Category Type is Income / NULL expected": {
+          "name": "Category Type is Income / NULL expected",
+          "value": "\"user_categories\".\"category_type\" != 'Income' OR \"user_categories\".\"expense_method\" IS NULL"
+        },
+        "Category Type is Savings / NULL expected": {
+          "name": "Category Type is Savings / NULL expected",
+          "value": "\"user_categories\".\"category_type\" != 'Savings' OR \"user_categories\".\"expense_method\" IS NULL"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.user_transactions": {
+      "name": "user_transactions",
+      "schema": "",
+      "columns": {
+        "transaction_id": {
+          "name": "transaction_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "clerk_user_id": {
+          "name": "clerk_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "transactionDate": {
+          "name": "transactionDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "transaction_type": {
+          "name": "transaction_type",
+          "type": "type_20",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "transaction_category_id_fk": {
+          "name": "transaction_category_id_fk",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "transaction_budget": {
+          "name": "transaction_budget",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "transaction_description": {
+          "name": "transaction_description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "transaction_credit_debit": {
+          "name": "transaction_credit_debit",
+          "type": "credit_debit_20",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isClaimable": {
+          "name": "isClaimable",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "user_transactions_transaction_category_id_fk_user_categories_category_id_fk": {
+          "name": "user_transactions_transaction_category_id_fk_user_categories_category_id_fk",
+          "tableFrom": "user_transactions",
+          "tableTo": "user_categories",
+          "columnsFrom": [
+            "transaction_category_id_fk"
+          ],
+          "columnsTo": [
+            "category_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "Category Type is Expense / Expenses fields (credit or debit and isclaimable) must not be null": {
+          "name": "Category Type is Expense / Expenses fields (credit or debit and isclaimable) must not be null",
+          "value": "\"user_transactions\".\"transaction_type\" != 'Expenses' OR \"user_transactions\".\"transaction_credit_debit\" IS NOT NULL AND \"user_transactions\".\"isClaimable\" IS NOT NULL"
+        },
+        "Category Type is Income / NULL expected for Expenses fields (credit or debit and isclaimable)": {
+          "name": "Category Type is Income / NULL expected for Expenses fields (credit or debit and isclaimable)",
+          "value": "\"user_transactions\".\"transaction_type\" != 'Income' OR \"user_transactions\".\"transaction_credit_debit\" IS NULL AND \"user_transactions\".\"isClaimable\" IS NULL"
+        },
+        "Category Type is Savings / NULL expected for Expenses fields (credit or debit and isclaimable)": {
+          "name": "Category Type is Savings / NULL expected for Expenses fields (credit or debit and isclaimable)",
+          "value": "\"user_transactions\".\"transaction_type\" != 'Savings' OR \"user_transactions\".\"transaction_credit_debit\" IS NULL AND \"user_transactions\".\"isClaimable\" IS NULL"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.user_subscriptions": {
+      "name": "user_subscriptions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "clerk_user_id": {
+          "name": "clerk_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tier": {
+          "name": "tier",
+          "type": "subscription_tier_20",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "user_subscriptions_clerk_user_id_unique": {
+          "name": "user_subscriptions_clerk_user_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "clerk_user_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    }
+  },
+  "enums": {
+    "public.credit_debit_20": {
+      "name": "credit_debit_20",
+      "schema": "public",
+      "values": [
+        "Credit",
+        "Debit"
+      ]
+    },
+    "public.expense_type_20": {
+      "name": "expense_type_20",
+      "schema": "public",
+      "values": [
+        "Fixed",
+        "Variable"
+      ]
+    },
+    "public.subscription_tier_20": {
+      "name": "subscription_tier_20",
+      "schema": "public",
+      "values": [
+        "Free",
+        "Basic",
+        "Standard",
+        "Premium"
+      ]
+    },
+    "public.type_20": {
+      "name": "type_20",
+      "schema": "public",
+      "values": [
+        "Income",
+        "Savings",
+        "Expenses"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
