@@ -71,13 +71,9 @@ export default function TransactionForm({
     useEffect(() => {
         // This form control is very confusing 
 
-        if (transactionToBeEdited) {
-            setCategoryOptions(getCategoryOptions(selectedTransactionType, allCategories))
-        }
+        setCategoryOptions(getCategoryOptions(selectedTransactionType, allCategories))
         
         if (selectedTransactionType !== "Expenses") {
-            setCategoryOptions(getCategoryOptions(selectedTransactionType, allCategories))
-            setValue("transactionCategoryIdFK", "")
             setValue("transactionCreditOrDebit", null)
             setValue("isClaimable", null)
         }
@@ -86,7 +82,6 @@ export default function TransactionForm({
             if (transactionToBeEdited) {
                 return
             }
-            setCategoryOptions(getCategoryOptions(selectedTransactionType, allCategories))
             setValue("isClaimable", false)
         }
     

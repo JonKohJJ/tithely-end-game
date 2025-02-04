@@ -272,7 +272,7 @@ export function TransactionDataTable({
                       </Button>
                   </DropdownMenuTrigger>
 
-                  <DropdownMenuContent className="bg-color-bg">
+                  <DropdownMenuContent className="bg-color-bg border-color-border">
                       <DropdownMenuItem
                         className="hover:cursor-pointer"
                         onClick={() => {
@@ -448,7 +448,7 @@ export function TransactionDataTable({
                 table.getRowModel().rows.map((row) => 
                   row.original.user_transactions.transactionId === editingRowId
                   ? (
-                    <TableRow key={row.id}>
+                    <TableRow key={row.id} className="border-color-border">
                       <TableCell colSpan={5}>
                         <TransactionForm
                           allCategories={allCategories} 
