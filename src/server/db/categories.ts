@@ -17,9 +17,11 @@ export type TFetchedCategoryWithChildTransactionCount = TFetchedCategory & {
 
 export type TFetchedAllCategories = {
     type: "Income" | "Savings" | "Expenses";
-    categories: TFetchedCategory[];
+    categories: TFetchedCategoryWithChildTransactionCount[];
     sum: number;
 }[]
+
+
 
 // const OPERATION_DELAY = 500
 // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
@@ -50,6 +52,20 @@ export async function getAllCategories(
     const fixedVariableRatioString = calculateFixedVariableRatio(allCategories)
     
     return { allCategories, zeroBasedIndicatorString, fixedVariableRatioString }
+}
+
+export async function getCategoriesCount(
+    userId: string
+) {
+    const [ result ] = await db
+        .select(
+            { count: count() }
+        )
+        .from(CategoriesTable)
+        .where(
+            eq(CategoriesTable.clerkUserId, userId)
+        )
+    return result.count
 }
 
 async function getIndividualCategories(

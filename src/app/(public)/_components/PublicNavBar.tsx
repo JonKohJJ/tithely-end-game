@@ -1,5 +1,5 @@
+import MyButton from '@/components/MyButton'
 import { ThemeModeToggle } from '@/components/ThemeModeToggle'
-import { Button } from '@/components/ui/button'
 import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs'
 import { ArrowRight, Flame } from 'lucide-react'
 import Link from 'next/link'
@@ -16,20 +16,20 @@ export default function PublicNavBar() {
                 </Link>
 
                 <div className='flex gap-2 items-center'>
-                    <ThemeModeToggle />
+                    <ThemeModeToggle onlyIcon={true} />
                     <SignedIn>
-                        <Button>
+                        <MyButton>
                             <Link href="/dashboard" className='flex items-center gap-1'>
                                 <p className='hidden md:block'>Go To Dashboard</p>
                                 <ArrowRight />
                             </Link>
-                        </Button>
+                        </MyButton>
                     </SignedIn>
                     <SignedOut>
                         <SignInButton>
-                            <Button className='rounded-md text-sm font-medium flex items-center'>
+                            <MyButton>
                                 <p>Sign In</p>
-                            </Button>
+                            </MyButton>
                         </SignInButton>
                     </SignedOut>
                 </div>

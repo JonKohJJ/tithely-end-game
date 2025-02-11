@@ -1,4 +1,4 @@
-import { getAllCategories } from "@/server/db/categories"
+import { getAllCategories, TFetchedAllCategories } from "@/server/db/categories"
 import CategoryForm from "./CategoryForm"
 import {
     Table,
@@ -12,15 +12,20 @@ import {
   } from "@/components/ui/table"
 import { Currency, LocateFixed, Percent, TrendingUpDown } from "lucide-react"
 import { InsightCard } from "@/components/InsightCard"
+import { Progress } from "@/components/ui/progress"
 
 export default async function CategoryList({
-    userId
+    userId,
+    maxNumberOfCategories,
+    categoriesCount
 } : {
     userId: string
+    maxNumberOfCategories: number
+    categoriesCount: number
 }) {
 
     let errorMessage: null | string = null
-    let allCategories: TCategoriesData = [];
+    let allCategories: TFetchedAllCategories = [];
     let zeroBasedIndicatorString = "";
     let fixedVariableRatioString = "";
 
@@ -52,10 +57,21 @@ export default async function CategoryList({
                                 content={zeroBasedIndicatorString}
                                 icon={<Currency className="w-4 h-4 text-neutral-500" />}
                             />
-                            <InsightCard 
+                            <InsightCard
                                 title="Fixed vs Variable Spending" 
                                 description="Compare fixed and variable expenses at a glance." 
                                 content={fixedVariableRatioString}
+                                icon={<Percent className="w-4 h-4 text-neutral-500" />}
+                            />
+                            <InsightCard
+                                title="Number of Categories" 
+                                description="Upgrade to the paid tier to add more category" 
+                                content={
+                                    <div className="flex flex-col gap-2">
+                                        <p>{categoriesCount} / {maxNumberOfCategories} categories created</p>
+                                        <Progress value={(categoriesCount/maxNumberOfCategories)*100} className="bg-color-border" additionalClasses="bg-color-text" />
+                                    </div>
+                                }
                                 icon={<Percent className="w-4 h-4 text-neutral-500" />}
                             />
                         </div>
@@ -131,18 +147,3 @@ export default async function CategoryList({
         </>
     )
 }
-
-type TCategoriesData = {
-    type: "Income" | "Savings" | "Expenses";
-    categories: {
-        categoryId: string;
-        clerkUserId: string;
-        categoryName: string;
-        categoryBudget: number;
-        categoryType: "Income" | "Savings" | "Expenses";
-        expenseMethod: "Fixed" | "Variable" | null;
-        createdAt: Date;
-        childTransactionsCount: number
-    }[];
-    sum: number;
-}[]

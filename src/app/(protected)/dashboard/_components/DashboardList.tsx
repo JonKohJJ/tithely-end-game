@@ -126,7 +126,7 @@ export default async function DashboardList({
                                                                 : "bg-blue-500"
                                                             } 
                                                         />
-                                                        <p className="absolute left-1/2 text-color-text text-[8px]">{Math.round(category.percentage)}%</p>
+                                                        <p className="absolute left-1/2 text-white text-[8px]">{Math.round(category.percentage)}%</p>
                                                     </TableCell>
                                                     <TableCell className={`w-1/12 text-right hidden md:block`}>${category.remaining}</TableCell>
                                                     <TableCell className={`w-1/12 text-right hidden md:block`}>${category.excess}</TableCell>
@@ -148,7 +148,7 @@ export default async function DashboardList({
                                                                 : "bg-blue-500"
                                                             } 
                                                         />
-                                                        <p className="absolute left-1/2 text-color-text text-[8px]">{Math.round(type.footerData.percentage)}%</p>
+                                                        <p className="absolute left-1/2 text-white text-[8px]">{Math.round(type.footerData.percentage)}%</p>
                                                     </TableCell>
                                                     <TableCell className={`w-1/12 text-right hidden md:block`}>${type.footerData.remaining}</TableCell>
                                                     <TableCell className={`w-1/12 text-right hidden md:block`}>${type.footerData.excess}</TableCell>
@@ -273,8 +273,8 @@ function calculateFooterData(
     if (DashboardCategoryData.length === 0) {
         return {
             name: "Total",
-            budgeted: 0,
             tracked: 0,
+            budgeted: 0,
             percentage: 0,
             remaining: 0,
             excess: 0
@@ -294,8 +294,8 @@ function calculateFooterData(
 
     return {
         name: "Total",
-        budgeted: totalBudgeted,
-        tracked: totalTracked,
+        tracked: roundTo(totalTracked, 2),
+        budgeted: roundTo(totalBudgeted, 2),
         percentage: totalPercentage,
         remaining: totalRemaining,
         excess: totalExcess
@@ -344,8 +344,8 @@ function calculateInsightCardsValues(allTransactions: TFetchedAllTransactions) {
     })
 
     const debitAccountBalance = totalIncome - totalSavings - totalDebitExpenses
-    DebitAccountBalanceString = debitAccountBalance > 0 ? `$${debitAccountBalance}` : "$0"
-    CreditCardChargesString = `$${totalCreditCharges}`
+    DebitAccountBalanceString = debitAccountBalance > 0 ? `$${roundTo(debitAccountBalance, 2)}` : "$0"
+    CreditCardChargesString = `$${roundTo(totalCreditCharges, 2)}`
 
     const difference = debitAccountBalance - totalCreditCharges
     if (difference > 0) {

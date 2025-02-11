@@ -10,21 +10,24 @@ const updatedAt = timestamp("updated_at", { withTimezone: true })
   .defaultNow()
   .$onUpdate(() => new Date())
 
-export const TierEnum = pgEnum("subscription_tier_20", ["Free", "Basic", "Standard", "Premium"])
+export const TierEnum = pgEnum("subscription_tier_22", ["Free", "Pro (Monthly)", "Pro (One Time Purchase)"])
 
 export const UserSubscriptionTable = pgTable(
   'user_subscriptions', 
   {
     id: uuid("id").primaryKey().defaultRandom(),
     clerkUserId: text("clerk_user_id").notNull().unique(),
+    stripeSubscriptionItemId: text("stripe_subscription_item_id"),
+    stripeSubscriptionId: text("stripe_subscription_id"),
+    stripeCustomerId: text("stripe_customer_id"),
     tier: TierEnum().notNull(),
     createdAt,
     updatedAt,
   },
 ).enableRLS()
 
-export const TypeEnum = pgEnum("type_20", ["Income", "Savings", "Expenses"])
-export const ExpenseMethodEnum = pgEnum("expense_type_20", ["Fixed", "Variable"])
+export const TypeEnum = pgEnum("type_22", ["Income", "Savings", "Expenses"])
+export const ExpenseMethodEnum = pgEnum("expense_type_22", ["Fixed", "Variable"])
 
 export const CategoriesTable = pgTable(
   'user_categories',
@@ -46,7 +49,7 @@ export const CategoriesTable = pgTable(
   }
 ).enableRLS()
 
-export const CreditOrDebitEnum = pgEnum("credit_debit_20", ["Credit", "Debit"])
+export const CreditOrDebitEnum = pgEnum("credit_debit_22", ["Credit", "Debit"])
 
 export const TransactionsTable = pgTable(
   'user_transactions',

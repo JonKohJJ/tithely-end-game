@@ -1,6 +1,6 @@
 import { db } from "@/drizzle/db";
 import { CategoriesTable, TransactionsTable } from "@/drizzle/schema"
-import { eq, and, desc, sql, sum } from "drizzle-orm";
+import { eq, and, desc, sql, sum, count } from "drizzle-orm";
 import { TDatabaseResponse, TFetchedCategory } from "./categories";
 import { TInsertTransaction } from "@/zod/transactions";
 
@@ -35,6 +35,20 @@ export async function getAllTransactions(
         )
 
     return allTransactions
+}
+
+export async function getTransactionsCount(
+    userId: string
+) {
+    const [ result ] = await db
+        .select(
+            { count: count() }
+        )
+        .from(TransactionsTable)
+        .where(
+            eq(TransactionsTable.clerkUserId, userId)
+        )
+    return result.count
 }
 
 export async function addTransaction(
@@ -115,7 +129,7 @@ export async function deleteTransaction({
     }
 } 
 
-export async function getLastTransactionDate(
+export async function getLastTransactionSummary(
     userId: string
 ) {
 
@@ -135,10 +149,7 @@ export async function getLastTransactionDate(
 
     // Handle if no transactions are found
     if (!result) {
-        return { 
-            lastTransactionDate: "No transactions found",
-            daysSinceLastTransaction: "No transactions found"
-        }
+        return "No transactions found"
     }
 
     // 02. Calculate the days difference between now and the transaction date
@@ -153,10 +164,7 @@ export async function getLastTransactionDate(
         daysSinceLastTransaction = `${daysDifference} day${daysDifference > 1 ? 's' : ''} since last transaction`
     }
 
-    return { 
-        lastTransactionDate: new Date(result.transactionDate).toDateString(), 
-        daysSinceLastTransaction 
-    }
+    return `Your last transaction was on ${new Date(result.transactionDate).toDateString()} - ${daysSinceLastTransaction}`
 }
 
 export async function calculateTotalClaims(

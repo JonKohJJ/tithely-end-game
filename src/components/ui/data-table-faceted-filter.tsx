@@ -38,7 +38,7 @@ export function DataTableFacetedFilter<TData, TValue>({
     <Popover>
 
       <PopoverTrigger asChild>
-        <Button size="sm" className="h-9 !border-color-border">
+        <Button size="sm" className="h-9 shadow-none border-[1px] border-color-border">
 
           <Settings2 />
 

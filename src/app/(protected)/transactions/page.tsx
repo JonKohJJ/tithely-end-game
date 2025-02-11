@@ -5,6 +5,7 @@ import { MonthYearFilter } from '../../../components/MonthYearFilter'
 import TransactionInsightCards from './_components/TransactionInsightCards'
 import TransactionSkeleton from './_components/TransactionSkeleton'
 import InsightCardSkeleton from '@/components/InsightCardSkeleton'
+import { canCreateTransaction } from '@/server/permissions'
 
 export default async function TransactionsPage({
   searchParams
@@ -14,6 +15,7 @@ export default async function TransactionsPage({
 
   const { userId, redirectToSignIn } = await auth()
   if (userId == null) return redirectToSignIn()
+  const { canCreate, maxNumberOfTransactions, transactionsCount } = await canCreateTransaction(userId)
 
   return (
     <div className='transaction-page flex flex-col gap-8'>
@@ -27,14 +29,14 @@ export default async function TransactionsPage({
       </div>
 
       <Suspense fallback={<InsightCardSkeleton />}>
-        <TransactionInsightCards userId={userId} searchParams={await searchParams} />
+        <TransactionInsightCards userId={userId} searchParams={await searchParams} transactionsCount={transactionsCount} maxNumberOfTransactions={maxNumberOfTransactions}/>
       </Suspense>
 
       <Suspense 
         fallback={<TransactionSkeleton />}
         key={JSON.stringify(await searchParams)}
       >
-        <TransactionList userId={userId} searchParams={await searchParams} />
+        <TransactionList userId={userId} searchParams={await searchParams} canCreate={canCreate} />
       </Suspense>
 
     </div>

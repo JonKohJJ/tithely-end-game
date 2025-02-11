@@ -1,7 +1,6 @@
 "use client"
 
 import { SendHorizontal } from "lucide-react"
-import { NavigationData, SettingsData } from "@/data/NavigationData"
 import {
   Sidebar,
   SidebarContent,
@@ -16,10 +15,13 @@ import {
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { ThemeModeToggle } from "@/components/ThemeModeToggle"
+import { NavigationData, SettingsData } from "@/data/NavigationData"
+import { usePathname } from "next/navigation"
 
 export function ProtectedNavBar() {
 
   const { setOpenMobile } = useSidebar();
+  const pathname = usePathname()
 
   return (
     <Sidebar collapsible="icon" className="protect-nav-bar border-color-border bg-color-bg">
@@ -44,16 +46,25 @@ export function ProtectedNavBar() {
               <SidebarGroup key={group.title}>
                 <SidebarGroupLabel className="font-light">{group.title}</SidebarGroupLabel>
                 <SidebarMenu>
-                  {group.subItems.map((item) => (
-                    <SidebarMenuItem key={item.name} onClick={() => setOpenMobile(false)}>
-                      <SidebarMenuButton asChild>
-                        <Link href={item.isDisabled ? "" : item.url} className={item.isDisabled ? "hover:cursor-not-allowed text-color-muted-text" : ""}>
-                          <item.icon />
-                          <span>{item.name}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
+                  {group.subItems.map((item) => {
+                        return (
+                          <SidebarMenuItem key={item.name} 
+                            onClick={() => setOpenMobile(false)} 
+                            className={`rounded-md ${item.url.includes(pathname) ? "bg-color-muted-text" : "hover:bg-color-muted-text"}`}
+                          >
+                            <SidebarMenuButton asChild>
+                              <Link href={item.url} className="flex justify-between">
+                                <div className={`flex gap-2 items-center`}>
+                                  <item.icon className="size-4" />
+                                  <span>{item.name}</span>
+                                </div>
+                              </Link>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        )
+                      }
+                    )
+                  }
                 </SidebarMenu>
               </SidebarGroup>
           ))}
@@ -68,11 +79,9 @@ export function ProtectedNavBar() {
             <SidebarMenu>
 
               {/* Theme Toggle here */}
-              <SidebarMenuItem>
+              <SidebarMenuItem className="">
                 <SidebarMenuButton asChild>
-                  <Link href="">
-                    <ThemeModeToggle additionalClasses="!border-none p-0 font-normal"/>
-                  </Link>
+                  <ThemeModeToggle additionalClasses="!p-2 font-normal"/>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 

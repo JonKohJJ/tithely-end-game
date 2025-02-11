@@ -22,10 +22,10 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { toast } from "@/hooks/use-toast"
 import { addTransaction, updateTransaction } from "@/server/actions/transactions"
 import { TFetchedTransaction } from "@/server/db/transactions"
+import MyButton from "@/components/MyButton"
 
 export default function TransactionForm({
     allCategories,
-    isAdding,
     setIsAdding,
     transactionToBeEdited,
     setEditingRowId,
@@ -33,7 +33,6 @@ export default function TransactionForm({
     setAddCreditDebit
 }: {
     allCategories: TFetchedAllCategories
-    isAdding?: boolean
     setIsAdding: Dispatch<SetStateAction<boolean>>
     transactionToBeEdited?: TFetchedTransaction
     setEditingRowId?: Dispatch<SetStateAction<string | null>>
@@ -294,6 +293,7 @@ export default function TransactionForm({
                                             placeholder="Transaction details..."
                                             {...field} 
                                             disabled={formState.isSubmitting}
+                                            className="shadow-none border-color-border"
                                         />
                                     </FormControl>
                                     <FormMessage className="font-bold col-span-4 text-right text-red-500"/>  
@@ -325,6 +325,7 @@ export default function TransactionForm({
                                                     const value = Number(field.value).toFixed(2)
                                                     field.onChange(Number(value))
                                             }}
+                                            className="shadow-none border-color-border"
                                         />
                                     </FormControl>
                                     <FormMessage className="font-bold col-span-4 text-right text-red-500"/>  
@@ -344,7 +345,7 @@ export default function TransactionForm({
                                                 disabled={selectedTransactionType !== "Expenses" || formState.isSubmitting}
                                                 onCheckedChange={(value) => field.onChange(value)}
                                             />
-                                            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-40">
                                                 Is Claimable
                                             </label>
                                         </div>
@@ -356,7 +357,7 @@ export default function TransactionForm({
                     </div>
 
                     <div className={`w-[8%] flex flex-col gap-2`}>
-                        <Button type="submit" disabled={formState.isSubmitting} className="border-color-border hover:border-color-text">
+                        <MyButton type="submit" disabled={formState.isSubmitting}>
                             {formState.isSubmitting
                                 ? 
                                     transactionToBeEdited
@@ -368,12 +369,9 @@ export default function TransactionForm({
                                     ? <p>Edit</p>
                                     : <p>Add</p>
                             }
-                        </Button>
-                        {isAdding && 
-                            <Button onClick={() => setIsAdding && setIsAdding(false)} className="border-color-border hover:border-color-text">Close</Button>
-                        }
+                        </MyButton>
                         {transactionToBeEdited && 
-                            <Button onClick={() => setEditingRowId && setEditingRowId(null)} className="border-color-border hover:border-color-text">Close</Button>
+                            <MyButton onClickFunction={() => setEditingRowId && setEditingRowId(null)}>Close</MyButton>
                         }
                     </div>
 

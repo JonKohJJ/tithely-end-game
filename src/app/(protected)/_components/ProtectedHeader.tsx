@@ -42,10 +42,17 @@ export default function ProtectedHeader() {
 }
 
 function getBreadCrumbs(pathname: string) {
+    // For navigation items
     for (const path of allPossiblePaths) {
         if (path.toLowerCase().includes(pathname)) {
             return path.split("/")
         }
     }
-    return ["Breadcrumbs Not Found"]
+
+    // For everything else
+    const formatted = pathname
+        .split('/') /* Split by "/" */
+        .filter(Boolean) /* Remove empty strings */
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1)) /* Capitalised first letter */
+    return formatted
 }

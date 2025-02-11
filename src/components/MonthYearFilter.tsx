@@ -17,7 +17,7 @@ export function MonthYearFilter() {
   return (
     <div className="flex gap-2"> 
       <Select value={String(month)} onValueChange={(value) => setMonth(Number(value))}>
-        <SelectTrigger className="w-[120px] border-color-border hover:border-color-text">
+        <SelectTrigger className="w-[120px] shadow-none border-[1px] border-color-text bg-color-text text-color-bg hover:bg-color-bg hover:text-color-text">
           <SelectValue placeholder="Month" />
         </SelectTrigger>
         <SelectContent className='border-color-border bg-color-bg'>
@@ -31,7 +31,7 @@ export function MonthYearFilter() {
       </Select>
 
       <Select value={String(year)} onValueChange={(value) => setYear(Number(value))}>
-        <SelectTrigger className="w-[120px] border-color-border hover:border-color-text">
+        <SelectTrigger className="w-[120px] shadow-none border-[1px] border-color-text bg-color-text text-color-bg hover:bg-color-bg hover:text-color-text">
           <SelectValue placeholder="Year" />
         </SelectTrigger>
         <SelectContent className='border-color-border bg-color-bg'>

@@ -6,9 +6,11 @@ import { useEffect, useState } from "react"
 import { Button } from "./ui/button"
 
 export function ThemeModeToggle({
-  additionalClasses
+  additionalClasses,
+  onlyIcon
 } : {
   additionalClasses?: string;
+  onlyIcon?: boolean
 }) {
 
   const { theme, setTheme } = useTheme()
@@ -26,17 +28,17 @@ export function ThemeModeToggle({
   return (
     <Button
       onClick={() => theme === "light" ? setTheme("dark") : setTheme("light")}
-      className={`theme-toggle flex items-center ${additionalClasses}`}
+      className={`theme-toggle flex items-center ${additionalClasses} shadow-none`}
 
     >
       { theme === "light" 
         ? <>
             <Moon />
-            <p className="hidden md:block">Dark</p>
+            {onlyIcon ? null : <p className="hidden md:block">Dark</p>}
           </>
         : <>
             <Sun />
-            <p className="hidden md:block">Light</p>
+            {onlyIcon ? null : <p className="hidden md:block">Light</p>}
           </>
       }
     </Button>

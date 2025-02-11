@@ -7,11 +7,13 @@ import { ProtectedNavBar } from './_components/ProtectedNavBar'
 import { Toaster } from '@/components/ui/toaster'
 import ProtectedHeader from './_components/ProtectedHeader'
 
-export default function ProtectedLayout({ 
+export default async function ProtectedLayout({ 
   children
 } : { 
   children: ReactNode 
 }) {
+
+  
 
   return (
     <SidebarProvider>
@@ -19,7 +21,7 @@ export default function ProtectedLayout({
       <SidebarInset>
         <ProtectedHeader />
         <div className='protected-layout flex justify-center w-full h-full'>
-          <div className='w-full p-6'>
+          <div className='w-full p-6 max-w-[1400px]'>
               {children}
               <Toaster />
           </div>

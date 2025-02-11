@@ -38,6 +38,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { addCategory, deleteCategory, updateCategory } from "@/server/actions/categories"
 import { toast, useToast } from "@/hooks/use-toast"
 import { TFetchedCategory, TFetchedCategoryWithChildTransactionCount } from "@/server/db/categories"
+import MyButton from "@/components/MyButton"
 
 
 export default function CategoryForm({
@@ -69,9 +70,9 @@ export default function CategoryForm({
                 {categoryTobeEdited ? (
                     <ButtonToEditDeleteCategory setDialogMode={setDialogMode} />
                 ) : (
-                    <Button
-                        onClick={() => setDialogMode('AddOrEdit')}
-                    >Add Category</Button>
+                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')}>
+                        Add Category
+                    </MyButton>
                 )}
             </DialogTrigger>
 
@@ -96,18 +97,16 @@ export default function CategoryForm({
                             <DialogTitle>{`Deleting '${categoryTobeEdited?.categoryName}' Category`}</DialogTitle>
                         </DialogHeader>
                         <p>{`There are ${categoryTobeEdited?.childTransactionsCount} transactions under '${categoryTobeEdited?.categoryName}', are you sure?`}</p>
-                        <Button 
-                            className="mt-4 w-1/4 ml-auto" 
-                            onClick={() => {
+                        <MyButton disabled={isDeleting} additionalClasses="mt-4 w-1/4 ml-auto"
+                            onClickFunction={() => {
                                 if (categoryTobeEdited) {
                                     onDelete(categoryTobeEdited)
                                     setIsDeleting(true)
                                 }
                             }}
-                            disabled={isDeleting}
                         >
                             {isDeleting ? 'Deleting...' : 'Delete'}
-                        </Button>
+                        </MyButton>
                     </>
                 )}
             </DialogContent>
@@ -184,7 +183,7 @@ function OfficialCategoryForm({
                                     onValueChange={field.onChange}
                                     disabled={formState.isSubmitting}
                                 >
-                                    <SelectTrigger className="col-span-3 !m-0 !border-color-border">
+                                    <SelectTrigger className="col-span-3 !m-0 shadow-none border-color-border">
                                         <SelectValue placeholder="Select Type" />
                                     </SelectTrigger>
                                     <SelectContent className="bg-color-bg border-color-border">
@@ -247,7 +246,7 @@ function OfficialCategoryForm({
                                     onValueChange={field.onChange}
                                     disabled={selectedCategoryType !== "Expenses" || formState.isSubmitting}
                                 >
-                                    <SelectTrigger className="col-span-3 !m-0 !border-color-border">
+                                    <SelectTrigger className="col-span-3 !m-0 shadow-none border-color-border">
                                         <SelectValue placeholder="Select Expense Method" />
                                     </SelectTrigger>
                                     <SelectContent className="bg-color-bg border-color-border">
@@ -263,8 +262,7 @@ function OfficialCategoryForm({
                         </FormItem>
                     )}
                 />
-                
-                <Button type="submit" className="mt-4 w-1/4 ml-auto border-color-border border-[1px] hover:border-color-text" disabled={formState.isSubmitting}>
+                <MyButton type="submit" additionalClasses="mt-4 w-1/4 ml-auto" disabled={formState.isSubmitting}>
                     {formState.isSubmitting
                         ? 
                             categoryTobeEdited
@@ -275,7 +273,7 @@ function OfficialCategoryForm({
                                 ? <p>Edit</p>
                                 : <p>Add</p>
                     }
-                </Button>
+                </MyButton>
             </form>
         </Form>
     )
@@ -289,7 +287,7 @@ function ButtonToEditDeleteCategory({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="!p-0 h-[unset] !border-0">
+                <Button variant="ghost" className="!p-0 h-[unset] notactive border-none">
                     <span className="sr-only">Open menu</span>
                     <MoreHorizontal />
                 </Button>

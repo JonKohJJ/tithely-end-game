@@ -10,6 +10,7 @@ import {
     getAllCategoryNames
 } from '../db/categories'
 import { revalidatePath } from "next/cache"
+import { canCreateCategory } from "../permissions"
 
 
 export async function addCategory(
@@ -18,12 +19,8 @@ export async function addCategory(
     const { userId } = await auth()
     const { success, data } = CategorySchema.safeParse(unsafeData)
 
-    // const canAdd = await canAddTodo(userId)
-    // if (!success || userId == null || !canAdd) {
-    //     return {error: true, message: "There was an error adding your todo"}
-    // }
-
-    if (!success || userId == null) {
+    const { canCreate } = await canCreateCategory(userId)
+    if (!success || userId == null || !canCreate) {
         return { success: false, dbResponseMessage: "SS Validation - There was an error adding your category" }
     }
 

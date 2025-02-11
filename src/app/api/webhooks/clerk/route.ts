@@ -2,6 +2,7 @@ import { Webhook } from "svix"
 import { headers } from "next/headers"
 import { WebhookEvent } from "@clerk/nextjs/server"
 import { createUserSubscription, deleteUserSubscription } from "@/server/db/subscription"
+import { env } from "@/data/env/server"
 
 export async function POST(req: Request) {
   
@@ -19,7 +20,7 @@ export async function POST(req: Request) {
   const payload = await req.json()
   const body = JSON.stringify(payload)
 
-  const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET as string)
+  const wh = new Webhook(env.CLERK_WEBHOOK_SECRET as string)
   let event: WebhookEvent
 
   try {

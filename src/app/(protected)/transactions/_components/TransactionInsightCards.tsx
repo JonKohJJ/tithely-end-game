@@ -1,31 +1,32 @@
 import { InsightCard } from "@/components/InsightCard";
-import { calculateTotalClaims, getLastTransactionDate } from "@/server/db/transactions";
+import { Progress } from "@/components/ui/progress";
+import { calculateTotalClaims, getLastTransactionSummary } from "@/server/db/transactions";
 import { CalendarDays, SwitchCamera, Tally5 } from "lucide-react";
 
 export default async function TransactionInsightCards({
     userId,
-    searchParams
+    searchParams,
+    transactionsCount,
+    maxNumberOfTransactions
 } : {
     userId: string
     searchParams: { [key: string]: string | string[] | undefined }
+    transactionsCount: number
+    maxNumberOfTransactions: number
 }) {
 
     const month = Number(searchParams.month) || new Date().getMonth() + 1
     const year = Number(searchParams.year) || new Date().getFullYear()
 
     let errorMessage: null | string = null
-    let lastTransactionDate: string = ""
-    let daysSinceLastTransaction: string = ""
+    let lastTransactionSummary: string = ""
     let totalClaims: string = ""
-
+    
     try {
-
-        const result = await getLastTransactionDate(userId)
-        lastTransactionDate = result.lastTransactionDate
-        daysSinceLastTransaction = result.daysSinceLastTransaction
-
+        
+        lastTransactionSummary = await getLastTransactionSummary(userId)
         totalClaims = await calculateTotalClaims(userId, month, year)
-
+    
     } catch (error) {
         if (error instanceof Error) {
             errorMessage = error.message
@@ -41,22 +42,27 @@ export default async function TransactionInsightCards({
                 : (
                     <div className="insight-cards-container flex gap-4 flex-col lg:flex-row">
                         <InsightCard 
-                            title="Date Of Last Transaction" 
-                            description="Just FYI." 
-                            content={lastTransactionDate}
+                            title="Last Transaction Summary" 
+                            description="Stay on top of your finances." 
+                            content={lastTransactionSummary}
                             icon={<CalendarDays className="w-4 h-4 text-neutral-500" />}
-                        />
-                        <InsightCard 
-                            title="Days Since Last Transaction" 
-                            description="Don't lose track of tracking your finances." 
-                            content={daysSinceLastTransaction}
-                            icon={<Tally5 className="w-4 h-4 text-neutral-500" />}
                         />
                         <InsightCard 
                             title="Total Claimables" 
                             description="Ensure that is exact amount is claimed." 
                             content={totalClaims}
                             icon={<SwitchCamera className="w-4 h-4 text-neutral-500" />}
+                        />
+                        <InsightCard 
+                            title="Number of Transactions" 
+                            description="Upgrade to the paid tier to add more transactions." 
+                            content={
+                                <div className="flex flex-col gap-2">
+                                    <p>{transactionsCount} / {maxNumberOfTransactions} transactions created</p>
+                                    <Progress value={(transactionsCount/maxNumberOfTransactions)*100} className="bg-color-border" additionalClasses="bg-color-text" />
+                                </div>
+                            }
+                            icon={<Tally5 className="w-4 h-4 text-neutral-500" />}
                         />
                     </div>
                 )

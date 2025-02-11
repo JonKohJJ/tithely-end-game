@@ -42,11 +42,14 @@ import { deleteBulkTransactions, deleteTransaction } from "@/server/actions/tran
 import { toast } from "@/hooks/use-toast"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import MyButton from "@/components/MyButton"
+import Link from "next/link"
 
 type TDataTableProps<TData> = {
   data: TData[]
   allCategories: TFetchedAllCategories
   allCategoryNames: string[]
+  canCreate: boolean
 }
 
 export const LOCAL_STORAGE_PAGESIZE_KEY = "TITHELY_TRANSACTION_DATATABLE_PAGE_SIZE"
@@ -54,7 +57,8 @@ export const LOCAL_STORAGE_PAGESIZE_KEY = "TITHELY_TRANSACTION_DATATABLE_PAGE_SI
 export function TransactionDataTable({
   data,
   allCategories,
-  allCategoryNames
+  allCategoryNames,
+  canCreate
 }: TDataTableProps<TFetchedTransaction>) {
 
   const [sorting, setSorting] = useState<SortingState>([])
@@ -266,7 +270,7 @@ export function TransactionDataTable({
               <DropdownMenu>
 
                   <DropdownMenuTrigger asChild className="hidden md:flex !border-0 !shadow-none">
-                      <Button variant="ghost" className="h-8 w-8 p-0">
+                      <Button variant="ghost" className="h-8 w-8 p-0 notactive">
                           <span className="sr-only">Open menu</span>
                           <MoreHorizontal className="h-4 w-4" />
                       </Button>
@@ -341,7 +345,7 @@ export function TransactionDataTable({
             placeholder="Search transaction details..."
             value={(table.getColumn("transactionDescription")?.getFilterValue() as string) ?? ""}
             onChange={(event) => table.getColumn("transactionDescription")?.setFilterValue(event.target.value)}
-            className="max-w-[250px]"
+            className="max-w-[250px] shadow-none border-color-border"
           />
 
           {table.getColumn("transactionType") && (
@@ -369,14 +373,12 @@ export function TransactionDataTable({
           )}
 
           {isFiltered && (
-            <Button
-              variant="ghost"
-              onClick={() => table.resetColumnFilters()}
-              className="h-9 px-2 lg:px-3 !border-color-border"
+            <MyButton
+              onClickFunction={() => table.resetColumnFilters()}
             >
               Reset
               <X />
-            </Button>
+            </MyButton>
           )}
 
         </div>
@@ -384,20 +386,23 @@ export function TransactionDataTable({
         <div className="flex gap-2 justify-end">
           {isAdding &&
             <>
-              <Button className="border-color-border hover:border-color-text" onClick={() => setAddCreditDebit("Credit")}><Plus /> Credit</Button>
-              <Button className="border-color-border hover:border-color-text" onClick={() => setAddCreditDebit("Debit")}><Plus /> Debit</Button>
+              <MyButton onClickFunction={() => setAddCreditDebit("Credit")}><Plus /> Credit</MyButton>
+              <MyButton onClickFunction={() => setAddCreditDebit("Debit")}><Plus /> Debit</MyButton>
             </>
           }
-          <Button 
-            onClick={() => { 
-              setIsAdding(true)
-              setEditingRowId(null)
-            }}
-            disabled={isAdding}
-            className="border-color-border hover:border-color-text"
-          >
-            <Plus />
-          </Button>
+          {canCreate
+            ? <MyButton 
+                onClickFunction={() => { 
+                  setIsAdding(!isAdding)
+                  setEditingRowId(null)
+                }}
+              >
+                { isAdding ? <X /> : <Plus /> }
+              </MyButton>
+            : <MyButton>
+                <Link href="/subscription">Upgrade to Add Transactions</Link>
+              </MyButton>
+          }
         </div>
 
       </div>
@@ -433,8 +438,7 @@ export function TransactionDataTable({
                 <TableRow className="border-color-border">
                   <TableCell colSpan={5}>
                     <TransactionForm 
-                      allCategories={allCategories} 
-                      isAdding={isAdding}
+                      allCategories={allCategories}
                       setIsAdding={setIsAdding}
                       addCreditDebit={addCreditDebit}
                       setAddCreditDebit={setAddCreditDebit}
@@ -518,7 +522,7 @@ export function TransactionDataTable({
                 localStorage.setItem(LOCAL_STORAGE_PAGESIZE_KEY, value)
               }}
             >
-              <SelectTrigger className="h-8 w-[70px] !border-color-border">
+              <SelectTrigger className="h-8 w-[70px] shadow-none border-color-border">
                 <SelectValue placeholder={table.getState().pagination.pageSize} />
               </SelectTrigger>
               <SelectContent side="top" className="bg-color-bg border-color-border">
@@ -539,7 +543,7 @@ export function TransactionDataTable({
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
+              className="hidden h-8 w-8 p-0 lg:flex shadow-none border-color-border"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
@@ -548,7 +552,7 @@ export function TransactionDataTable({
             </Button>
             <Button
               variant="outline"
-              className="h-8 w-8 p-0"
+              className="h-8 w-8 p-0 shadow-none border-color-border"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
@@ -557,7 +561,7 @@ export function TransactionDataTable({
             </Button>
             <Button
               variant="outline"
-              className="h-8 w-8 p-0"
+              className="h-8 w-8 p-0 shadow-none border-color-border"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
@@ -566,7 +570,7 @@ export function TransactionDataTable({
             </Button>
             <Button
               variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
+              className="hidden h-8 w-8 p-0 lg:flex shadow-none border-color-border"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >

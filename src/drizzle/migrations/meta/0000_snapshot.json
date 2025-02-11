@@ -1,5 +1,5 @@
 {
-  "id": "b0fa32fc-d61c-42e4-a01f-34aac5f7a6fa",
+  "id": "5a15eae9-32d8-43bb-8d50-199aa91148ba",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -35,14 +35,14 @@
         },
         "category_type": {
           "name": "category_type",
-          "type": "type_20",
+          "type": "type_22",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "expense_method": {
           "name": "expense_method",
-          "type": "expense_type_20",
+          "type": "expense_type_22",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -101,7 +101,7 @@
         },
         "transaction_type": {
           "name": "transaction_type",
-          "type": "type_20",
+          "type": "type_22",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -126,7 +126,7 @@
         },
         "transaction_credit_debit": {
           "name": "transaction_credit_debit",
-          "type": "credit_debit_20",
+          "type": "credit_debit_22",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -197,9 +197,27 @@
           "primaryKey": false,
           "notNull": true
         },
+        "stripe_subscription_item_id": {
+          "name": "stripe_subscription_item_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stripe_subscription_id": {
+          "name": "stripe_subscription_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stripe_customer_id": {
+          "name": "stripe_customer_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "tier": {
           "name": "tier",
-          "type": "subscription_tier_20",
+          "type": "subscription_tier_22",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -237,34 +255,33 @@
     }
   },
   "enums": {
-    "public.credit_debit_20": {
-      "name": "credit_debit_20",
+    "public.credit_debit_22": {
+      "name": "credit_debit_22",
       "schema": "public",
       "values": [
         "Credit",
         "Debit"
       ]
     },
-    "public.expense_type_20": {
-      "name": "expense_type_20",
+    "public.expense_type_22": {
+      "name": "expense_type_22",
       "schema": "public",
       "values": [
         "Fixed",
         "Variable"
       ]
     },
-    "public.subscription_tier_20": {
-      "name": "subscription_tier_20",
+    "public.subscription_tier_22": {
+      "name": "subscription_tier_22",
       "schema": "public",
       "values": [
         "Free",
-        "Basic",
-        "Standard",
-        "Premium"
+        "Pro (Monthly)",
+        "Pro (One Time Purchase)"
       ]
     },
-    "public.type_20": {
-      "name": "type_20",
+    "public.type_22": {
+      "name": "type_22",
       "schema": "public",
       "values": [
         "Income",

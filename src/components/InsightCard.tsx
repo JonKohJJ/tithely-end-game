@@ -9,8 +9,9 @@ export function InsightCard({
 } : {
     title: string
     description: string
-    content: string
+    content: string | ReactNode
     icon?: ReactNode
+
 }) {
     return (
         <Card className="w-full flex flex-col gap-4 justify-between border-[1px] border-color-border !shadow-none">

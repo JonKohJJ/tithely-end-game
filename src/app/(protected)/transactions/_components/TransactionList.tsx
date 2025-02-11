@@ -4,10 +4,12 @@ import { getAllCategories, getAllCategoryNames, TFetchedAllCategories } from "@/
 
 export default async function TransactionList({
     userId,
-    searchParams
+    searchParams,
+    canCreate
 } : {
     userId: string
     searchParams: { [key: string]: string | string[] | undefined }
+    canCreate: boolean
 }) {
 
     const month = Number(searchParams.month) || new Date().getMonth() + 1
@@ -46,6 +48,7 @@ export default async function TransactionList({
                                 data={allTransactions} 
                                 allCategories={allCategories} 
                                 allCategoryNames={allCategoryNames}
+                                canCreate={canCreate}
                             />
                         </div>
                     </div>

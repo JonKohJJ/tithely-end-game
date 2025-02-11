@@ -1,88 +1,93 @@
 import {
-    LayoutDashboard,
-    ChartNoAxesCombined,
-    CreditCard,
-    ArrowRightLeft,
-    PiggyBank,
-    AlignStartVertical,
-    LucideProps,
-    CaseUpper,
-  } from "lucide-react"
+  LayoutDashboard,
+  ChartNoAxesCombined,
+  CreditCard,
+  ArrowRightLeft,
+  PiggyBank,
+  AlignStartVertical,
+  LucideProps,
+  CaseUpper,
+  BadgeDollarSign
+} from "lucide-react"
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
+
 export const NavigationData = [
-    {
-      title: "Overview",
-      subItems: [
-        {
-          name: "Dashboard",
-          url: "/dashboard",
-          icon: LayoutDashboard,
-        },
-        {
-          name: "Analytics",
-          url: "/analytics",
-          icon: ChartNoAxesCombined,
-          isDisabled: true
-        },
-      ],
-    },
-    {
-      title: "Getting Started",
-      subItems: [
-        {
-          name: "Categories",
-          url: "/categories",
-          icon: AlignStartVertical,
-        },
-        {
-          name: "Cards",
-          url: "/cards",
-          icon: CreditCard,
-          isDisabled: true
-        },
-        {
-          name: "Accounts",
-          url: "/accounts",
-          icon: PiggyBank,
-          isDisabled: true
-        },
-        {
-          name: "Transactions",
-          url: "/transactions",
-          icon: ArrowRightLeft,
-        },
-      ],
-    },
+  {
+    title: "Overview",
+    subItems: [
+      {
+        name: "Dashboard",
+        url: "/dashboard",
+        icon: LayoutDashboard,
+      },
+      {
+        name: "Analytics",
+        url: "/analytics",
+        icon: ChartNoAxesCombined,
+        isDisabled: true
+      },
+    ],
+  },
+  {
+    title: "Getting Started",
+    subItems: [
+      {
+        name: "Categories",
+        url: "/categories",
+        icon: AlignStartVertical,
+      },
+      {
+        name: "Cards",
+        url: "/cards",
+        icon: CreditCard,
+        isDisabled: true
+      },
+      {
+        name: "Accounts",
+        url: "/accounts",
+        icon: PiggyBank,
+        isDisabled: true
+      },
+      {
+        name: "Transactions",
+        url: "/transactions",
+        icon: ArrowRightLeft,
+      },
+    ],
+  },
 ]
 
 export const SettingsData = [
   {
     title: "Settings",
     subItems: [
-      // {
-      //   name: "Dark Mode",
-      //   icon: Moon,
-      // },
       {
         name: "Style Guide",
         url: "/style-guide",
         icon: CaseUpper,
       },
+      {
+        name: "Subscription",
+        url: "/subscription",
+        icon: BadgeDollarSign,
+      },
     ]
   }
 ]
 
+export type TNavigationData = {
+  title: string;
+  subItems: {
+      name: string;
+      url: string;
+      icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
+      isDisabled?: boolean
+  }[];
+}[]
+
 function createNavigationMap(
-  NavigationData: 
-  {
-      title: string;
-      subItems: {
-          name: string;
-          url: string;
-          icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
-      }[];
-  }[]
+  NavigationData: TNavigationData
 ) {
 
   const allPossiblePaths = new Set<string>()

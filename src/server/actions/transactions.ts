@@ -10,6 +10,7 @@ import {
     deleteTransaction as deleteTransactionDb,
     deleteBulkTransactions as deleteBulkTransactionsDb
 } from '../db/transactions'
+import { canCreateTransaction } from "../permissions"
 
 export async function addTransaction(
     unsafeData: TInsertTransaction
@@ -18,12 +19,8 @@ export async function addTransaction(
     const { userId } = await auth()
     const { success, data } = TransactionSchema.safeParse(unsafeData)
 
-    // const canAdd = await canAddTodo(userId)
-    // if (!success || userId == null || !canAdd) {
-    //     return {error: true, message: "There was an error adding your todo"}
-    // }
-
-    if (!success || userId == null) {
+    const { canCreate } = await canCreateTransaction(userId)
+    if (!success || userId == null || !canCreate) {
         return { success: false, dbResponseMessage: "SS Validation - There was an error adding your transaction" }
     }
 
@@ -39,7 +36,7 @@ export async function updateTransaction(
     const { success, data } = TransactionSchema.safeParse(unsafeData)
 
     if (!success || userId == null) {
-        return { success: false, dbResponseMessage: "SS Validation - There was an error updating your category" }
+        return { success: false, dbResponseMessage: "SS Validation - There was an error updating your transaction" }
     }
 
     revalidatePath('/tracker') 
