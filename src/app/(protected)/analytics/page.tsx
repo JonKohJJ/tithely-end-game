@@ -1,5 +1,5 @@
 import { HasPermission } from '@/components/HasPermission'
-import { MonthYearFilter } from '@/components/MonthYearFilter'
+// import { MonthYearFilter } from '@/components/MonthYearFilter'
 import { canAccessAnalyticsPage } from '@/server/permissions'
 import React from 'react'
 
@@ -11,15 +11,22 @@ export default function AnalyticsPage() {
                 <p className='fs-h3 font-medium'>Analytics</p>
                 <p className='fs-base font-light'>Get Insights</p>
                 </div>
-                <MonthYearFilter />
+                {/* <MonthYearFilter /> */}
             </div>
 
             <HasPermission
                 permission={canAccessAnalyticsPage}
                 renderFallback
             >
+                {/* <Suspense 
+                    fallback={<p>Loading analytics...</p>}
+                    key={JSON.stringify(await searchParams)}
+                >
+                    <p>Analytics Content</p>
+                </Suspense> */}
                 <p>Analytics Content</p>
             </HasPermission>
+            
         </div>
     )
 }
