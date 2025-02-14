@@ -41,7 +41,7 @@ export async function createCancelSessionSubscription() {
 
 export async function createCheckoutSession(
     tier: PaidTierNames,
-    isOneTimePurchase: boolean
+    isLifetimePurchase: boolean
 ) {
 
     const user = await currentUser()
@@ -49,7 +49,7 @@ export async function createCheckoutSession(
     const subscription = await getUserSubscription(user.id)
     if (subscription == null) return
 
-    if (isOneTimePurchase) {
+    if (isLifetimePurchase) {
         // getCheckoutSession for One Time Purchase here
         const url = await getCheckoutSessionOneTimePayment(tier, user)
         if (url == null) return

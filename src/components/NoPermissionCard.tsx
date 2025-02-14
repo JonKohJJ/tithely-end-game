@@ -11,7 +11,7 @@ export default function NoPermissionCard({
     return (
         <Card className="shadow-none border-color-border">
             <CardHeader>
-                <CardTitle className="text-xl">Permission Denied</CardTitle>
+                <CardTitle>Permission Denied</CardTitle>
             </CardHeader>
             <CardContent>
                 <CardDescription>{children}</CardDescription>

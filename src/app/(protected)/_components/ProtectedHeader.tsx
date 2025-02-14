@@ -8,10 +8,16 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import {
+    BadgeDollarSign
+  } from "lucide-react"
 import { allPossiblePaths } from "@/data/NavigationData"
 import { usePathname } from 'next/navigation'
 import { UserButton } from "@clerk/nextjs"
 import { Fragment } from "react"
+import MyButton from "@/components/MyButton"
+import Link from "next/link"
+import { ThemeModeToggle } from "@/components/ThemeModeToggle"
 
 export default function ProtectedHeader() {
 
@@ -23,18 +29,29 @@ export default function ProtectedHeader() {
             <div className="flex items-center gap-2">
                 <SidebarTrigger />
                 <Separator orientation="vertical" className="mr-2 h-4" />
-                <Breadcrumb className="flex gap-2">
-                    <BreadcrumbList className="flex !gap-2">
+
+                <Breadcrumb className="hidden md:block">
+                    <BreadcrumbList>
                         {crumbs.map((crumb, index) => (
                             <Fragment key={index}>
-                                <BreadcrumbItem className="hidden md:block font-light last:font-medium">{crumb}</BreadcrumbItem>
-                                { index !== crumbs.length-1 && <BreadcrumbSeparator className="hidden md:block" /> }
+                                <BreadcrumbItem>
+                                    <p>{crumb}</p>
+                                </BreadcrumbItem>
+                                { index !== crumbs.length-1 && <BreadcrumbSeparator /> }
                             </Fragment>
                         ))}
                     </BreadcrumbList>
                 </Breadcrumb>
+
             </div>
-            <div>
+            <div className="flex gap-4 items-center">
+                <ThemeModeToggle onlyIcon={true} additionalClasses="!p-0" />
+                <MyButton>
+                    <Link href="/subscription" className="flex gap-2 items-center">
+                        <BadgeDollarSign />
+                        <p>Subscription</p>
+                    </Link>
+                </MyButton>
                 <UserButton />
             </div>
         </header>

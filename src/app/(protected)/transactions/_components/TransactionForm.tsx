@@ -176,7 +176,7 @@ export default function TransactionForm({
                                             </PopoverContent>
 
                                         </Popover>
-                                        <FormMessage className="font-bold col-span-4 text-right text-red-500"/>
+                                        <FormMessage className=" col-span-4 text-right text-red-500"/>
                                     </FormItem>
                                 )
                             }}
@@ -209,7 +209,7 @@ export default function TransactionForm({
                                             </SelectContent>
                                         </Select>
                                     </FormControl>
-                                    <FormMessage className="font-bold col-span-4 text-right text-red-500"/>  
+                                    <FormMessage className=" col-span-4 text-right text-red-500"/>  
                                 </FormItem>
                             )}
                         />
@@ -236,7 +236,7 @@ export default function TransactionForm({
                                             </SelectContent>
                                         </Select>
                                     </FormControl>
-                                    <FormMessage className="font-bold col-span-4 text-right text-red-500"/>  
+                                    <FormMessage className=" col-span-4 text-right text-red-500"/>  
                                 </FormItem>
                             )}
                         />
@@ -268,13 +268,13 @@ export default function TransactionForm({
                                                             ))
                                                         )
                                                         : 
-                                                        <p className="p-2 text-sm">No Categories Found</p>
+                                                        <p className="p-2">No Categories Found</p>
                                                     }
                                                 </SelectGroup>
                                             </SelectContent>
                                         </Select>
                                     </FormControl>
-                                    <FormMessage className="font-bold col-span-4 text-right text-red-500"/>  
+                                    <FormMessage className=" col-span-4 text-right text-red-500"/>  
                                 </FormItem>
                             )}
                         />
@@ -296,7 +296,7 @@ export default function TransactionForm({
                                             className="shadow-none border-color-border"
                                         />
                                     </FormControl>
-                                    <FormMessage className="font-bold col-span-4 text-right text-red-500"/>  
+                                    <FormMessage className=" col-span-4 text-right text-red-500"/>  
                                 </FormItem>
                             )}
                         />
@@ -328,7 +328,7 @@ export default function TransactionForm({
                                             className="shadow-none border-color-border"
                                         />
                                     </FormControl>
-                                    <FormMessage className="font-bold col-span-4 text-right text-red-500"/>  
+                                    <FormMessage className=" col-span-4 text-right text-red-500"/>  
                                 </FormItem>
                             )}
                         />
@@ -345,12 +345,12 @@ export default function TransactionForm({
                                                 disabled={selectedTransactionType !== "Expenses" || formState.isSubmitting}
                                                 onCheckedChange={(value) => field.onChange(value)}
                                             />
-                                            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-40">
+                                            <label className="peer-disabled:cursor-not-allowed peer-disabled:opacity-40">
                                                 Is Claimable
                                             </label>
                                         </div>
                                     </FormControl>
-                                    <FormMessage className="font-bold col-span-4 text-right text-red-500"/>  
+                                    <FormMessage className=" col-span-4 text-right text-red-500"/>  
                                 </FormItem>
                             )}
                         />

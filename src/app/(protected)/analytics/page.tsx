@@ -2,17 +2,15 @@ import { HasPermission } from '@/components/HasPermission'
 // import { MonthYearFilter } from '@/components/MonthYearFilter'
 import { canAccessAnalyticsPage } from '@/server/permissions'
 import React from 'react'
+import PageHeader from '../_components/PageHeader'
 
 export default function AnalyticsPage() {
     return (
         <div className='analytics-page flex flex-col gap-8 h-full'>
-            <div className='flex flex-col gap-6 md:flex-row md:justify-between md:items-center'>
-                <div className='flex flex-col gap-1'>
-                <p className='fs-h3 font-medium'>Analytics</p>
-                <p className='fs-base font-light'>Get Insights</p>
-                </div>
+
+            <PageHeader title='Analytics' description='Get insights to your financials'>
                 {/* <MonthYearFilter /> */}
-            </div>
+            </PageHeader>
 
             <HasPermission
                 permission={canAccessAnalyticsPage}
@@ -24,7 +22,7 @@ export default function AnalyticsPage() {
                 >
                     <p>Analytics Content</p>
                 </Suspense> */}
-                <p>Analytics Content</p>
+                <p className='fs-h1'>Analytics Page Content - developement in progress</p>
             </HasPermission>
             
         </div>

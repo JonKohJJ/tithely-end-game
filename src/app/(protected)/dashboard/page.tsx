@@ -4,6 +4,7 @@ import { auth } from '@clerk/nextjs/server'
 import DashboardList from './_components/DashboardList'
 import InsightCardSkeleton from '@/components/InsightCardSkeleton'
 import DashboardListSkeleton from './_components/DashboardListSkeleton'
+import PageHeader from '../_components/PageHeader'
 
 export default async function DashboardPage({
   searchParams
@@ -17,13 +18,9 @@ export default async function DashboardPage({
   return (
     <div className='dashboard-page flex flex-col gap-8 h-full'>
   
-      <div className='flex flex-col gap-6 md:flex-row md:justify-between md:items-center'>
-          <div className='flex flex-col gap-1'>
-            <p className='fs-h3 font-medium'>Dashboard</p>
-            <p className='fs-base font-light'>All your categories & transactions in one place</p>
-          </div>
-          <MonthYearFilter />
-      </div>
+      <PageHeader title='Dashboard' description='All your categories & transactions in one place'>
+        <MonthYearFilter />
+      </PageHeader>
 
       <Suspense 
         fallback={

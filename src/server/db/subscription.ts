@@ -2,6 +2,7 @@ import { SubscriptionTiers } from "@/data/subscriptionTiers";
 import { db } from "@/drizzle/db";
 import { CategoriesTable, UserSubscriptionTable } from "@/drizzle/schema";
 import { eq, SQL } from "drizzle-orm";
+import { TDatabaseResponse } from "./categories";
 
 export async function createUserSubscription(
     data: typeof UserSubscriptionTable.$inferInsert
@@ -50,9 +51,23 @@ export async function getUserSubscriptionTier(
 export async function updateUserSubscription(
     where: SQL,
     data: Partial<typeof UserSubscriptionTable.$inferInsert>
-) {
-    await db
-        .update(UserSubscriptionTable)
-        .set(data)
-        .where(where)
+): Promise<TDatabaseResponse> {
+
+    try {
+        const [ updatedSubscription ] = await db
+            .update(UserSubscriptionTable)
+            .set(data)
+            .where(where)
+            .returning()
+
+        return { success: true, dbResponseMessage: `Current Tier: ${updatedSubscription.tier}`}
+
+    } catch (error) {
+
+        if (error instanceof Error) {
+            return { success: false, dbResponseMessage: `DB ERROR - ${error.message}` }
+        }
+        
+        return { success: false, dbResponseMessage: "DB ERROR - An unexpected error occurred" }
+    }
 }

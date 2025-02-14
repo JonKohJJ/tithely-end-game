@@ -108,7 +108,7 @@ export function TransactionDataTable({
         },
         enableSorting: false,
         enableHiding: false,
-        size: 50,
+        size: 30,
     },
   
     // Transaction Date
@@ -117,7 +117,7 @@ export function TransactionDataTable({
         header: ({ column }) => {
             return (
                 <div>
-                  <DataTableColumnHeader column={column} title="Date" />
+                  <DataTableColumnHeader column={column} title="Date" className="fs-caption" />
                 </div>
             )
         },
@@ -126,7 +126,7 @@ export function TransactionDataTable({
             const formatted = date.toDateString()
             return (
               <div>
-                  <p className="line-clamp-1 !p-0">{formatted}</p>
+                  <p className="line-clamp-1">{formatted}</p>
               </div>
             )
         },
@@ -200,7 +200,7 @@ export function TransactionDataTable({
     {
         accessorKey: "transactionDescription",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Details" className="hidden md:block" />
+            <DataTableColumnHeader column={column} title="Details" className="hidden md:block fs-caption" />
         ),
         cell: ({ row }) => {
   
@@ -212,10 +212,13 @@ export function TransactionDataTable({
             return (
               <div className="md:flex md:space-x-2 hidden">
                 {badgesArray.map((badge, index) => (
-                    badge !== null && <Badge key={index} className="border-color-border shadow-none"><p className="line-clamp-1">{badge}</p></Badge>
+                    badge !== null && 
+                      <Badge key={index} className="border-color-text">
+                        <p className="line-clamp-1">{badge}</p>
+                      </Badge>
                 ))}
                 
-                <span className="truncate font-medium">
+                <span className="truncate">
                   {row.original.user_transactions.transactionDescription}
                 </span>
               </div>
@@ -227,7 +230,7 @@ export function TransactionDataTable({
         },
         enableSorting: false,
         enableHiding: false,
-        size: 1200,
+        size: 1300,
     },
   
     // Transaction Amount
@@ -235,7 +238,7 @@ export function TransactionDataTable({
         accessorKey: "transactionAmount",
         header: ({ column }) => {
             return (
-                <DataTableColumnHeader column={column} title="Amount" className="text-right" />
+                <DataTableColumnHeader column={column} title="Amount" className="text-right fs-caption" />
             )
         },
         cell: ({ row }) => {
@@ -408,7 +411,7 @@ export function TransactionDataTable({
       </div>
 
       {/* Table Itself */}
-      <div className="rounded-xl border-color-border border-[1px]">
+      <div className="rounded-md border-color-border border-[1px]">
         <Table>
 
           <TableHeader>
@@ -495,9 +498,9 @@ export function TransactionDataTable({
       </div>
 
       {/* Table Footer - Pagination & X number of Rows Selected */}
-      <div className="hidden md:flex md:items-center md:justify-end md:space-x-2">
+      <div className="hidden md:flex md:items-center md:justify-end md:space-x-2 fs-caption">
 
-        <div className="flex-1 text-sm text-muted-foreground flex gap-2">
+        <div className="flex-1 text-muted-foreground flex gap-2">
           <span>
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
@@ -514,7 +517,7 @@ export function TransactionDataTable({
         <div className="pagination flex gap-8 items-center">
 
           <div className="flex items-center gap-2">
-            <p className="text-sm font-medium">Rows per page</p>
+            <p>Rows per page</p>
             <Select
               value={`${table.getState().pagination.pageSize}`}
               onValueChange={(value) => {
@@ -525,7 +528,7 @@ export function TransactionDataTable({
               <SelectTrigger className="h-8 w-[70px] shadow-none border-color-border">
                 <SelectValue placeholder={table.getState().pagination.pageSize} />
               </SelectTrigger>
-              <SelectContent side="top" className="bg-color-bg border-color-border">
+              <SelectContent side="top" className="bg-color-bg border-color-border fs-caption">
                 {[10, 20, 30, 40, 50].map((pageSize) => (
                   <SelectItem key={pageSize} value={`${pageSize}`} className="hover:cursor-pointer">
                     {pageSize}
@@ -535,7 +538,7 @@ export function TransactionDataTable({
             </Select>
           </div>
 
-          <div className="flex items-center justify-center text-sm font-medium">
+          <div className="flex items-center justify-center">
             Page {table.getState().pagination.pageIndex + 1} of{" "}
             {table.getPageCount()}
           </div>

@@ -8,7 +8,7 @@ export default function MyButton({
     type,
     onClickFunction, 
 } : {
-    children: string | ReactNode
+    children: ReactNode
     additionalClasses?: string
     disabled?: boolean
     type?: "button" | "submit" | "reset"

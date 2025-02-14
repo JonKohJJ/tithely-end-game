@@ -1,24 +1,23 @@
 import MyButton from '@/components/MyButton'
 import { ThemeModeToggle } from '@/components/ThemeModeToggle'
 import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs'
-import { ArrowRight, Flame } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
 export default function PublicNavBar() {
     return (
-        <section className='mysection border-b-[1px] border-color-border sticky top-0 bg-color-bg'>
+        <section className='mysection border-b-[1px] border-color-border sticky top-0 bg-color-bg z-[1]'>
             <div className='mycontainer flex items-center justify-between'>
 
                 <Link href="/" className='flex items-center'>
-                    <Flame className='size-6' />
-                    <span className='hidden md:block fs-h2'>Tithely</span>
+                    <p className='fs-h2'>Tithely</p>
                 </Link>
 
                 <div className='flex gap-2 items-center'>
                     <ThemeModeToggle onlyIcon={true} />
                     <SignedIn>
-                        <MyButton>
+                        <MyButton additionalClasses='py-6'>
                             <Link href="/dashboard" className='flex items-center gap-1'>
                                 <p className='hidden md:block'>Go To Dashboard</p>
                                 <ArrowRight />
@@ -27,7 +26,7 @@ export default function PublicNavBar() {
                     </SignedIn>
                     <SignedOut>
                         <SignInButton>
-                            <MyButton>
+                            <MyButton additionalClasses='py-6'>
                                 <p>Sign In</p>
                             </MyButton>
                         </SignInButton>

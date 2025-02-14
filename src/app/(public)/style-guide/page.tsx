@@ -42,7 +42,7 @@ export default function StyleGuide() {
 
     return (
         <section className='mysection style-guide'>
-            <div className='mycontainer flex flex-col gap-24'>
+            <div className='mycontainer flex flex-col gap-20'>
                 <div>
                     <p className='fs-caption text-color-text-muted'>fs-h1 / {fontSizes['fs-1']}</p>
                     <p className="fs-h1" ref={h1Ref}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque tempora molestiae aperiam.</p>

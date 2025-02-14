@@ -10,7 +10,7 @@ const updatedAt = timestamp("updated_at", { withTimezone: true })
   .defaultNow()
   .$onUpdate(() => new Date())
 
-export const TierEnum = pgEnum("subscription_tier_22", ["Free", "Pro (Monthly)", "Pro (One Time Purchase)"])
+export const TierEnum = pgEnum("subscription_tier_23", ["Free", "Pro Monthly", "Pro Lifetime"])
 
 export const UserSubscriptionTable = pgTable(
   'user_subscriptions', 
@@ -26,8 +26,8 @@ export const UserSubscriptionTable = pgTable(
   },
 ).enableRLS()
 
-export const TypeEnum = pgEnum("type_22", ["Income", "Savings", "Expenses"])
-export const ExpenseMethodEnum = pgEnum("expense_type_22", ["Fixed", "Variable"])
+export const TypeEnum = pgEnum("type_23", ["Income", "Savings", "Expenses"])
+export const ExpenseMethodEnum = pgEnum("expense_type_23", ["Fixed", "Variable"])
 
 export const CategoriesTable = pgTable(
   'user_categories',
@@ -49,7 +49,7 @@ export const CategoriesTable = pgTable(
   }
 ).enableRLS()
 
-export const CreditOrDebitEnum = pgEnum("credit_debit_22", ["Credit", "Debit"])
+export const CreditOrDebitEnum = pgEnum("credit_debit_23", ["Credit", "Debit"])
 
 export const TransactionsTable = pgTable(
   'user_transactions',

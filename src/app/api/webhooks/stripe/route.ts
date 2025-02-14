@@ -96,7 +96,7 @@ async function handleOneTimePurchase(payment: Stripe.PaymentIntent) {
       {
           // Put the payment intent id into the stripe customer id, when the OTP plan is purchased
           stripeCustomerId: paymentIntentId,
-          tier: "Pro (One Time Purchase)",
+          tier: "Pro Lifetime",
           stripeSubscriptionId: null,
           stripeSubscriptionItemId: null,
           // TODO: add another field just for OTP payment_intend id

@@ -1,5 +1,5 @@
 {
-  "id": "5a15eae9-32d8-43bb-8d50-199aa91148ba",
+  "id": "06b422a8-1249-41a0-a8f2-3afe5c0158d6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -35,14 +35,14 @@
         },
         "category_type": {
           "name": "category_type",
-          "type": "type_22",
+          "type": "type_23",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "expense_method": {
           "name": "expense_method",
-          "type": "expense_type_22",
+          "type": "expense_type_23",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -101,7 +101,7 @@
         },
         "transaction_type": {
           "name": "transaction_type",
-          "type": "type_22",
+          "type": "type_23",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -126,7 +126,7 @@
         },
         "transaction_credit_debit": {
           "name": "transaction_credit_debit",
-          "type": "credit_debit_22",
+          "type": "credit_debit_23",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -217,7 +217,7 @@
         },
         "tier": {
           "name": "tier",
-          "type": "subscription_tier_22",
+          "type": "subscription_tier_23",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -255,33 +255,33 @@
     }
   },
   "enums": {
-    "public.credit_debit_22": {
-      "name": "credit_debit_22",
+    "public.credit_debit_23": {
+      "name": "credit_debit_23",
       "schema": "public",
       "values": [
         "Credit",
         "Debit"
       ]
     },
-    "public.expense_type_22": {
-      "name": "expense_type_22",
+    "public.expense_type_23": {
+      "name": "expense_type_23",
       "schema": "public",
       "values": [
         "Fixed",
         "Variable"
       ]
     },
-    "public.subscription_tier_22": {
-      "name": "subscription_tier_22",
+    "public.subscription_tier_23": {
+      "name": "subscription_tier_23",
       "schema": "public",
       "values": [
         "Free",
-        "Pro (Monthly)",
-        "Pro (One Time Purchase)"
+        "Pro Monthly",
+        "Pro Lifetime"
       ]
     },
-    "public.type_22": {
-      "name": "type_22",
+    "public.type_23": {
+      "name": "type_23",
       "schema": "public",
       "values": [
         "Income",

@@ -7,6 +7,7 @@ import CategoryListSkeleton from './_components/CategoryListSkeleton'
 import Link from 'next/link'
 import MyButton from '@/components/MyButton'
 import { canCreateCategory } from '@/server/permissions'
+import PageHeader from '../_components/PageHeader'
 
 export default async function CategoriesPage() {
 
@@ -17,20 +18,20 @@ export default async function CategoriesPage() {
   return (
     <div className='categories-page flex flex-col gap-8 h-full'>
 
-        <div className='flex flex-col gap-6 md:flex-row md:justify-between md:items-center'>
-            <div className='flex flex-col gap-1'>
-              <p className='fs-h3 font-medium'>Categories</p>
-              <p className='fs-base font-light'>Budget your income, savings and expenses categories here</p>
-            </div>
-            <div className='hidden md:block'>
-              {canCreate
-                ? <CategoryForm /> 
-                : <MyButton>
-                    <Link href="/subscription">Upgrade to Add Categories</Link>
-                  </MyButton> 
-              }
-            </div>
-        </div>
+        <PageHeader title='Categories' description='Budget your income, savings and expenses categories here'>
+          <div className='hidden md:block'>
+            {canCreate
+              ? <CategoryForm /> 
+              : <MyButton>
+                  <Link href="/subscription">
+                    <p className="">Upgrade to Add Categories</p>
+                  </Link>
+                </MyButton> 
+            }
+          </div>
+        </PageHeader>
+
+
         
         <Suspense fallback={
           <>

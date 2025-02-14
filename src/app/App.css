@@ -16,25 +16,35 @@
 
 
 /* Font Size */
+/* View Width - 375px - 1200px */
 .fs-h1 {
+    /* View Width - 36px - 72px */
     font-size: clamp(2.25rem, 0.9499rem + 5.547vw, 4.5rem);
-    font-weight: 500;
     line-height: 1;
+    font-weight: 700;
 }
 .fs-h2 {
-    font-size: clamp(1.6rem, 1.4411rem + 0.678vw, 1.875rem);
+    /* View Width - 26px - 30px */
+    font-size: clamp(1.625rem, 1.5114rem + 0.4848vw, 1.875rem);
+    line-height: 1.3;
     font-weight: 500;
-    line-height: 1.2;
 }
 .fs-h3 {
-    font-size: clamp(1.25rem, 1.1055rem + 0.6163vw, 1.5rem);
-    line-height: 1.3;
+    /* View Width - 18px - 22px */
+    font-size: clamp(1.125rem, 1.0114rem + 0.4848vw, 1.375rem);
+    line-height: 1.4;
 }
 .fs-base {
-    font-size: clamp(0.875rem, 0.7305rem + 0.6163vw, 1.125rem);
-    line-height: 1.5;
+    /* View Width - 14px - 16px */
+    font-size: clamp(0.875rem, 0.8182rem + 0.2424vw, 1rem);
+    line-height: 1.75;
 }
 .fs-caption {
-    font-size: clamp(0.625rem, 0.5528rem + 0.3082vw, 0.75rem);
+    /* View Width - 10px - 12px */
+    font-size: clamp(0.625rem, 0.5682rem + 0.2424vw, 0.75rem);
     line-height: 1.5;
+}
+
+.indicate {
+    @apply border-red-500 border-[1px]
 }

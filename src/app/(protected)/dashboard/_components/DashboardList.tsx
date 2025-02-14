@@ -91,23 +91,26 @@ export default async function DashboardList({
                             {dashboardData.map(type => {
                                 return (
                                     <Card key={type.type} className="!shadow-none border-color-border">
-                                        <p className="p-6 fs-base font-medium">{type.type}</p>
+                                        <p className="p-6">My {type.type}</p>
                                         <Table>
                                             <TableHeader>
-                                                <TableRow className="flex gap-2 items-center justify-between px-4 border-color-border">
-                                                    <TableHead className={`w-5/12 md:w-3/12 font-light fs-caption`}>Category</TableHead>
-                                                    <TableHead className={`w-1/12 hidden md:block font-light fs-caption`}>Tracked</TableHead>
-                                                    <TableHead className={`w-1/12 hidden md:block font-light fs-caption`}>Budgeted</TableHead>
-                                                    <TableHead className={`w-7/12 md:w-6/12 px-6 text-center font-light fs-caption`}>% Completed</TableHead>
-                                                    <TableHead className={`w-1/12 text-right hidden md:block font-light fs-caption`}>Remaining</TableHead>
-                                                    <TableHead className={`w-1/12 text-right hidden md:block font-light fs-caption`}>Excess</TableHead>
+                                                <TableRow className="flex gap-2 items-center justify-between px-4 border-color-border fs-caption">
+                                                    <TableHead className={`w-5/12 md:w-3/12`}>Category</TableHead>
+                                                    <TableHead className={`w-1/12 hidden md:block`}>Tracked</TableHead>
+                                                    <TableHead className={`w-1/12 hidden md:block`}>Budgeted</TableHead>
+                                                    <TableHead className={`w-7/12 md:w-6/12 px-6 text-center`}>% Completed</TableHead>
+                                                    <TableHead className={`w-1/12 text-right hidden md:block`}>Remaining</TableHead>
+                                                    <TableHead className={`w-1/12 text-right hidden md:block`}>Excess</TableHead>
                                                 </TableRow>
                                             </TableHeader>
+                                            
                                             <TableBody>
 
                                             {type.categoriesData.length === 0 &&
                                                 <TableRow className="flex gap-2 items-center justify-center px-6 py-4 border-color-border">
-                                                    <TableCell>No categories or transactions found</TableCell>
+                                                    <TableCell>
+                                                        <p>No categories or transactions found</p>
+                                                    </TableCell>
                                                 </TableRow>
                                             }
 
@@ -133,6 +136,7 @@ export default async function DashboardList({
                                                 </TableRow>
                                             ))}
                                             </TableBody>
+                                            
                                             <TableFooter className="border-color-border">
                                                 <TableRow className="flex gap-2 items-center justify-between px-4 py-2">
                                                     <TableCell className={`w-5/12 md:w-3/12`}>Total</TableCell>

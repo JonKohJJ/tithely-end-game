@@ -1,22 +1,20 @@
 import { HasPermission } from '@/components/HasPermission'
 import { canAccessCardsPage } from '@/server/permissions'
 import React from 'react'
+import PageHeader from '../_components/PageHeader'
 
 export default function CardsPage() {
     return (
         <div className='analytics-page flex flex-col gap-8 h-full'>
-            <div className='flex flex-col gap-6 md:flex-row md:justify-between md:items-center'>
-                <div className='flex flex-col gap-1'>
-                    <p className='fs-h3 font-medium'>Your Cards</p>
-                    <p className='fs-base font-light'>Manage all your cards</p>
-                </div>
-            </div>
+            
+            <PageHeader title='Your Cards' description='Manage all your cards'>
+            </PageHeader>
 
             <HasPermission
                 permission={canAccessCardsPage}
                 renderFallback
             >
-                <p>Cards Content</p>
+                <p className='fs-h1'>Cards Page Content - developement in progress</p>
             </HasPermission>
         </div>
     )

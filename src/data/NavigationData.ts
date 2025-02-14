@@ -33,11 +33,6 @@ export const NavigationData = [
     title: "Getting Started",
     subItems: [
       {
-        name: "Categories",
-        url: "/categories",
-        icon: AlignStartVertical,
-      },
-      {
         name: "Cards",
         url: "/cards",
         icon: CreditCard,
@@ -48,6 +43,11 @@ export const NavigationData = [
         url: "/accounts",
         icon: PiggyBank,
         isDisabled: true
+      },
+      {
+        name: "Categories",
+        url: "/categories",
+        icon: AlignStartVertical,
       },
       {
         name: "Transactions",

@@ -5,6 +5,12 @@ import {
 } from '@clerk/nextjs'
 import './App.css'
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Atkinson_Hyperlegible } from 'next/font/google'
+
+const AtkinsonHyperlegibleFont = Atkinson_Hyperlegible({ 
+  weight: ['400', '700'],
+  subsets: ['latin']
+})
 
 export const metadata: Metadata = {
   title: "Tithely End Game",
@@ -19,7 +25,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={`antialiased bg-color-bg`}>
+        <body className={`antialiased bg-color-bg ${AtkinsonHyperlegibleFont.className} fs-base`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"

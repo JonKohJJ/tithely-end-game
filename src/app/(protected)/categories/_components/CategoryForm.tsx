@@ -71,7 +71,7 @@ export default function CategoryForm({
                     <ButtonToEditDeleteCategory setDialogMode={setDialogMode} />
                 ) : (
                     <MyButton onClickFunction={() => setDialogMode('AddOrEdit')}>
-                        Add Category
+                        <p>Add Category</p>
                     </MyButton>
                 )}
             </DialogTrigger>
@@ -81,7 +81,7 @@ export default function CategoryForm({
                     <>
                         <DialogHeader>
                             <DialogTitle>
-                                {categoryTobeEdited ? 'Edit Category' : 'Add Category'}
+                                <p>{categoryTobeEdited ? 'Edit Category' : 'Add Category'}</p>
                             </DialogTitle>
                         </DialogHeader>
                         <OfficialCategoryForm 
@@ -96,7 +96,8 @@ export default function CategoryForm({
                         <DialogHeader>
                             <DialogTitle>{`Deleting '${categoryTobeEdited?.categoryName}' Category`}</DialogTitle>
                         </DialogHeader>
-                        <p>{`There are ${categoryTobeEdited?.childTransactionsCount} transactions under '${categoryTobeEdited?.categoryName}', are you sure?`}</p>
+                        <p>{`Number of transaction found under category - ${categoryTobeEdited?.childTransactionsCount}`}</p>
+                        <p>{`Are you sure?`}</p>
                         <MyButton disabled={isDeleting} additionalClasses="mt-4 w-1/4 ml-auto"
                             onClickFunction={() => {
                                 if (categoryTobeEdited) {
@@ -176,7 +177,7 @@ function OfficialCategoryForm({
                     name="categoryType"
                     render={({ field }) => (
                         <FormItem className="grid grid-cols-4 items-center gap-x-4">
-                            <FormLabel className="text-right">Type</FormLabel>
+                            <FormLabel className="text-right"><p>Type</p></FormLabel>
                             <FormControl>
                                 <Select
                                     value={field.value}
@@ -195,7 +196,7 @@ function OfficialCategoryForm({
                                     </SelectContent>
                                 </Select>
                             </FormControl>
-                            <FormMessage className="font-bold col-span-4 text-right text-red-500"/>  
+                            <FormMessage className=" col-span-4 text-right text-red-500"/>  
                         </FormItem>
                     )}
                 />
@@ -204,7 +205,7 @@ function OfficialCategoryForm({
                     name="categoryName"
                     render={({ field }) => (
                         <FormItem className="grid grid-cols-4 items-center gap-x-4">
-                            <FormLabel className="text-right">Name</FormLabel>
+                            <FormLabel className="text-right"><p>Name</p></FormLabel>
                             <FormControl>
                                 <Input 
                                     {...field} 
@@ -212,7 +213,7 @@ function OfficialCategoryForm({
                                     className="col-span-3 !m-0 border-color-border shadow-none" 
                                 />
                             </FormControl>
-                            <FormMessage className="font-bold col-span-4 text-right text-red-500"/>  
+                            <FormMessage className=" col-span-4 text-right text-red-500"/>  
                         </FormItem>
                     )}
                 />
@@ -221,7 +222,7 @@ function OfficialCategoryForm({
                     name="categoryBudget"
                     render={({ field }) => (
                         <FormItem className="grid grid-cols-4 items-center gap-x-4">
-                            <FormLabel className="text-right">Budget</FormLabel>
+                            <FormLabel className="text-right"><p>Budget</p></FormLabel>
                             <FormControl>
                                 <Input 
                                     {...field} 
@@ -230,7 +231,7 @@ function OfficialCategoryForm({
                                     onChange={(e) => field.onChange(parseFloat(e.target.value) || "")}
                                 />
                             </FormControl>
-                            <FormMessage className="font-bold col-span-4 text-right text-red-500"/>  
+                            <FormMessage className=" col-span-4 text-right text-red-500"/>  
                         </FormItem>
                     )}
                 />
@@ -239,7 +240,7 @@ function OfficialCategoryForm({
                     name="expenseMethod"
                     render={({ field }) => (
                         <FormItem className="grid grid-cols-4 items-center gap-x-4">
-                            <FormLabel className="text-right">Expense Method</FormLabel>
+                            <FormLabel className="text-right"><p>Expense Method</p></FormLabel>
                             <FormControl>
                                 <Select
                                     value={field.value || ""}
@@ -258,7 +259,7 @@ function OfficialCategoryForm({
                                     </SelectContent>
                                 </Select>
                             </FormControl>
-                            <FormMessage className="font-bold col-span-4 text-right text-red-500"/>  
+                            <FormMessage className=" col-span-4 text-right text-red-500"/>  
                         </FormItem>
                     )}
                 />

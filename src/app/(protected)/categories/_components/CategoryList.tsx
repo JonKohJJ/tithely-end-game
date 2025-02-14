@@ -82,12 +82,12 @@ export default async function CategoryList({
                                     
                                     <TableHeader className="w-full flex flex-col">
                                         <TableRow className="!border-b-0 flex">
-                                            <TableHead className="w-9/12 flex items-center fs-base font-medium">{eachType.type}</TableHead>
-                                            <TableHead className="w-3/12 flex items-center justify-end fs-base font-medium">{eachType.categories.length}</TableHead>
+                                            <TableHead className="w-9/12 flex items-center">{eachType.type}</TableHead>
+                                            <TableHead className="w-3/12 flex items-center justify-end">{eachType.categories.length}</TableHead>
                                         </TableRow>
-                                        <TableRow className="border-b-[1px] border-color-border flex">
-                                            <TableHead className={`w-9/12 flex items-center font-light fs-caption`}>Category</TableHead>
-                                            <TableHead className={`w-3/12 flex items-center justify-end font-light fs-caption`}>Budget</TableHead>
+                                        <TableRow className="border-b-[1px] border-color-border flex fs-caption">
+                                            <TableHead className={`w-9/12 flex items-center`}>Category</TableHead>
+                                            <TableHead className={`w-3/12 flex items-center justify-end`}>Budget</TableHead>
                                         </TableRow>
                                     </TableHeader>
 
@@ -96,7 +96,7 @@ export default async function CategoryList({
                                             ? (
                                                 eachType.categories.map(category => (
                                                     <TableRow key={category.categoryId} className="w-full flex border-b-[1px] border-color-border">
-                                                        <TableCell className={`w-9/12 font-medium`}>
+                                                        <TableCell className={`w-9/12`}>
                                                             { category.expenseMethod === null
                                                                 ? <p className="line-clamp-1">{category.categoryName}</p>
                                                                 : category.expenseMethod === "Fixed"
@@ -106,7 +106,7 @@ export default async function CategoryList({
                                                         </TableCell>
                                                         <TableCell className={`w-3/12 flex justify-end md:gap-2`}>
                                                             ${category.categoryBudget}
-                                                            <div className="hidden md:block">
+                                                            <div className="hidden md:flex justify-center">
                                                                 <CategoryForm categoryTobeEdited={category} />
                                                             </div>
                                                         </TableCell>
@@ -115,7 +115,7 @@ export default async function CategoryList({
                                             )
                                             : (
                                                 <TableRow className="w-full flex justify-center h-full items-center hover:!bg-transparent">
-                                                    <TableCell className={`font-medium`}>You have no {eachType.type.toLowerCase()} categories</TableCell>
+                                                    <TableCell className={``}>You have no {eachType.type.toLowerCase()} categories</TableCell>
                                                 </TableRow>
                                             )
                                         }
@@ -123,18 +123,18 @@ export default async function CategoryList({
 
                                     <TableFooter className="w-full flex-shrink-0 border-t-[1px] border-color-border">
                                         <TableRow className="w-full flex !border-0">
-                                            <TableCell className={`w-9/12 font-medium`}>Total</TableCell>
+                                            <TableCell className={`w-9/12`}>Total</TableCell>
                                             <TableCell className={`w-3/12 flex items-center justify-end`}>${eachType.sum}</TableCell>
                                         </TableRow>
                                     </TableFooter>
 
-                                    <TableCaption>
+                                    <TableCaption className="fs-caption">
                                         {eachType.type === "Expenses" 
                                             ? <div className="flex gap-4 items-center w-full justify-center">
-                                                <p className="flex gap-[5px] items-center fs-caption"><LocateFixed className="w-4 h-4" /> Fixed Expenses</p>
-                                                <p className="flex gap-[5px] items-center fs-caption"><TrendingUpDown className="w-4 h-4" /> Variable Expenses</p>
+                                                <p className="flex gap-[5px] items-center"><LocateFixed className="w-4 h-4" /> Fixed Expenses</p>
+                                                <p className="flex gap-[5px] items-center"><TrendingUpDown className="w-4 h-4" /> Variable Expenses</p>
                                             </div>
-                                            : <p className="fs-caption">A list of your {eachType.type.toLowerCase()} categories</p>
+                                            : <p>A list of your {eachType.type.toLowerCase()} categories</p>
                                         }
                                     </TableCaption>
                                 </Table>

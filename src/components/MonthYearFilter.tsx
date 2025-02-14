@@ -24,7 +24,9 @@ export function MonthYearFilter() {
           <SelectGroup>
             <SelectLabel>Month</SelectLabel>
             {[...Array(12).keys()].map(i => (
-              <SelectItem className='hover:cursor-pointer' key={i} value={String(i + 1)}>{new Date(0, i).toLocaleString('default', { month: 'long' })}</SelectItem>
+              <SelectItem className='hover:cursor-pointer' key={i} value={String(i + 1)}>
+                <p>{new Date(0, i).toLocaleString('default', { month: 'long' })}</p>
+              </SelectItem>
             ))}
           </SelectGroup>
         </SelectContent>
@@ -38,7 +40,9 @@ export function MonthYearFilter() {
           <SelectGroup>
             <SelectLabel>Year</SelectLabel>
             {[2025, 2026, 2027].map(y => (
-              <SelectItem className='hover:cursor-pointer hover:font-medium' key={y} value={String(y)}>{y}</SelectItem>
+              <SelectItem className='hover:cursor-pointer' key={y} value={String(y)}>
+                <p>{y}</p>
+              </SelectItem>
             ))}
           </SelectGroup>
         </SelectContent>

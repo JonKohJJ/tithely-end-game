@@ -1,10 +1,8 @@
 "use client"
 
-import { SendHorizontal } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -14,8 +12,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
-import { ThemeModeToggle } from "@/components/ThemeModeToggle"
-import { NavigationData, SettingsData } from "@/data/NavigationData"
+import { NavigationData } from "@/data/NavigationData"
 import { usePathname } from "next/navigation"
 
 export function ProtectedNavBar() {
@@ -29,12 +26,9 @@ export function ProtectedNavBar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-                <Link href="/" className="!gap-0">
-                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                        <SendHorizontal className="size-6 -rotate-90" />
-                    </div>
-                    <span className="fs-h3 font-medium">Tithely</span>
+            <SidebarMenuButton size="lg">
+                <Link href="/">
+                    <p className="fs-h2">Tithely</p>
                 </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -44,7 +38,11 @@ export function ProtectedNavBar() {
       <SidebarContent>
           {NavigationData.map(group => (
               <SidebarGroup key={group.title}>
-                <SidebarGroupLabel className="font-light">{group.title}</SidebarGroupLabel>
+
+                <SidebarGroupLabel>
+                  <p className="fs-caption">{group.title}</p>
+                </SidebarGroupLabel>
+
                 <SidebarMenu>
                   {group.subItems.map((item) => {
                         return (
@@ -56,7 +54,7 @@ export function ProtectedNavBar() {
                               <Link href={item.url} className="flex justify-between">
                                 <div className={`flex gap-2 items-center`}>
                                   <item.icon className="size-4" />
-                                  <span>{item.name}</span>
+                                  <p>{item.name}</p>
                                 </div>
                               </Link>
                             </SidebarMenuButton>
@@ -66,40 +64,10 @@ export function ProtectedNavBar() {
                     )
                   }
                 </SidebarMenu>
+
               </SidebarGroup>
           ))}
       </SidebarContent>
-
-      <SidebarFooter className="!p-0">
-        
-
-        {SettingsData.map(group => (
-          <SidebarGroup key={group.title}>
-            <SidebarGroupLabel className="font-light">{group.title}</SidebarGroupLabel>
-            <SidebarMenu>
-
-              {/* Theme Toggle here */}
-              <SidebarMenuItem className="">
-                <SidebarMenuButton asChild>
-                  <ThemeModeToggle additionalClasses="!p-2 font-normal"/>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              {group.subItems.map((item) => (
-                <SidebarMenuItem key={item.name}>
-                  <SidebarMenuButton asChild>
-                    <Link href={item.url ? item.url : ""}>
-                      <item.icon />
-                      <span>{item.name}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroup>
-        ))}
-
-      </SidebarFooter>
 
     </Sidebar>
   )

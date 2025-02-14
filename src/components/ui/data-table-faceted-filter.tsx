@@ -38,30 +38,23 @@ export function DataTableFacetedFilter<TData, TValue>({
     <Popover>
 
       <PopoverTrigger asChild>
-        <Button size="sm" className="h-9 shadow-none border-[1px] border-color-border">
+        <Button size="sm" className="h-9 shadow-none border border-color-border">
 
           <Settings2 />
 
-          {title}
+          <p className="fs-caption">{title}</p>
 
           {selectedValues.size > 0 && (
             <div className="hidden lg:flex">
               {selectedValues.size > 1 ? (
-                <Badge
-                  variant="secondary"
-                  className="rounded-sm px-1 font-normal"
-                >
+                <Badge>
                   {selectedValues.size} selected
                 </Badge>
               ) : (
                 options
                   .filter((option) => selectedValues.has(option))
                   .map((option) => (
-                    <Badge
-                      variant="secondary"
-                      key={option}
-                      className="rounded-sm px-1 font-normal jon"
-                    >
+                    <Badge key={option}>
                       {option}
                     </Badge>
                   ))
@@ -108,7 +101,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     </div>
                     <span>{option}</span>
                     {facets?.get(option) && (
-                      <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
+                      <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono">
                         {facets?.get(option)}
                       </span>
                     )}

@@ -14,15 +14,26 @@ export function InsightCard({
 
 }) {
     return (
-        <Card className="w-full flex flex-col gap-4 justify-between border-[1px] border-color-border !shadow-none">
+        <Card className="w-full flex flex-col gap-6 justify-between border-[1px] border-color-border !shadow-none rounded-xl">
             <CardHeader>
+
                 <CardTitle className="flex gap-2 items-center justify-between">
                     <p>{title}</p>
-                    {icon && icon}
+                    {icon && icon} 
                 </CardTitle>
-                <CardDescription className="font-light">{description}</CardDescription>
+
+                <CardDescription>
+                    <p className="fs-caption">{description}</p>
+                </CardDescription>
+
             </CardHeader>
-            <CardContent className="fs-base">{content}</CardContent>
+
+            <CardContent>
+                {typeof content === "string" 
+                    ? <p className="fs-h3">{content}</p>
+                    : <div className="fs-h3">{content}</div>
+                }
+            </CardContent>
         </Card>
     )
 }
