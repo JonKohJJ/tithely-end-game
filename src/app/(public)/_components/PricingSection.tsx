@@ -10,8 +10,8 @@ export default async function PricingSection() {
         <section className="mysection">
             <div className="mycontainer">
                 <div className="mx-auto max-w-screen-md text-center mb-12">
-                    <p className="mb-4">Designed for business teams like yours</p>
-                    <p className="">Here at Flowbite we focus on markets where technology, innovation, and capital can unlock long-term value and drive economic growth.</p>
+                    <p className="mb-4 fs-h2">Find the Right Plan for Your Financial Journey</p>
+                    <p>Get the tools you need to track, manage, and optimize your spending—whether you&apos;re just starting out or need advanced budgeting features.</p>
                 </div>
 
                 <SubcriptionPlans 

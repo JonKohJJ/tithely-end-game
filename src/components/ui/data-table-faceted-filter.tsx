@@ -16,7 +16,6 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { Badge } from "@/components/ui/badge"
 
 
 type DataTableFacetedFilterProps<TData, TValue> = {
@@ -46,19 +45,7 @@ export function DataTableFacetedFilter<TData, TValue>({
 
           {selectedValues.size > 0 && (
             <div className="hidden lg:flex">
-              {selectedValues.size > 1 ? (
-                <Badge>
-                  {selectedValues.size} selected
-                </Badge>
-              ) : (
-                options
-                  .filter((option) => selectedValues.has(option))
-                  .map((option) => (
-                    <Badge key={option}>
-                      {option}
-                    </Badge>
-                  ))
-              )}
+              <p className="fs-caption">{selectedValues.size}</p>
             </div>
           )}
           

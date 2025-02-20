@@ -1,6 +1,8 @@
 import { env } from "@/data/env/server"
 import { getTierByPriceId, SubscriptionTiers } from "@/data/subscriptionTiers"
 import { UserSubscriptionTable } from "@/drizzle/schema"
+import { deleteAllAccounts } from "@/server/db/accounts"
+import { deleteAllCards } from "@/server/db/cards"
 import { updateUserSubscription } from "@/server/db/subscription"
 import { eq } from "drizzle-orm"
 import { NextRequest } from "next/server"
@@ -59,10 +61,13 @@ async function handleCreateSubscription(subscription: Stripe.Subscription) {
 
 async function handleDeleteSubscription(subscription: Stripe.Subscription) {
 
-    console.log("subscription delete")
-
     const customer = subscription.customer
     const customerId = typeof customer === "string" ? customer : customer.id
+
+    // Delete all cards and accounts while leaving transaction data
+    await deleteAllCards(subscription.metadata.clerkUserId)
+    await deleteAllAccounts(subscription.metadata.clerkUserId)
+    // Todo: delete X number of categories to make it only 6
 
     await updateUserSubscription(
         eq(UserSubscriptionTable.stripeCustomerId, customerId),

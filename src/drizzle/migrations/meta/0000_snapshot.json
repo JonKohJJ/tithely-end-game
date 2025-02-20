@@ -1,9 +1,105 @@
 {
-  "id": "06b422a8-1249-41a0-a8f2-3afe5c0158d6",
+  "id": "d70b110d-ff59-461d-a8e3-cc27d896e049",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.user_accounts": {
+      "name": "user_accounts",
+      "schema": "",
+      "columns": {
+        "account_id": {
+          "name": "account_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "clerk_user_id": {
+          "name": "clerk_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "account_name": {
+          "name": "account_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "account_balance": {
+          "name": "account_balance",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.user_cards": {
+      "name": "user_cards",
+      "schema": "",
+      "columns": {
+        "card_id": {
+          "name": "card_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "clerk_user_id": {
+          "name": "clerk_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "card_name": {
+          "name": "card_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "card_minimum_spend": {
+          "name": "card_minimum_spend",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "card_current_charge": {
+          "name": "card_current_charge",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
     "public.user_categories": {
       "name": "user_categories",
       "schema": "",
@@ -35,14 +131,14 @@
         },
         "category_type": {
           "name": "category_type",
-          "type": "type_23",
+          "type": "type_27",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "expense_method": {
           "name": "expense_method",
-          "type": "expense_type_23",
+          "type": "expense_type_27",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -101,13 +197,25 @@
         },
         "transaction_type": {
           "name": "transaction_type",
-          "type": "type_23",
+          "type": "type_27",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "transaction_category_id_fk": {
           "name": "transaction_category_id_fk",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "transaction_card_id_fk": {
+          "name": "transaction_card_id_fk",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "transaction_account_id_fk": {
+          "name": "transaction_account_id_fk",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -126,7 +234,7 @@
         },
         "transaction_credit_debit": {
           "name": "transaction_credit_debit",
-          "type": "credit_debit_23",
+          "type": "credit_debit_27",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -158,6 +266,32 @@
             "category_id"
           ],
           "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "user_transactions_transaction_card_id_fk_user_cards_card_id_fk": {
+          "name": "user_transactions_transaction_card_id_fk_user_cards_card_id_fk",
+          "tableFrom": "user_transactions",
+          "tableTo": "user_cards",
+          "columnsFrom": [
+            "transaction_card_id_fk"
+          ],
+          "columnsTo": [
+            "card_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "user_transactions_transaction_account_id_fk_user_accounts_account_id_fk": {
+          "name": "user_transactions_transaction_account_id_fk_user_accounts_account_id_fk",
+          "tableFrom": "user_transactions",
+          "tableTo": "user_accounts",
+          "columnsFrom": [
+            "transaction_account_id_fk"
+          ],
+          "columnsTo": [
+            "account_id"
+          ],
+          "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
@@ -217,7 +351,7 @@
         },
         "tier": {
           "name": "tier",
-          "type": "subscription_tier_23",
+          "type": "subscription_tier_27",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -255,24 +389,24 @@
     }
   },
   "enums": {
-    "public.credit_debit_23": {
-      "name": "credit_debit_23",
+    "public.credit_debit_27": {
+      "name": "credit_debit_27",
       "schema": "public",
       "values": [
         "Credit",
         "Debit"
       ]
     },
-    "public.expense_type_23": {
-      "name": "expense_type_23",
+    "public.expense_type_27": {
+      "name": "expense_type_27",
       "schema": "public",
       "values": [
         "Fixed",
         "Variable"
       ]
     },
-    "public.subscription_tier_23": {
-      "name": "subscription_tier_23",
+    "public.subscription_tier_27": {
+      "name": "subscription_tier_27",
       "schema": "public",
       "values": [
         "Free",
@@ -280,8 +414,8 @@
         "Pro Lifetime"
       ]
     },
-    "public.type_23": {
-      "name": "type_23",
+    "public.type_27": {
+      "name": "type_27",
       "schema": "public",
       "values": [
         "Income",

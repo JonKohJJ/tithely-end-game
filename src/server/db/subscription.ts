@@ -3,6 +3,8 @@ import { db } from "@/drizzle/db";
 import { CategoriesTable, UserSubscriptionTable } from "@/drizzle/schema";
 import { eq, SQL } from "drizzle-orm";
 import { TDatabaseResponse } from "./categories";
+import { deleteAllCards } from "./cards";
+import { deleteAllAccounts } from "./accounts";
 
 export async function createUserSubscription(
     data: typeof UserSubscriptionTable.$inferInsert
@@ -25,6 +27,9 @@ export async function deleteUserSubscription(
     await db
         .delete(CategoriesTable)
         .where(eq(CategoriesTable.clerkUserId, clerkUserId))
+
+    await deleteAllCards(clerkUserId)
+    await deleteAllAccounts(clerkUserId)
 }
 
 export async function getUserSubscription(

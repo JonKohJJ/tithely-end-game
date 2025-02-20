@@ -44,12 +44,19 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import MyButton from "@/components/MyButton"
 import Link from "next/link"
+import { TFetchedCard } from "@/server/db/cards"
+import { TFetchedAccount } from "@/server/db/accounts"
 
 type TDataTableProps<TData> = {
   data: TData[]
   allCategories: TFetchedAllCategories
   allCategoryNames: string[]
   canCreate: boolean
+  allCards: TFetchedCard[]
+  allCardNames: string[]
+  allAccounts: TFetchedAccount[]
+  allAccountNames: string[]
+  planName: string
 }
 
 export const LOCAL_STORAGE_PAGESIZE_KEY = "TITHELY_TRANSACTION_DATATABLE_PAGE_SIZE"
@@ -58,7 +65,12 @@ export function TransactionDataTable({
   data,
   allCategories,
   allCategoryNames,
-  canCreate
+  canCreate,
+  allCards,
+  allCardNames,
+  allAccounts,
+  allAccountNames,
+  planName
 }: TDataTableProps<TFetchedTransaction>) {
 
   const [sorting, setSorting] = useState<SortingState>([])
@@ -66,6 +78,8 @@ export function TransactionDataTable({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     transactionType: false,
     transactionCreditOrDebit: false, 
+    transactionCard: false,
+    transactionAccount: false,
     transactionCategory: false, 
   })
 
@@ -132,9 +146,10 @@ export function TransactionDataTable({
         },
         enableSorting: false,
         enableHiding: false,
-        size: 180,
+        size: 200,
     },
   
+
     // Transaction Type - Hidden
     {
         accessorKey: "transactionType",
@@ -181,6 +196,34 @@ export function TransactionDataTable({
             )
         },
     },
+    // Transaction Card - Hidden
+    {
+      accessorKey: "transactionCard",
+      accessorFn: (row) => row.user_cards?.cardName || "Unknown",
+      header: "Card",
+      cell: ({ row }) => {
+          const card = row.original.user_cards?.cardName
+          return (
+            <div>
+              <span>{card}</span>
+            </div>
+          )
+        },
+    },
+    // Transaction Account - Hidden
+    {
+      accessorKey: "transactionAccount",
+      accessorFn: (row) => row.user_accounts?.accountName || "Unknown",
+      header: "Account",
+      cell: ({ row }) => {
+          const account = row.original.user_accounts?.accountName
+          return (
+            <div>
+              <span>{account}</span>
+            </div>
+          )
+        },
+    },
     // Transaction Category - Hidden
     {
         accessorKey: "transactionCategory",
@@ -195,6 +238,7 @@ export function TransactionDataTable({
             )
         },
     },
+
   
     // Transaction Description
     {
@@ -207,6 +251,8 @@ export function TransactionDataTable({
             const badgesArray: (string | null)[] = []
             badgesArray.push(row.original.user_transactions.transactionType)
             badgesArray.push(row.original.user_transactions.transactionCreditOrDebit)
+            if (row.original.user_cards !== null) { badgesArray.push(row.original.user_cards.cardName) }
+            if (row.original.user_accounts !== null) { badgesArray.push(row.original.user_accounts.accountName) }
             badgesArray.push(row.original.user_categories.categoryName)
   
             return (
@@ -335,8 +381,6 @@ export function TransactionDataTable({
     }
   }, [table])
 
-
-
   return (
     <div className="transaction-data-table flex flex-col gap-4">
 
@@ -367,7 +411,23 @@ export function TransactionDataTable({
             />
           )}
 
-          {table.getColumn("transactionCategory") && (
+          {(table.getColumn("transactionCard") && allCardNames.length > 0) && (
+            <DataTableFacetedFilter
+              column={table.getColumn("transactionCard")}
+              title="Card"
+              options={allCardNames}
+            />
+          )}
+
+          {(table.getColumn("transactionAccount") && allAccountNames.length > 0) && (
+            <DataTableFacetedFilter
+              column={table.getColumn("transactionAccount")}
+              title="Account"
+              options={allAccountNames}
+            />
+          )}
+
+          {(table.getColumn("transactionCategory") && allCategoryNames.length > 0) && (
             <DataTableFacetedFilter
               column={table.getColumn("transactionCategory")}
               title="Category"
@@ -442,9 +502,12 @@ export function TransactionDataTable({
                   <TableCell colSpan={5}>
                     <TransactionForm 
                       allCategories={allCategories}
+                      allCards={allCards}
+                      allAccounts={allAccounts}
                       setIsAdding={setIsAdding}
                       addCreditDebit={addCreditDebit}
                       setAddCreditDebit={setAddCreditDebit}
+                      planName={planName}
                     />
                   </TableCell>
                 </TableRow>
@@ -459,9 +522,12 @@ export function TransactionDataTable({
                       <TableCell colSpan={5}>
                         <TransactionForm
                           allCategories={allCategories} 
+                          allCards={allCards}
+                          allAccounts={allAccounts}
                           setIsAdding={setIsAdding} 
                           transactionToBeEdited={row.original}
                           setEditingRowId={setEditingRowId}
+                          planName={planName}
                         />
                       </TableCell>
                     </TableRow>
@@ -487,7 +553,7 @@ export function TransactionDataTable({
               : (
                 <TableRow>
                   <TableCell colSpan={columns.length} className="h-24 text-center">
-                    No results.
+                    No transactions found.
                   </TableCell>
                 </TableRow>
               )
@@ -507,7 +573,7 @@ export function TransactionDataTable({
           </span>
           {
             table.getFilteredSelectedRowModel().rows.length > 0 && 
-              <p className="underline hover:cursor-pointer text-black" onClick={() => onBulkDelete(selectedTransactions, table.resetRowSelection)}>
+              <p className="underline hover:cursor-pointer text-color-text" onClick={() => onBulkDelete(selectedTransactions, table.resetRowSelection)}>
                 Delete {table.getFilteredSelectedRowModel().rows.length} 
                 {table.getFilteredSelectedRowModel().rows.length > 1 ? " transactions" : " transaction"}
               </p>

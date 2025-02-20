@@ -24,7 +24,7 @@ export async function addTransaction(
         return { success: false, dbResponseMessage: "SS Validation - There was an error adding your transaction" }
     }
 
-    revalidatePath('/tracker')
+    revalidatePath('/transactions')
     return await addTransactionDb({ ...data, clerkUserId: userId })
 }
 
@@ -39,7 +39,7 @@ export async function updateTransaction(
         return { success: false, dbResponseMessage: "SS Validation - There was an error updating your transaction" }
     }
 
-    revalidatePath('/tracker') 
+    revalidatePath('/transactions') 
     return await updatedTransactionDb(data, { transactionId, userId })
 }
 
@@ -50,7 +50,7 @@ export async function deleteTransaction(transactionId: string) {
         return { success: false, dbResponseMessage: "SS Validation - There was an error deleting your transaction" }
     }
 
-    revalidatePath('/tracker') 
+    revalidatePath('/transactions') 
     return await deleteTransactionDb({ transactionId, userId })
 }
 
@@ -61,6 +61,6 @@ export async function deleteBulkTransactions(selectedTransactions: Set<string>) 
         return { success: false, dbResponseMessage: "SS Validation - There was an error bulk deleting your transactions" }
     }
 
-    revalidatePath('/tracker') 
+    revalidatePath('/transactions') 
     return await deleteBulkTransactionsDb({ selectedTransactions, userId })
 }

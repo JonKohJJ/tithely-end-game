@@ -1,3 +1,5 @@
+import { getAccountsCount } from "./db/accounts"
+import { getCardsCount } from "./db/cards"
 import { getCategoriesCount } from "./db/categories"
 import { getUserSubscriptionTier } from "./db/subscription"
 import { getTransactionsCount } from "./db/transactions"
@@ -47,5 +49,35 @@ export async function canCreateTransaction(userId: string | null) {
         canCreate: transactionsCount < maxNumberOfTransactions,
         maxNumberOfTransactions,
         transactionsCount
+    }
+}
+
+export async function canCreateCard(userId: string | null) {
+    if (userId === null) return { 
+        canCreate: false, 
+        maxNumberOfCards: 0, 
+        cardsCount: 0 
+    }
+    const { maxNumberOfCards } = await getUserSubscriptionTier(userId)
+    const cardsCount = await getCardsCount(userId)
+    return { 
+        canCreate: cardsCount < maxNumberOfCards,
+        maxNumberOfCards,
+        cardsCount
+    }
+}
+
+export async function canCreateAccount(userId: string | null) {
+    if (userId === null) return { 
+        canCreate: false, 
+        maxNumberOfAccounts: 0, 
+        accountsCount: 0 
+    }
+    const { maxNumberOfAccounts } = await getUserSubscriptionTier(userId)
+    const accountsCount = await getAccountsCount(userId)
+    return { 
+        canCreate: accountsCount < maxNumberOfAccounts,
+        maxNumberOfAccounts,
+        accountsCount
     }
 }

@@ -17,7 +17,7 @@ export default function PublicNavBar() {
                 <div className='flex gap-2 items-center'>
                     <ThemeModeToggle onlyIcon={true} />
                     <SignedIn>
-                        <MyButton additionalClasses='py-6'>
+                        <MyButton>
                             <Link href="/dashboard" className='flex items-center gap-1'>
                                 <p className='hidden md:block'>Go To Dashboard</p>
                                 <ArrowRight />
@@ -26,7 +26,7 @@ export default function PublicNavBar() {
                     </SignedIn>
                     <SignedOut>
                         <SignInButton>
-                            <MyButton additionalClasses='py-6'>
+                            <MyButton>
                                 <p>Sign In</p>
                             </MyButton>
                         </SignInButton>

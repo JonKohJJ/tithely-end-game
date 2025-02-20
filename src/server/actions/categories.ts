@@ -25,12 +25,12 @@ export async function addCategory(
     }
 
     // Check for duplicate category name
-    const hasDuplicatedName = await hasDuplicateName(userId, data.categoryName)
+    const hasDuplicatedName = await hasDuplicateCategoryName(userId, data.categoryName)
     if (hasDuplicatedName) {
         return { success: false, dbResponseMessage: "No duplicated category name allowed. Please add a different one." }
     }
 
-    revalidatePath('/planner') 
+    revalidatePath('/categories') 
     return await addCategoryDb({ ...data, clerkUserId: userId })
 }
 
@@ -45,7 +45,7 @@ export async function updateCategory(
         return { success: false, dbResponseMessage: "SS Validation - There was an error updating your category" }
     }
 
-    revalidatePath('/planner') 
+    revalidatePath('/categories') 
     return await updateCategoryDb(data, { categoryId, userId })
 }
 
@@ -56,11 +56,11 @@ export async function deleteCategory(categoryId: string) {
         return { success: false, dbResponseMessage: "SS Validation - There was an error deleting your category" }
     }
 
-    revalidatePath('/planner') 
+    revalidatePath('/categories') 
     return await deleteCategoryDb({ categoryId, userId })
 }
 
-async function hasDuplicateName(
+async function hasDuplicateCategoryName(
     userId: string,
     nameToBeChecked: string
 ) {

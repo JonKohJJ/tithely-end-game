@@ -10,7 +10,7 @@ const updatedAt = timestamp("updated_at", { withTimezone: true })
   .defaultNow()
   .$onUpdate(() => new Date())
 
-export const TierEnum = pgEnum("subscription_tier_23", ["Free", "Pro Monthly", "Pro Lifetime"])
+export const TierEnum = pgEnum("subscription_tier_27", ["Free", "Pro Monthly", "Pro Lifetime"])
 
 export const UserSubscriptionTable = pgTable(
   'user_subscriptions', 
@@ -26,8 +26,8 @@ export const UserSubscriptionTable = pgTable(
   },
 ).enableRLS()
 
-export const TypeEnum = pgEnum("type_23", ["Income", "Savings", "Expenses"])
-export const ExpenseMethodEnum = pgEnum("expense_type_23", ["Fixed", "Variable"])
+export const TypeEnum = pgEnum("type_27", ["Income", "Savings", "Expenses"])
+export const ExpenseMethodEnum = pgEnum("expense_type_27", ["Fixed", "Variable"])
 
 export const CategoriesTable = pgTable(
   'user_categories',
@@ -49,7 +49,7 @@ export const CategoriesTable = pgTable(
   }
 ).enableRLS()
 
-export const CreditOrDebitEnum = pgEnum("credit_debit_23", ["Credit", "Debit"])
+export const CreditOrDebitEnum = pgEnum("credit_debit_27", ["Credit", "Debit"])
 
 export const TransactionsTable = pgTable(
   'user_transactions',
@@ -59,6 +59,8 @@ export const TransactionsTable = pgTable(
     transactionDate: date().notNull(),
     transactionType: TypeEnum("transaction_type").notNull(),
     transactionCategoryIdFK: uuid("transaction_category_id_fk").references(() => CategoriesTable.categoryId, {onDelete: 'cascade'}),
+    transactionCardIdFK: uuid("transaction_card_id_fk").references(() => CardsTable.cardId),
+    transactionAccountIdFK: uuid("transaction_account_id_fk").references(() => AccountsTable.accountId),
     transactionAmount: doublePrecision("transaction_budget").notNull(),
     transactionDescription: text("transaction_description").notNull(),
     transactionCreditOrDebit: CreditOrDebitEnum("transaction_credit_debit"),
@@ -74,3 +76,25 @@ export const TransactionsTable = pgTable(
   }
 ).enableRLS()
 
+export const CardsTable = pgTable(
+  'user_cards',
+  {
+    cardId: uuid("card_id").primaryKey().defaultRandom(),
+    clerkUserId: text("clerk_user_id").notNull(),
+    cardName: text("card_name").notNull(),
+    cardMinimumSpend: doublePrecision("card_minimum_spend").notNull(),
+    cardCurrentCharge: doublePrecision("card_current_charge").notNull(),
+    createdAt,
+  },
+).enableRLS()
+
+export const AccountsTable = pgTable(
+  'user_accounts',
+  {
+    accountId: uuid("account_id").primaryKey().defaultRandom(),
+    clerkUserId: text("clerk_user_id").notNull(),
+    accountName: text("account_name").notNull(),
+    accountBalance: doublePrecision("account_balance").notNull(),
+    createdAt,
+  },
+).enableRLS()

@@ -23,21 +23,29 @@ import { toast } from "@/hooks/use-toast"
 import { addTransaction, updateTransaction } from "@/server/actions/transactions"
 import { TFetchedTransaction } from "@/server/db/transactions"
 import MyButton from "@/components/MyButton"
+import { TFetchedCard } from "@/server/db/cards"
+import { TFetchedAccount } from "@/server/db/accounts"
 
 export default function TransactionForm({
     allCategories,
+    allCards,
+    allAccounts,
     setIsAdding,
     transactionToBeEdited,
     setEditingRowId,
     addCreditDebit,
-    setAddCreditDebit
+    setAddCreditDebit,
+    planName,
 }: {
     allCategories: TFetchedAllCategories
+    allCards: TFetchedCard[]
+    allAccounts: TFetchedAccount[]
     setIsAdding: Dispatch<SetStateAction<boolean>>
     transactionToBeEdited?: TFetchedTransaction
     setEditingRowId?: Dispatch<SetStateAction<string | null>>
     addCreditDebit?: "Credit" | "Debit" | null
     setAddCreditDebit?: Dispatch<SetStateAction<"Credit" | "Debit" | null>>
+    planName: string
 }) {
 
     const form = useForm<TInsertTransaction>({
@@ -48,53 +56,99 @@ export default function TransactionForm({
                 transactionType: transactionToBeEdited.user_transactions.transactionType, 
                 transactionCreditOrDebit: transactionToBeEdited.user_transactions.transactionCreditOrDebit,
                 transactionCategoryIdFK: transactionToBeEdited.user_categories.categoryId,
+                transactionCardIdFK: transactionToBeEdited.user_transactions.transactionCardIdFK,
+                transactionAccountIdFK: transactionToBeEdited.user_transactions.transactionAccountIdFK,
                 transactionDescription: transactionToBeEdited.user_transactions.transactionDescription,
                 transactionAmount: transactionToBeEdited.user_transactions.transactionAmount,
                 isClaimable: transactionToBeEdited.user_transactions.isClaimable,
             }
             : { 
                 transactionDate: undefined,
-                transactionType: undefined, 
+                transactionType: undefined,
                 transactionCreditOrDebit: null,
                 transactionCategoryIdFK: undefined,
+                transactionCardIdFK: null,
+                transactionAccountIdFK: null,
                 transactionDescription: "",
                 transactionAmount: 0,
-                isClaimable: undefined,
+                isClaimable: null,
             }
     })
-
     const { handleSubmit, control, formState, watch, setValue } = form
-    const selectedTransactionType = watch("transactionType");
+
+
+    // MANAGED STATES
     const [CategoryOptions, setCategoryOptions] = useState<TSelectOption[]>([])
+    const [CardOptions, setCardOptions] = useState<TSelectOption[]>([])
+    const [AccountOptions, setAccountOptions] = useState<TSelectOption[]>([])
+    const [calendarOpen, setCalendarOpen] = useState(false);
 
+
+    // WATCHING SPECIFIC FORM FIELDS
+    const selectedTransactionType = watch("transactionType");
+    const selectedCreditOrDebit = watch("transactionCreditOrDebit");
+    
+
+    // USE EFFECT TO HANDLE FORM FIELD CHANGES
     useEffect(() => {
-        // This form control is very confusing 
 
-        setCategoryOptions(getCategoryOptions(selectedTransactionType, allCategories))
-        
-        if (selectedTransactionType !== "Expenses") {
-            setValue("transactionCreditOrDebit", null)
-            setValue("isClaimable", null)
+        if (transactionToBeEdited) {
+
+            // Editing
+            // No Need to Clear CategoryId field
+            setCategoryOptions(getCategoryOptions(selectedTransactionType, allCategories))
+
+        } else {
+
+            // Adding
+            // Clear CategoryId field
+            setValue("transactionCategoryIdFK", "")
+            setCategoryOptions(getCategoryOptions(selectedTransactionType, allCategories))
+
         }
+
 
         if (selectedTransactionType === "Expenses") {
-            if (transactionToBeEdited) {
-                return
-            }
-            setValue("isClaimable", false)
-        }
-    
-    }, [selectedTransactionType, setValue, allCategories, transactionToBeEdited])
 
-    // Add Credit or Debit useEffect Hook
+            // Expenses
+            setValue("isClaimable", false)
+
+        } else {
+
+            // Income or Savings
+            setValue("transactionCreditOrDebit", null)
+            setValue("isClaimable", null)
+
+        }
+        
+
+    }, [selectedTransactionType, allCategories, transactionToBeEdited, setValue])
+
     useEffect(() => {
         if (addCreditDebit) {
             setValue("transactionType", "Expenses")
             setValue("transactionCreditOrDebit", addCreditDebit)
         }
-    }, [setValue, addCreditDebit])
+    }, [addCreditDebit, setValue])
+
+    useEffect(() => {
+
+        if (selectedCreditOrDebit === "Credit") {
+            setValue("transactionAccountIdFK", null)
+            setCardOptions(getCardOptions(allCards))
+        }
+
+        if (selectedCreditOrDebit === "Debit") {
+            setValue("transactionCardIdFK", null)
+            setAccountOptions(getAccountOptions(allAccounts))
+        }
+
+    }, [selectedCreditOrDebit, allCards, allAccounts, setValue])
+
 
     async function onSubmit(values: TInsertTransaction) {
+
+        console.log("submitted - ", values)
 
         const response = transactionToBeEdited
             ? await updateTransaction(transactionToBeEdited.user_transactions.transactionId, values)
@@ -113,10 +167,8 @@ export default function TransactionForm({
         } else {
             toast({ title: "Error", description: response.dbResponseMessage });
         }
-    }
 
-    // Calendar Open/Close State
-    const [calendarOpen, setCalendarOpen] = useState(false);
+    }
 
     return (
         <div>
@@ -184,7 +236,7 @@ export default function TransactionForm({
                     </div>
 
 
-                    {/* Transaction Type / Expense Method */}
+                    {/* Transaction Type / Expense Credit or Debit Method */}
                     <div className={`flex flex-col gap-2 w-[15%]`}>
                         <FormField
                             control={control}
@@ -243,41 +295,126 @@ export default function TransactionForm({
                     </div>
 
 
-                    {/* Transaction Category */}
-                    <div className={`w-[15%]`}>
+                    {/* Transaction Category & Card/Account */}
+                    <div className={`flex flex-col gap-2 w-[15%]`}>
                         <FormField
                             control={control}
                             name="transactionCategoryIdFK"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Select
-                                            value={field.value}
-                                            onValueChange={field.onChange}
-                                            disabled={formState.isSubmitting}
-                                        >
-                                            <SelectTrigger className="!border-color-border shadow-none">
-                                                <SelectValue placeholder="Category" />
-                                            </SelectTrigger>
-                                            <SelectContent className="bg-color-bg border-color-border">
-                                                <SelectGroup>
-                                                    {CategoryOptions.length > 0
-                                                        ? (
-                                                            CategoryOptions.map(option => (
-                                                                <SelectItem key={option.value} value={option.value} className="hover:cursor-pointer">{option.label}</SelectItem>
-                                                            ))
-                                                        )
-                                                        : 
-                                                        <p className="p-2">No Categories Found</p>
-                                                    }
-                                                </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
-                                    </FormControl>
-                                    <FormMessage className=" col-span-4 text-right text-red-500"/>  
-                                </FormItem>
-                            )}
+                            render={({ field }) => 
+                                {
+                                    // console.log(field)
+                                    return (
+                                        <FormItem>
+                                            <FormControl>
+                                                <Select
+                                                    value={field.value}
+                                                    onValueChange={field.onChange}
+                                                    disabled={formState.isSubmitting}
+                                                >
+                                                    <SelectTrigger className="!border-color-border shadow-none">
+                                                        <SelectValue placeholder="Category" />
+                                                    </SelectTrigger>
+                                                    <SelectContent className="bg-color-bg border-color-border">
+                                                        <SelectGroup>
+                                                            {CategoryOptions.length > 0
+                                                                ? (
+                                                                    CategoryOptions.map(option => (
+                                                                        <SelectItem key={option.value} value={option.value} className="hover:cursor-pointer">{option.label}</SelectItem>
+                                                                    ))
+                                                                )
+                                                                : 
+                                                                <p className="p-2">No Categories Found</p>
+                                                            }
+                                                        </SelectGroup>
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage className=" col-span-4 text-right text-red-500"/>  
+                                        </FormItem>
+                                    )
+                                }
+                            }
                         />
+                        {(selectedCreditOrDebit === "Credit" && planName !== "Free") && 
+                            <FormField
+                                control={control}
+                                name="transactionCardIdFK"
+                                render={({ field }) => 
+                                    {
+                                        // console.log("transactionCardIdFK field - ", field)
+                                        return (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Select
+                                                        value={field.value || ""}
+                                                        onValueChange={field.onChange}
+                                                        disabled={selectedCreditOrDebit === null || formState.isSubmitting}
+                                                    >
+                                                        <SelectTrigger className="!border-color-border shadow-none">
+                                                            <SelectValue placeholder="Cards" />
+                                                        </SelectTrigger>
+                                                        <SelectContent className="bg-color-bg border-color-border">
+                                                            <SelectGroup>
+                                                                {CardOptions.length > 0
+                                                                    ? (
+                                                                        CardOptions.map(option => (
+                                                                            <SelectItem key={option.value} value={option.value} className="hover:cursor-pointer">{option.label}</SelectItem>
+                                                                        ))
+                                                                    )
+                                                                    : 
+                                                                    <p className="p-2">No Cards Found</p>
+                                                                }
+                                                            </SelectGroup>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </FormControl>
+                                                <FormMessage className=" col-span-4 text-right text-red-500"/>  
+                                            </FormItem>
+                                        )
+                                    }
+                                }
+                            />
+                        }
+                        {(selectedCreditOrDebit === "Debit" && planName !== "Free") &&
+                            <FormField
+                                control={control}
+                                name="transactionAccountIdFK"
+                                render={({ field }) => 
+                                    {
+                                        // console.log(field)
+                                        return (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Select
+                                                        value={field.value || ""}
+                                                        onValueChange={field.onChange}
+                                                        disabled={selectedCreditOrDebit === null || formState.isSubmitting}
+                                                    >
+                                                        <SelectTrigger className="!border-color-border shadow-none">
+                                                            <SelectValue placeholder="Accounts" />
+                                                        </SelectTrigger>
+                                                        <SelectContent className="bg-color-bg border-color-border">
+                                                            <SelectGroup>
+                                                                {AccountOptions.length > 0
+                                                                    ? (
+                                                                        AccountOptions.map(option => (
+                                                                            <SelectItem key={option.value} value={option.value} className="hover:cursor-pointer">{option.label}</SelectItem>
+                                                                        ))
+                                                                    )
+                                                                    : 
+                                                                    <p className="p-2">No Accounts Found</p>
+                                                                }
+                                                            </SelectGroup>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </FormControl>
+                                                <FormMessage className=" col-span-4 text-right text-red-500"/>  
+                                            </FormItem>
+                                        )
+                                    }
+                                }
+                            />
+                        }
                     </div>
 
 
@@ -303,7 +440,7 @@ export default function TransactionForm({
                     </div>
 
 
-                    {/* Transaction Amount */}
+                    {/* Transaction Amount / isClaimable */}
                     <div className={`flex flex-col gap-2 w-[10%]`}>
                         <FormField
                             control={control}
@@ -356,6 +493,7 @@ export default function TransactionForm({
                         />
                     </div>
 
+
                     <div className={`w-[8%] flex flex-col gap-2`}>
                         <MyButton type="submit" disabled={formState.isSubmitting}>
                             {formState.isSubmitting
@@ -399,7 +537,32 @@ function getCategoryOptions(selectedType: string, allCategories: TFetchedAllCate
 
     return validCategoryOptions
 }
+function getCardOptions(allCards: TFetchedCard[]): TSelectOption[] {
 
+    const validCardOptions: TSelectOption[] = []
+
+    allCards.map(card => {
+        validCardOptions.push({
+            label: card.cardName,
+            value: card.cardId
+        })
+    })
+
+    return validCardOptions
+}
+function getAccountOptions(allAccounts: TFetchedAccount[]): TSelectOption[] {
+
+    const validAccountOptions: TSelectOption[] = []
+
+    allAccounts.map(account => {
+        validAccountOptions.push({
+            label: account.accountName,
+            value: account.accountId
+        })
+    })
+
+    return validAccountOptions
+}
 type TSelectOption = {
     label: string
     value: string

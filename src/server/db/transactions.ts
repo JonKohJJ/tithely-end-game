@@ -1,10 +1,14 @@
 import { db } from "@/drizzle/db";
-import { CategoriesTable, TransactionsTable } from "@/drizzle/schema"
+import { AccountsTable, CardsTable, CategoriesTable, TransactionsTable } from "@/drizzle/schema"
 import { eq, and, desc, sql, sum, count } from "drizzle-orm";
 import { TDatabaseResponse, TFetchedCategory } from "./categories";
 import { TInsertTransaction } from "@/zod/transactions";
+import { TFetchedCard } from "./cards";
+import { TFetchedAccount } from "./accounts";
 
 export type TFetchedTransaction = {
+    user_accounts: TFetchedAccount | null
+    user_cards: TFetchedCard | null
     user_categories: TFetchedCategory
     user_transactions: typeof TransactionsTable.$inferSelect
 }
@@ -22,6 +26,8 @@ export async function getAllTransactions(
         .select()
         .from(TransactionsTable)
         .innerJoin(CategoriesTable, eq(TransactionsTable.transactionCategoryIdFK, CategoriesTable.categoryId))
+        .leftJoin(CardsTable, eq(TransactionsTable.transactionCardIdFK, CardsTable.cardId))
+        .leftJoin(AccountsTable, eq(TransactionsTable.transactionAccountIdFK, AccountsTable.accountId))
         .where(
             and(
                 eq(TransactionsTable.clerkUserId, userId),
@@ -229,4 +235,60 @@ export async function deleteBulkTransactions({
         return { success: false, dbResponseMessage: "DB ERROR - An unexpected error occurred" }
 
     }
+}
+
+// For Card deletion
+export async function getTransactionsIdByCardId(    
+    cardId: string, 
+    userId: string
+) {
+
+    const respectiveTransactions = await db
+        .select({ id: TransactionsTable.transactionId })
+        .from(TransactionsTable)
+        .where(
+            and(
+                eq(TransactionsTable.clerkUserId, userId),
+                eq(TransactionsTable.transactionCardIdFK, cardId),
+            )
+        )
+
+    return respectiveTransactions
+}
+export async function resetTransactionCardId(
+    transactionId: string,
+    userId: string
+) {
+    await db
+        .update(TransactionsTable)
+        .set({ transactionCardIdFK: null })
+        .where(and(eq(TransactionsTable.clerkUserId, userId), eq(TransactionsTable.transactionId, transactionId)))
+}
+
+// For Account deletion
+export async function getTransactionsIdByAccountId(    
+    accountId: string, 
+    userId: string
+) {
+
+    const respectiveTransactions = await db
+        .select({ id: TransactionsTable.transactionId })
+        .from(TransactionsTable)
+        .where(
+            and(
+                eq(TransactionsTable.clerkUserId, userId),
+                eq(TransactionsTable.transactionAccountIdFK, accountId),
+            )
+        )
+
+    return respectiveTransactions
+}
+export async function resetTransactionAccountId(
+    transactionId: string,
+    userId: string
+) {
+    await db
+        .update(TransactionsTable)
+        .set({ transactionAccountIdFK: null })
+        .where(and(eq(TransactionsTable.clerkUserId, userId), eq(TransactionsTable.transactionId, transactionId)))
 }

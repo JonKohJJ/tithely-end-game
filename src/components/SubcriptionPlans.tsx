@@ -62,14 +62,14 @@ function PricingCard({
         `}>
             
             {mostPopular && 
-                <p className="absolute top-0 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-color-text text-color-bg px-4 rounded-xl">Most Polular</p>
+                <p className="absolute top-0 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-color-text text-color-bg px-4 rounded-xl">Most Popular</p>
             }
 
-            <p className="text-center">{name}</p>
+            <p className="text-center fs-h3">{name}</p>
 
             <div className="flex justify-center items-baseline my-8 gap-2">
                 {originalPriceInCents && <p className="line-through text-color-muted-text">${originalPriceInCents/100}</p>}
-                <p>${priceInCents/100}</p>
+                <p className="fs-h2">${priceInCents/100}</p>
                 {isMonthlyPlan && <p>/ monthly</p>}
                 {isLifetimePlan && <p>lifetime</p>}
             </div>

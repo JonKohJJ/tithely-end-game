@@ -22,7 +22,7 @@ export default function AnalyticsPage() {
                 >
                     <p>Analytics Content</p>
                 </Suspense> */}
-                <p className='fs-h1'>Analytics Page Content - developement in progress</p>
+                <p>developement in progress</p>
             </HasPermission>
             
         </div>

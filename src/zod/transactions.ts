@@ -9,6 +9,8 @@ export const TransactionSchema = z
         transactionDescription: z.string().min(1, "Required").max(100), 
 
         transactionCreditOrDebit: z.enum(["Credit", "Debit"]).nullable(),
+        transactionCardIdFK: z.string().nullable(),
+        transactionAccountIdFK: z.string().nullable(),
         isClaimable: z.boolean().nullable(),
     })
     .superRefine((TransactionSchema, ctx) => {
@@ -18,7 +20,6 @@ export const TransactionSchema = z
                 ctx.addIssue({
                     code: "custom",
                     message: "Null Expected",
-                        // "'transactionCreditOrDebit' must be NULL when 'transactionType' is 'Income' or 'Savings'.",
                     path: ["transactionCreditOrDebit"],
                 });
             }
@@ -28,7 +29,6 @@ export const TransactionSchema = z
                 ctx.addIssue({
                     code: "custom",
                     message: "Null Expected",
-                        //  "'isClaimable' must be NULL when 'transactionType' is 'Income' or 'Savings'.",
                     path: ["isClaimable"],
                 });
             }

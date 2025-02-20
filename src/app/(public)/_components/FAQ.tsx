@@ -52,7 +52,7 @@ export default function FAQSection() {
       <div className="mycontainer">
         <div className="flex flex-col md:flex-row md:justify-between gap-10 md:gap-20">
           <div className="md:w-1/3">
-            <p className="mb-4">Frequently Asked Questions</p>
+            <p className="mb-4 fs-h2">Frequently Asked Questions</p>
             <p className="">Find answers to common questions about our products and services.</p>
           </div>
           <div className="md:w-2/3">
@@ -92,7 +92,7 @@ function AccordionItem({ question, answer, isOpen, onClick }: AccordionItemProps
         onClick={onClick}
         aria-expanded={isOpen}
       >
-        <span className="">{question}</span>
+        <p>{question}</p>
         <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
       </button>
       <div
@@ -101,7 +101,7 @@ function AccordionItem({ question, answer, isOpen, onClick }: AccordionItemProps
         className="overflow-hidden transition-all duration-300 ease-in-out"
       >
         <div className="pb-4">
-          <p>{answer}</p>
+          <p className="fs-h3">{answer}</p>
         </div>
       </div>
     </div>
