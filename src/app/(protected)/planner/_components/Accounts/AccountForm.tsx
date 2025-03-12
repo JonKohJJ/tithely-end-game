@@ -21,7 +21,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -33,12 +33,15 @@ import MyButton from "@/components/MyButton"
 import { TFetchedAccount, TFetchedAccountWithChildTransactionCount } from "@/server/db/accounts"
 import { AccountSchema, TInsertAccount } from "@/zod/Accounts"
 import { addAccount, deleteAccount, updateAccount } from "@/server/actions/Accounts"
+import { cn } from "@/lib/utils"
 
 
 export default function AccountForm({
-    accountTobeEdited
+    accountTobeEdited,
+    isMdScreen
 }: {
     accountTobeEdited?: TFetchedAccountWithChildTransactionCount
+    isMdScreen?: boolean
 }) {
 
     const [dialogMode, setDialogMode] = useState<'AddOrEdit' | 'Delete' | null>(null)
@@ -64,8 +67,18 @@ export default function AccountForm({
                 {accountTobeEdited ? (
                     <ButtonToEditDeleteAccount setDialogMode={setDialogMode} />
                 ) : (
-                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')}>
-                        <p>Add Account</p>
+                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')}
+                        additionalClasses={cn(
+                            "min-h-[200px] lg:min-h-[250px] w-full border border-color-border rounded-lg p-6 !bg-color-bg hover:border-color-text hover:border-solid",
+                        )}
+                    >
+                        {isMdScreen && isMdScreen
+                            ? <>
+                                <PlusCircle className="w-10 h-10 text-color-text" />
+                                <p className="text-color-text">Add Account</p>
+                            </>
+                            : <p className="text-color-text">You cannot add or edit account in mobile view</p>
+                        }
                     </MyButton>
                 )}
             </DialogTrigger>
@@ -191,7 +204,7 @@ function ButtonToEditDeleteAccount({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="!p-0 h-[unset] notactive border-none">
+                <Button variant="ghost" className="!p-0 h-[unset] notactive border-none hidden md:block">
                     <span className="sr-only">Open menu</span>
                     <MoreHorizontal />
                 </Button>

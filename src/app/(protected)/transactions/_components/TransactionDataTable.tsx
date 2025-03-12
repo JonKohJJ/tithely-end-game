@@ -50,12 +50,9 @@ import { TFetchedAccount } from "@/server/db/accounts"
 type TDataTableProps<TData> = {
   data: TData[]
   allCategories: TFetchedAllCategories
-  allCategoryNames: string[]
-  canCreate: boolean
   allCards: TFetchedCard[]
-  allCardNames: string[]
   allAccounts: TFetchedAccount[]
-  allAccountNames: string[]
+  canCreate: boolean
   planName: string
 }
 
@@ -64,12 +61,9 @@ export const LOCAL_STORAGE_PAGESIZE_KEY = "TITHELY_TRANSACTION_DATATABLE_PAGE_SI
 export function TransactionDataTable({
   data,
   allCategories,
-  allCategoryNames,
-  canCreate,
   allCards,
-  allCardNames,
   allAccounts,
-  allAccountNames,
+  canCreate,
   planName
 }: TDataTableProps<TFetchedTransaction>) {
 
@@ -381,6 +375,13 @@ export function TransactionDataTable({
     }
   }, [table])
 
+
+  // Filters
+  const allCategoryNames = generateCategoryNames(allCategories)
+  const allCardNames = generateCardNames(allCards)
+  const allAccountNames = generateAccountNames(allAccounts)
+
+  
   return (
     <div className="transaction-data-table flex flex-col gap-4">
 
@@ -680,4 +681,26 @@ async function onBulkDelete(
   } else {
       toast({ title: "Error", description: response.dbResponseMessage });
   }
+}
+
+function generateCardNames(allCards: TFetchedCard[]) {
+  return allCards.map(card => {
+    return card.cardName
+  })
+}
+
+function generateAccountNames(allAccounts: TFetchedAccount[]) {
+  return allAccounts.map(account => {
+    return account.accountName
+  })
+}
+
+function generateCategoryNames(allCategories: TFetchedAllCategories) {
+  const allCategoryNames: string[] = []
+  allCategories.map(type => {
+    type.categories.map(category => {
+      allCategoryNames.push(category.categoryName)
+    })
+  })
+  return allCategoryNames
 }

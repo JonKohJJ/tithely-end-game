@@ -7,15 +7,15 @@
   .light {
       --color-bg: #f7f6f6;
       --color-text: #1c1c1c;
-      --color-muted-text: #b9b7b7;
-      --color-border: #e5e7eb;
+      --color-muted-text: #e2e2e2;
+      --color-border: #c4c4c4;
   }
 
   .dark {
       --color-bg: #1c1c1c;
       --color-text: #f7f6f6;
-      --color-muted-text: #464646;
-      --color-border: #242425;
+      --color-muted-text: #2b2b2b;
+      --color-border: #454545;
   }
 
 }

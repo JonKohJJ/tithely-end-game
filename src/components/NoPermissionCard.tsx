@@ -1,20 +1,23 @@
 import Link from "next/link"
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "./ui/card"
-import { ReactNode } from "react"
 import MyButton from "./MyButton"
 
 export default function NoPermissionCard({
-    children = "You do not have permission to perform this action. Try upgrading your account to access this feature.",
+    fallbackActionText,
 }: {
-    children?: ReactNode
+    fallbackActionText?: string
 }) {
     return (
-        <Card className="shadow-none border-color-border">
+        <Card className="shadow-none border-color-border h-full flex flex-col items-center justify-center text-center">
             <CardHeader>
-                <CardTitle>Permission Denied</CardTitle>
+                <CardTitle>
+                    <p className="fs-h3">Permission Denied</p>
+                </CardTitle>
             </CardHeader>
             <CardContent>
-                <CardDescription>{children}</CardDescription>
+                <CardDescription>
+                    <p className="px-10">You do not have permission to {fallbackActionText}. Ugrade your account to access this feature.</p>
+                </CardDescription>
             </CardContent>
             <CardFooter>
                 <MyButton>

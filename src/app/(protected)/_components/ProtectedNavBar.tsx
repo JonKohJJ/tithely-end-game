@@ -48,7 +48,7 @@ export function ProtectedNavBar() {
                         return (
                           <SidebarMenuItem key={item.name} 
                             onClick={() => setOpenMobile(false)} 
-                            className={`rounded-md ${item.url.includes(pathname) ? "bg-color-muted-text" : "hover:bg-color-muted-text"}`}
+                            className={`rounded-md ${item.url.includes(pathname) ? "bg-color-muted-text" : "hover:bg-color-border"}`}
                           >
                             <SidebarMenuButton asChild>
                               <Link href={item.url} className="flex justify-between">

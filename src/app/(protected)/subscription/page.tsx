@@ -33,7 +33,7 @@ export default async function SubscriptionPage() {
                         content={
                             <div className="flex flex-col gap-2">
                                 <p>{transactionsCount} / {maxNumberOfTransactions} transactions created</p>
-                                <Progress value={(transactionsCount/maxNumberOfTransactions)*100} className="bg-color-border" additionalClasses="bg-color-text" />
+                                <Progress value={(transactionsCount/maxNumberOfTransactions)*100} className="bg-color-muted-text" additionalClasses="bg-color-text" />
                             </div>
                         }
                         icon={<Tally5 className="w-4 h-4 text-neutral-500" />}
@@ -44,7 +44,7 @@ export default async function SubscriptionPage() {
                     content={
                         <div className="flex flex-col gap-2">
                             <p>{categoriesCount} / {maxNumberOfCategories} categories created</p>
-                            <Progress value={(categoriesCount/maxNumberOfCategories)*100} className="bg-color-border" additionalClasses="bg-color-text" />
+                            <Progress value={(categoriesCount/maxNumberOfCategories)*100} className="bg-color-muted-text" additionalClasses="bg-color-text" />
                         </div>
                     }
                     icon={<Percent className="w-4 h-4 text-neutral-500" />}
@@ -56,7 +56,7 @@ export default async function SubscriptionPage() {
                         name === "Free" ? <UpgradeButton /> :
                         <div className="flex flex-col gap-2">
                             <p>{cardsCount} / {maxNumberOfCards} cards created</p>
-                            <Progress value={(cardsCount/maxNumberOfCards)*100} className="bg-color-border" additionalClasses="bg-color-text" />
+                            <Progress value={(cardsCount/maxNumberOfCards)*100} className="bg-color-muted-text" additionalClasses="bg-color-text" />
                         </div>
                     }
                     icon={<Percent className="w-4 h-4 text-neutral-500" />}
@@ -68,7 +68,7 @@ export default async function SubscriptionPage() {
                         name === "Free" ? <UpgradeButton /> :
                         <div className="flex flex-col gap-2">
                             <p>{accountsCount} / {maxNumberOfAccounts} cards created</p>
-                            <Progress value={(accountsCount/maxNumberOfAccounts)*100} className="bg-color-border" additionalClasses="bg-color-text" />
+                            <Progress value={(accountsCount/maxNumberOfAccounts)*100} className="bg-color-muted-text" additionalClasses="bg-color-text" />
                         </div>
                     }
                     icon={<Percent className="w-4 h-4 text-neutral-500" />}

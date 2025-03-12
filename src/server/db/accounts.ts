@@ -118,12 +118,14 @@ export async function deleteAccount({
                 resetTransactionAccountId(transaction.id, userId)
             })
         )
-
+        
+        console.log("ACCOUNT start - ", respectiveTransactions)
         const [deletedAccount] = await db
             .delete(AccountsTable)
             .where(and(eq(AccountsTable.clerkUserId, userId), eq(AccountsTable.accountId, accountId)))
             .returning()
-            
+        
+        console.log("ACCOUNT end deletedAccount - ", deletedAccount)
         return { success: true, dbResponseMessage: `Account '${deletedAccount.accountName}' successfully deleted`}
 
     } catch (error) {

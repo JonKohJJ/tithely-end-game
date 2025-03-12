@@ -21,7 +21,7 @@ export default async function ProtectedLayout({
       <SidebarInset>
         <ProtectedHeader />
         <div className='protected-layout flex justify-center w-full h-full'>
-          <div className='w-full p-6 max-w-[1400px]'>
+          <div className='w-full p-6 max-w-[1500px]'>
               {children}
               <Toaster />
           </div>

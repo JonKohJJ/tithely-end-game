@@ -15,7 +15,7 @@ export default {
         "color-border": "var(--color-border)",
         "color-muted-text": "var(--color-muted-text)"
       }
-  	}
+  	},
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;

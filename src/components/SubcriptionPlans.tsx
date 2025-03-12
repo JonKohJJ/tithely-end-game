@@ -1,6 +1,8 @@
+"use client"
+
 import { SubscriptionTiersInOrder, TierNames, TSubscriptionTier } from "@/data/subscriptionTiers"
 import MyButton from "./MyButton"
-import { ReactNode } from "react"
+import { ReactNode, useState } from "react"
 import { ArrowUp, ArrowUpFromDot, Check, X } from "lucide-react"
 import Link from "next/link"
 import { createCancelSessionSubscription, createCheckoutSession } from "@/server/actions/stripe"
@@ -14,6 +16,7 @@ export default function SubcriptionPlans({
 } : {
     currentPlanName: TierNames | null
 }) {
+
     return (
         <div className='subscription-plans flex flex-col md:flex-row gap-4'>
             {SubscriptionTiersInOrder.map(tier => {
@@ -47,13 +50,12 @@ function PricingCard({
 
 } : TPricingCardProps) {
 
+    const [isRedirecting, setIsRedirecting] = useState(false)
+
     // Confusing boolean conditions, but they are important
     const userLoggedIn = currentPlanName !== null
     const isCurrentPlan = currentPlanName === name
     const mostPopular = !currentPlanName && isPopular
-
-    // const isCurrentPlanLifetime = currentPlanName === "Pro Lifetime"
-    // console.log(userLoggedIn, isCurrentPlan, isCurrentPlanLifetime)
 
     return (
         <div className={`
@@ -75,7 +77,6 @@ function PricingCard({
             </div>
 
             <div className="features flex flex-col gap-2">
-
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canAccessDashboardPage}>Access dashboard page</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfCategories}>max categories</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfTransactions}>max transactions</Feature>
@@ -94,16 +95,19 @@ function PricingCard({
                     : createCheckoutSession.bind(null, name, (isLifetimePlan ? true : false))
                 }
             >
-                <MyButton additionalClasses="w-full py-6 mt-8" disabled={userLoggedIn && isCurrentPlan}>
-                    {userLoggedIn
-                        ? (
-                            isCurrentPlan
-                            ? <p>Current</p>
-                            : <p>Swap</p>
-                        )
-                        : <Link href="/subscription"><p>Get Started</p></Link>
-                    }
-                </MyButton>
+                {currentPlanName?.includes("Lifetime") 
+                    ?   <MyButton additionalClasses="w-full py-6 mt-8"  disabled={true}>You have full access!</MyButton>
+                    :   <MyButton additionalClasses="w-full py-6 mt-8" disabled={userLoggedIn && isCurrentPlan} onClickFunction={() => {setIsRedirecting(true)}}>
+                            {userLoggedIn
+                                ? (
+                                    isCurrentPlan
+                                    ? <p>Current</p>
+                                    : <p>{ isRedirecting ? "Redirecting..." : "Swap" }</p>
+                                )
+                                : <Link href="/subscription"><p>Get Started</p></Link>
+                            }
+                        </MyButton>
+                }
             </form>
         </div>
     )

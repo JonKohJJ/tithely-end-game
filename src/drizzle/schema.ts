@@ -10,7 +10,7 @@ const updatedAt = timestamp("updated_at", { withTimezone: true })
   .defaultNow()
   .$onUpdate(() => new Date())
 
-export const TierEnum = pgEnum("subscription_tier_27", ["Free", "Pro Monthly", "Pro Lifetime"])
+export const TierEnum = pgEnum("subscription_tier_28", ["Free", "Pro Monthly", "Pro Lifetime"])
 
 export const UserSubscriptionTable = pgTable(
   'user_subscriptions', 
@@ -26,8 +26,8 @@ export const UserSubscriptionTable = pgTable(
   },
 ).enableRLS()
 
-export const TypeEnum = pgEnum("type_27", ["Income", "Savings", "Expenses"])
-export const ExpenseMethodEnum = pgEnum("expense_type_27", ["Fixed", "Variable"])
+export const TypeEnum = pgEnum("type_28", ["Income", "Savings", "Expenses"])
+export const ExpenseMethodEnum = pgEnum("expense_type_28", ["Fixed", "Variable"])
 
 export const CategoriesTable = pgTable(
   'user_categories',
@@ -49,7 +49,7 @@ export const CategoriesTable = pgTable(
   }
 ).enableRLS()
 
-export const CreditOrDebitEnum = pgEnum("credit_debit_27", ["Credit", "Debit"])
+export const CreditOrDebitEnum = pgEnum("credit_debit_28", ["Credit", "Debit"])
 
 export const TransactionsTable = pgTable(
   'user_transactions',
@@ -83,6 +83,7 @@ export const CardsTable = pgTable(
     clerkUserId: text("clerk_user_id").notNull(),
     cardName: text("card_name").notNull(),
     cardMinimumSpend: doublePrecision("card_minimum_spend").notNull(),
+    cardMaximumBudget: doublePrecision("card_maximum_budget").notNull(),
     cardCurrentCharge: doublePrecision("card_current_charge").notNull(),
     createdAt,
   },

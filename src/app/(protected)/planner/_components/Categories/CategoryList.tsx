@@ -1,5 +1,4 @@
 import { getAllCategories, TFetchedAllCategories } from "@/server/db/categories"
-import CategoryForm from "./CategoryForm"
 import {
     Table,
     TableBody,
@@ -13,6 +12,7 @@ import {
 import { Currency, LocateFixed, Percent, TrendingUpDown } from "lucide-react"
 import { InsightCard } from "@/components/InsightCard"
 import { Progress } from "@/components/ui/progress"
+import CategoryForm from "./CategoryForm"
 
 export default async function CategoryList({
     userId,
@@ -48,12 +48,12 @@ export default async function CategoryList({
                     <p>Oh no! Something went wrong. ISSUE: {errorMessage}</p>
                 )
                 : (
-                    <div className="category-list flex flex-col gap-8">
+                    <div className="category-list flex flex-col gap-4">
 
                         <div className="insight-cards-container flex gap-4 flex-col lg:flex-row">
                             <InsightCard 
                                 title="Zero-Based Indicator" 
-                                description="The zero-based indicator tracks your income against savings and expenses, ensuring every dollar is accounted for and allocated." 
+                                description="The zero-based indicator tracks income, savings, and expenses, ensuring every dollar is allocated." 
                                 content={zeroBasedIndicatorString}
                                 icon={<Currency className="w-4 h-4 text-neutral-500" />}
                             />
@@ -69,14 +69,14 @@ export default async function CategoryList({
                                 content={
                                     <div className="flex flex-col gap-2">
                                         <p>{categoriesCount} / {maxNumberOfCategories} categories created</p>
-                                        <Progress value={(categoriesCount/maxNumberOfCategories)*100} className="bg-color-border" additionalClasses="bg-color-text" />
+                                        <Progress value={(categoriesCount/maxNumberOfCategories)*100} className="bg-color-muted-text" additionalClasses="bg-color-text" />
                                     </div>
                                 }
                                 icon={<Percent className="w-4 h-4 text-neutral-500" />}
                             />
                         </div>
 
-                        <div className="categories-table-container flex gap-4 flex-col lg:flex-row lg:min-h-[400px]">
+                        <div className="categories-table-container flex flex-col gap-4">
                             {allCategories.map(eachType => (
                                 <Table key={eachType.type} className="category-table flex flex-col p-2 w-full !h-full border-[1px] border-color-border rounded-xl">
                                     
@@ -85,7 +85,7 @@ export default async function CategoryList({
                                             <TableHead className="w-9/12 flex items-center">{eachType.type}</TableHead>
                                             <TableHead className="w-3/12 flex items-center justify-end">{eachType.categories.length}</TableHead>
                                         </TableRow>
-                                        <TableRow className="border-b-[1px] border-color-border flex fs-caption">
+                                        <TableRow className="border-b-[1px] border-color-muted-text flex fs-caption">
                                             <TableHead className={`w-9/12 flex items-center`}>Category</TableHead>
                                             <TableHead className={`w-3/12 flex items-center justify-end`}>Budget</TableHead>
                                         </TableRow>
@@ -95,7 +95,7 @@ export default async function CategoryList({
                                         {eachType.categories.length > 0
                                             ? (
                                                 eachType.categories.map(category => (
-                                                    <TableRow key={category.categoryId} className="w-full flex border-b-[1px] border-color-border">
+                                                    <TableRow key={category.categoryId} className="w-full flex border-b-[1px] border-color-muted-text">
                                                         <TableCell className={`w-9/12`}>
                                                             { category.expenseMethod === null
                                                                 ? <p className="line-clamp-1">{category.categoryName}</p>
@@ -121,7 +121,7 @@ export default async function CategoryList({
                                         }
                                     </TableBody>
 
-                                    <TableFooter className="w-full flex-shrink-0 border-t-[1px] border-color-border">
+                                    <TableFooter className="w-full flex-shrink-0 border-t-[1px] border-color-muted-text">
                                         <TableRow className="w-full flex !border-0">
                                             <TableCell className={`w-9/12`}>Total</TableCell>
                                             <TableCell className={`w-3/12 flex items-center justify-end`}>${eachType.sum}</TableCell>

@@ -10,9 +10,14 @@ export type TFetchedCardWithChildTransactionCount = TFetchedCard & {
     childTransactionsCount: number
 }
 
+// const OPERATION_DELAY = 5000
+// await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
+
 export async function getAllCards(
     userId: string
 ) {
+
+    // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
 
     const allCards = await db
         .select()
@@ -24,10 +29,11 @@ export async function getAllCards(
             asc(CardsTable.createdAt)
         )
 
-    // Get X transactions tied to this card
     const allCardsWithChildTransactionsCount = await Promise.all(
         allCards.map(async (card) => {
+            // Get X transactions tied to this card
             const count = await getChildTransactionsCount(userId, card.cardId)
+
             return {
                 ...card,
                 childTransactionsCount: count
@@ -118,12 +124,14 @@ export async function deleteCard({
                 await resetTransactionCardId(transaction.id, userId)
             })
         )
-
+        
+        console.log("CARD start - ", respectiveTransactions)
         const [deletedCard] = await db
             .delete(CardsTable)
             .where(and(eq(CardsTable.clerkUserId, userId), eq(CardsTable.cardId, cardId)))
             .returning()
             
+        console.log("CARD end deletedCard - ", deletedCard)
         return { success: true, dbResponseMessage: `Card '${deletedCard.cardName}' successfully deleted`}
 
     } catch (error) {

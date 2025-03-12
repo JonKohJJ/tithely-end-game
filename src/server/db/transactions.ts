@@ -15,6 +15,7 @@ export type TFetchedTransaction = {
 export type TFetchedAllTransactions = TFetchedTransaction[]
 
 // const OPERATION_DELAY = 500
+// await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
 
 export async function getAllTransactions(
     userId: string,
@@ -121,7 +122,7 @@ export async function deleteTransaction({
             .where(and(eq(TransactionsTable.clerkUserId, userId), eq(TransactionsTable.transactionId, transactionId)))
             .returning()
 
-        return { success: true, dbResponseMessage: `Category '${deletedTransaction.transactionDescription}' successfully deleted`}
+        return { success: true, dbResponseMessage: `Transaction '${deletedTransaction.transactionDescription}' successfully deleted`}
 
     } catch (error) {
 

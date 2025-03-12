@@ -148,8 +148,6 @@ export default function TransactionForm({
 
     async function onSubmit(values: TInsertTransaction) {
 
-        console.log("submitted - ", values)
-
         const response = transactionToBeEdited
             ? await updateTransaction(transactionToBeEdited.user_transactions.transactionId, values)
             : await addTransaction(values)

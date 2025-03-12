@@ -1,5 +1,5 @@
 {
-  "id": "d70b110d-ff59-461d-a8e3-cc27d896e049",
+  "id": "e3626afe-21ec-45ad-b840-f438dbe81f30",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -78,6 +78,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "card_maximum_budget": {
+          "name": "card_maximum_budget",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
         "card_current_charge": {
           "name": "card_current_charge",
           "type": "double precision",
@@ -131,14 +137,14 @@
         },
         "category_type": {
           "name": "category_type",
-          "type": "type_27",
+          "type": "type_28",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "expense_method": {
           "name": "expense_method",
-          "type": "expense_type_27",
+          "type": "expense_type_28",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -197,7 +203,7 @@
         },
         "transaction_type": {
           "name": "transaction_type",
-          "type": "type_27",
+          "type": "type_28",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -234,7 +240,7 @@
         },
         "transaction_credit_debit": {
           "name": "transaction_credit_debit",
-          "type": "credit_debit_27",
+          "type": "credit_debit_28",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -351,7 +357,7 @@
         },
         "tier": {
           "name": "tier",
-          "type": "subscription_tier_27",
+          "type": "subscription_tier_28",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -389,24 +395,24 @@
     }
   },
   "enums": {
-    "public.credit_debit_27": {
-      "name": "credit_debit_27",
+    "public.credit_debit_28": {
+      "name": "credit_debit_28",
       "schema": "public",
       "values": [
         "Credit",
         "Debit"
       ]
     },
-    "public.expense_type_27": {
-      "name": "expense_type_27",
+    "public.expense_type_28": {
+      "name": "expense_type_28",
       "schema": "public",
       "values": [
         "Fixed",
         "Variable"
       ]
     },
-    "public.subscription_tier_27": {
-      "name": "subscription_tier_27",
+    "public.subscription_tier_28": {
+      "name": "subscription_tier_28",
       "schema": "public",
       "values": [
         "Free",
@@ -414,8 +420,8 @@
         "Pro Lifetime"
       ]
     },
-    "public.type_27": {
-      "name": "type_27",
+    "public.type_28": {
+      "name": "type_28",
       "schema": "public",
       "values": [
         "Income",

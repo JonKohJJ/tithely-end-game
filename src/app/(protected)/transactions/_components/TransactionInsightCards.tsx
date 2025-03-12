@@ -59,7 +59,7 @@ export default async function TransactionInsightCards({
                             content={
                                 <div className="flex flex-col gap-2">
                                     <p>{transactionsCount} / {maxNumberOfTransactions} transactions created</p>
-                                    <Progress value={(transactionsCount/maxNumberOfTransactions)*100} className="bg-color-border" additionalClasses="bg-color-text" />
+                                    <Progress value={(transactionsCount/maxNumberOfTransactions)*100} className="bg-color-muted-text" additionalClasses="bg-color-text" />
                                 </div>
                             }
                             icon={<Tally5 className="w-4 h-4 text-neutral-500" />}

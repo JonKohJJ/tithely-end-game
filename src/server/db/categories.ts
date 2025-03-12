@@ -23,12 +23,16 @@ export type TFetchedAllCategories = {
 
 
 
-// const OPERATION_DELAY = 500
+// const OPERATION_DELAY = 5000
 // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
+
 
 export async function getAllCategories(
     userId: string
 ) {
+
+    // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
+
     const allCategories = []
 
     // Array to Calculate Zero Based Indicator 

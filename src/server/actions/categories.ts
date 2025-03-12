@@ -30,7 +30,7 @@ export async function addCategory(
         return { success: false, dbResponseMessage: "No duplicated category name allowed. Please add a different one." }
     }
 
-    revalidatePath('/categories') 
+    revalidatePath('/planner') 
     return await addCategoryDb({ ...data, clerkUserId: userId })
 }
 
@@ -45,7 +45,7 @@ export async function updateCategory(
         return { success: false, dbResponseMessage: "SS Validation - There was an error updating your category" }
     }
 
-    revalidatePath('/categories') 
+    revalidatePath('/planner') 
     return await updateCategoryDb(data, { categoryId, userId })
 }
 
@@ -56,7 +56,7 @@ export async function deleteCategory(categoryId: string) {
         return { success: false, dbResponseMessage: "SS Validation - There was an error deleting your category" }
     }
 
-    revalidatePath('/categories') 
+    revalidatePath('/planner') 
     return await deleteCategoryDb({ categoryId, userId })
 }
 

@@ -1,13 +1,11 @@
 import {
   LayoutDashboard,
   ChartNoAxesCombined,
-  CreditCard,
   ArrowRightLeft,
-  PiggyBank,
-  AlignStartVertical,
   LucideProps,
   CaseUpper,
-  BadgeDollarSign
+  BadgeDollarSign,
+  Notebook
 } from "lucide-react"
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
@@ -33,21 +31,10 @@ export const NavigationData = [
     title: "Getting Started",
     subItems: [
       {
-        name: "Cards",
-        url: "/cards",
-        icon: CreditCard,
+        name: "Planner",
+        url: "/planner",
+        icon: Notebook,
         isDisabled: true
-      },
-      {
-        name: "Accounts",
-        url: "/accounts",
-        icon: PiggyBank,
-        isDisabled: true
-      },
-      {
-        name: "Categories",
-        url: "/categories",
-        icon: AlignStartVertical,
       },
       {
         name: "Transactions",

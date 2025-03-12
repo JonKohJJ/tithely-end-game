@@ -21,7 +21,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -30,15 +30,18 @@ import { Dispatch, SetStateAction, useState } from "react"
 import { toast, useToast } from "@/hooks/use-toast"
 
 import MyButton from "@/components/MyButton"
-import { TFetchedCard, TFetchedCardWithChildTransactionCount } from "@/server/db/cards"
+import { TFetchedCardWithChildTransactionCount } from "@/server/db/cards"
 import { CardSchema, TInsertCard } from "@/zod/cards"
 import { addCard, deleteCard, updateCard } from "@/server/actions/cards"
+import { cn } from "@/lib/utils"
 
 
 export default function CardForm({
-    cardTobeEdited
+    cardTobeEdited,
+    isMdScreen
 }: {
     cardTobeEdited?: TFetchedCardWithChildTransactionCount
+    isMdScreen?: boolean
 }) {
 
     const [dialogMode, setDialogMode] = useState<'AddOrEdit' | 'Delete' | null>(null)
@@ -57,20 +60,32 @@ export default function CardForm({
             setIsDeleting(false)
         }
     }
-
+    
     return (
         <Dialog open={dialogMode !== null} onOpenChange={(isOpen) => !isOpen && setDialogMode(null)}>
             <DialogTrigger asChild>
                 {cardTobeEdited ? (
                     <ButtonToEditDeleteCard setDialogMode={setDialogMode} />
                 ) : (
-                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')}>
-                        <p>Add Card</p>
+                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')}
+                        additionalClasses={cn(
+                            "min-h-[200px] lg:min-h-[250px] w-full border border-color-border rounded-lg p-6 !bg-color-bg hover:border-color-text hover:border-solid",
+                        )}
+                    >
+                        {isMdScreen && isMdScreen
+                            ? <>
+                                <PlusCircle className="w-10 h-10 text-color-text" />
+                                <p className="text-color-text">Add Card</p>
+                            </>
+                            : <p className="text-color-text">You cannot add or edit card in mobile view</p>
+                        }
                     </MyButton>
                 )}
             </DialogTrigger>
 
-            <DialogContent className="max-w-xl bg-color-bg border-color-border">
+            <DialogContent className={cn(
+                "max-w-xl bg-color-bg border-color-border",
+            )}>
                 {dialogMode === 'AddOrEdit' && (
                     <>
                         <DialogHeader>
@@ -113,7 +128,7 @@ function OfficialCardForm({
     cardTobeEdited,
     setDialogMode
 } : {
-    cardTobeEdited?: TFetchedCard
+    cardTobeEdited?: TFetchedCardWithChildTransactionCount
     setDialogMode: Dispatch<SetStateAction<"AddOrEdit" | "Delete" | null>>
 }) {
 
@@ -124,11 +139,13 @@ function OfficialCardForm({
         defaultValues: cardTobeEdited 
         ? {
             cardName: cardTobeEdited.cardName,
-            cardMinimumSpend: cardTobeEdited.cardMinimumSpend
+            cardMinimumSpend: cardTobeEdited.cardMinimumSpend,
+            cardMaximumBudget: cardTobeEdited.cardMaximumBudget,
         }
         : {
             cardName: "",
-            cardMinimumSpend: 0
+            cardMinimumSpend: 0,
+            cardMaximumBudget: 0,
         }
     })
 
@@ -179,7 +196,25 @@ function OfficialCardForm({
                                     {...field} 
                                     disabled={formState.isSubmitting} 
                                     className="col-span-3 !m-0 border-color-border shadow-none" 
-                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || "")}
+                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                />
+                            </FormControl>
+                            <FormMessage className=" col-span-4 text-right text-red-500"/>  
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={control}
+                    name="cardMaximumBudget"
+                    render={({ field }) => (
+                        <FormItem className="grid grid-cols-4 items-center gap-x-4">
+                            <FormLabel className="text-right"><p>Card Budget</p></FormLabel>
+                            <FormControl>
+                                <Input 
+                                    {...field} 
+                                    disabled={formState.isSubmitting} 
+                                    className="col-span-3 !m-0 border-color-border shadow-none" 
+                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
                                 />
                             </FormControl>
                             <FormMessage className=" col-span-4 text-right text-red-500"/>  
@@ -211,7 +246,7 @@ function ButtonToEditDeleteCard({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="!p-0 h-[unset] notactive border-none">
+                <Button variant="ghost" className="!p-0 h-[unset] notactive border-none hidden md:block">
                     <span className="sr-only">Open menu</span>
                     <MoreHorizontal />
                 </Button>

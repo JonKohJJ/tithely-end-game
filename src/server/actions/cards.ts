@@ -29,7 +29,7 @@ export async function addCard(
         return { success: false, dbResponseMessage: "No duplicated card name allowed. Please add a different one." }
     }
 
-    revalidatePath('/cards') 
+    revalidatePath('/planner') 
     return await addCardDb({ 
         ...data, 
         cardCurrentCharge: 0,
@@ -48,7 +48,7 @@ export async function updateCard(
         return { success: false, dbResponseMessage: "SS Validation - There was an error updating your card" }
     }
 
-    revalidatePath('/cards')
+    revalidatePath('/planner')
     return await updateCardDb(data, { cardId, userId })
 }
 
@@ -59,7 +59,7 @@ export async function deleteCard(cardId: string) {
         return { success: false, dbResponseMessage: "SS Validation - There was an error deleting your card" }
     }
 
-    revalidatePath('/cards') 
+    revalidatePath('/planner') 
     return await deleteCardDb({ cardId, userId })
 }
 

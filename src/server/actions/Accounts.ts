@@ -29,7 +29,7 @@ export async function addAccount(
         return { success: false, dbResponseMessage: "No duplicated account name allowed. Please add a different one." }
     }
 
-    revalidatePath('/accounts') 
+    revalidatePath('/planner') 
     return await addAccountDb({ 
         ...data, 
         accountBalance: 0,
@@ -48,7 +48,7 @@ export async function updateAccount(
         return { success: false, dbResponseMessage: "SS Validation - There was an error updating your card" }
     }
 
-    revalidatePath('/accounts')
+    revalidatePath('/planner')
     return await updateAccountDb(data, { accountId, userId })
 }
 
@@ -59,7 +59,7 @@ export async function deleteAccount(accountId: string) {
         return { success: false, dbResponseMessage: "SS Validation - There was an error deleting your card" }
     }
 
-    revalidatePath('/accounts') 
+    revalidatePath('/planner') 
     return await deleteAccountDb({ accountId, userId })
 }
 

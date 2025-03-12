@@ -94,9 +94,9 @@ export default function CategoryForm({
                 {dialogMode === 'Delete' && (
                     <>
                         <DialogHeader>
-                            <DialogTitle>{`Deleting '${categoryTobeEdited?.categoryName}' Category`}</DialogTitle>
+                            <DialogTitle><p className="font-bold">{`Deleting '${categoryTobeEdited?.categoryName}' Category`}</p></DialogTitle>
                         </DialogHeader>
-                        <p>{`Number of transaction found under category - ${categoryTobeEdited?.childTransactionsCount}`}</p>
+                        <p>{`${categoryTobeEdited?.childTransactionsCount} transaction(s) found under category`}</p>
                         <p>{`Are you sure?`}</p>
                         <MyButton disabled={isDeleting} additionalClasses="mt-4 w-1/4 ml-auto"
                             onClickFunction={() => {
@@ -294,8 +294,8 @@ function ButtonToEditDeleteCategory({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-color-bg border-[1px] border-color-border">
-                <DropdownMenuItem onClick={() => setDialogMode('AddOrEdit')} className="hover:cursor-pointer">Edit</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setDialogMode('Delete')} className="hover:cursor-pointer">Delete</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setDialogMode('AddOrEdit')} className="hover:cursor-pointer"><p className="fs-base">Edit</p></DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setDialogMode('Delete')} className="hover:cursor-pointer"><p className="fs-base">Delete</p></DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )
