@@ -10,9 +10,14 @@ export type TFetchedAccountWithChildTransactionCount = TFetchedAccount & {
     childTransactionsCount: number
 }
 
+// const OPERATION_DELAY = 2000
+// await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
+
 export async function getAllAccounts(
     userId: string
 ) {
+
+    // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
 
     const allAccounts = await db
         .select()

@@ -472,7 +472,7 @@ export function TransactionDataTable({
       </div>
 
       {/* Table Itself */}
-      <div className="rounded-md border-color-border border-[1px]">
+      <div className="rounded-md border-color-border border">
         <Table>
 
           <TableHeader>

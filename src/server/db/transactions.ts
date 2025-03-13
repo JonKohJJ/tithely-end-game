@@ -14,7 +14,7 @@ export type TFetchedTransaction = {
 }
 export type TFetchedAllTransactions = TFetchedTransaction[]
 
-// const OPERATION_DELAY = 500
+// const OPERATION_DELAY = 5000
 // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
 
 export async function getAllTransactions(

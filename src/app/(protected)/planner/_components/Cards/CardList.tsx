@@ -1,6 +1,6 @@
 import { getAllCards, TFetchedCardWithChildTransactionCount } from "@/server/db/cards"
 import { getUserSubscriptionTier } from "@/server/db/subscription";
-import CardListCarousel from "./CardListCarousel";
+import CardsAccountsCarousel from "../CardsAccountsCarousel";
 
 
 export default async function CardList({
@@ -31,8 +31,9 @@ export default async function CardList({
                     <p>Oh no! Something went wrong. ISSUE: {errorMessage}</p>
                 )
                 : (
-                    <CardListCarousel
-                        allCards={allCards}
+                    <CardsAccountsCarousel
+                        cardOrAccount="card"
+                        allItems={allCards}
                         emptySlotsCount={EmptySlotsCount}
                     />
                 )

@@ -1,33 +1,39 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { ChevronUp, ChevronDown, CreditCard } from "lucide-react"
+import { CreditCard, ChevronsUpDown, ChevronsDownUp, ChevronUp, ChevronDown, PiggyBank } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { TFetchedCardWithChildTransactionCount } from "@/server/db/cards"
+import MyButton from "@/components/MyButton"
 import { Button } from "@/components/ui/button"
-import CardForm from "./CardForm"
+import { TFetchedAccountWithChildTransactionCount } from "@/server/db/accounts"
+import AccountForm from "./Accounts/AccountForm"
+import CardForm from "./Cards/CardForm"
 
-export default function CardListCarousel({
-    allCards,
+export default function CardsAccountsCarousel({
+    cardOrAccount,
+    allItems,
     emptySlotsCount
 } : {
-    allCards: TFetchedCardWithChildTransactionCount[]
+    cardOrAccount: "card" | "account"
+    allItems: TFetchedCardWithChildTransactionCount[] | TFetchedAccountWithChildTransactionCount[]
     emptySlotsCount: number
 }) {
+
+    const allItemsWithEmptySlots = [
+        ...allItems,
+        ...Array.from({ length: emptySlotsCount }).map(() => ({ isForm: true }))
+    ]
+
     const [activeIndex, setActiveIndex] = useState(0)
 
     const goToPrevious = () => {
-      setActiveIndex((prevIndex) => (prevIndex === 0 ? allCardsWithEmptySlots.length - 1 : prevIndex - 1))
+      setActiveIndex((prevIndex) => (prevIndex === 0 ? allItemsWithEmptySlots.length - 1 : prevIndex - 1))
     }
   
     const goToNext = () => {
-      setActiveIndex((prevIndex) => (prevIndex === allCardsWithEmptySlots.length - 1 ? 0 : prevIndex + 1))
+      setActiveIndex((prevIndex) => (prevIndex === allItemsWithEmptySlots.length - 1 ? 0 : prevIndex + 1))
     }
-
-    const allCardsWithEmptySlots = [
-        ...allCards,
-        ...Array.from({ length: emptySlotsCount }).map(() => ({ isForm: true }))
-    ];
 
     const [isMdScreen, setIsMdScreen] = useState(false);
     useEffect(() => {
@@ -39,13 +45,40 @@ export default function CardListCarousel({
         return () => window.removeEventListener("resize", updateScreenSize);
     }, []);
 
+    const [expand, setExpand] = useState(false)
+
     return (
         <div className={cn(
-            "card-list-carousel flex-1 relative w-full overflow-hidden min-h-[300px] lg:min-h-[unset]",
+            "carousel relative",
+            expand && "",
+            !expand && ""
         )}>
 
-            <div className="relative w-full h-full flex flex-col gap-4">
-                {allCardsWithEmptySlots.map((card, index) => {
+            <MyButton
+                onClickFunction={() => setExpand(!expand)}
+                additionalClasses="absolute bg-color-transparent text-color-text translate-y-[calc(-100%-1rem)] right-0 border-none p-0 hover:bg-color-none"
+            >
+                <div className="flex gap-1 items-center">
+                    {expand
+                    ? <>
+                        <p>collapse</p>
+                        <ChevronsDownUp className="w-2 h-2" />
+                    </>
+                    : <>
+                        <p>expand</p>
+                        <ChevronsUpDown className="w-2 h-2" />
+                    </>
+                    }
+                </div>
+            </MyButton>
+
+            <div className={cn(
+                "container",
+                expand && "flex flex-col gap-4",
+                !expand && "h-full relative overflow-hidden",
+                !isMdScreen ? "min-h-[300px]" : "min-h-[350px]"
+            )}>
+                {allItemsWithEmptySlots.map((item, index) => {
 
                     const distance = Math.abs(activeIndex - index)
                     const isActive = index === activeIndex
@@ -55,23 +88,48 @@ export default function CardListCarousel({
                         <div
                             key={index}
                             className={cn(
-                                "absolute w-[calc(100%-3rem)] transition-all duration-300 ease-in-out" 
+                                "item transition-all duration-200 ease-in-out",
+                                expand && "",
+                                !expand && "absolute w-[calc(100%-3rem)]"
                             )}
                             style={{
-                                zIndex: allCardsWithEmptySlots.length - distance,
-                                opacity: Math.max(0.4, 1 - distance * 0.2),
-                                top: isActive ? "50%" : `calc(50% + ${direction * 40 * distance}px)`,
-                                transform: `translateY(-50%) scale(${1 - distance * 0.1})`,
-                                pointerEvents: (isActive && isMdScreen) ? "auto" : "none",
+                                zIndex: allItemsWithEmptySlots.length - distance,
+                                opacity: !expand // All cards/accounts will have the same opacity  properties, hence moving straight to the expand state
+                                    ? Math.max(0.4, 1 - distance * 0.2) 
+                                    : 1
+                                ,
+                                top: isActive ? `50%` : `calc(50% + ${direction * 30 * distance}px)`
+                                ,
+                                transform: !expand // All cards/accounts will have the same translate and scaling properties, hence moving straight to the expand state
+                                    ? `translateY(-50%) scale(${1 - distance * 0.1})` 
+                                    : ""
+                                ,
+                                pointerEvents: !isMdScreen
+                                    ? "none"
+                                    : isActive || expand
+                                        ? "auto"
+                                        : "none"
                             }}
                         >
-                            {"isForm" in card ? <CardForm isMdScreen={isMdScreen} /> : <ExistingCard card={card} />}
+                            {cardOrAccount  === "card"
+                                ?
+                                    "isForm" in item 
+                                        ? <CardForm isMdScreen={isMdScreen} /> 
+                                        : <ExistingCard card={item as TFetchedCardWithChildTransactionCount} />
+                                :   
+                                    "isForm" in item 
+                                        ? <AccountForm isMdScreen={isMdScreen} /> 
+                                        : <ExistingAccount account={item as TFetchedAccountWithChildTransactionCount} />
+                            }
                         </div>
                     )
                 })}
             </div>
     
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 flex flex-col items-center gap-12">
+            <div className={cn(
+                expand && "hidden",
+                !expand && "absolute right-0 top-1/2 -translate-y-1/2 flex flex-col items-center gap-12"
+            )}>
                 <Button
                     className="!shadow-none h-8 w-8"
                     onClick={goToPrevious}
@@ -80,7 +138,7 @@ export default function CardListCarousel({
                 </Button>
 
                 <div className="flex flex-col gap-1 py-2">
-                    {allCardsWithEmptySlots.map((_, index) => (
+                    {allItemsWithEmptySlots.map((_, index) => (
                         <button
                             key={index}
                             className={cn(
@@ -88,7 +146,6 @@ export default function CardListCarousel({
                                 index === activeIndex ? "bg-color-text w-4" : "bg-color-border",
                             )}
                             onClick={() => setActiveIndex(index)}
-                            aria-label={`Go to card ${index + 1}`}
                         />
                     ))}
                 </div>
@@ -252,4 +309,23 @@ function calculatePercentage(value: number, maxValue:number) {
         return 0
     }
     return result
+}
+
+function ExistingAccount({
+    account,
+} : {
+    account: TFetchedAccountWithChildTransactionCount
+}) {
+    return (
+        <div className={`h-full min-h-[200px] lg:min-h-[250px] border border-color-border p-6 pb-8 rounded-xl flex flex-col justify-between bg-color-bg`}>
+            <div className="flex justify-between items-center lg:mb-4">
+                <PiggyBank />
+                <AccountForm accountTobeEdited={account} />
+            </div>
+            <div className="lg:mt-4">
+                <p className="fs-h3">{account.accountName}</p>
+                <p>more account details goes here</p>
+            </div>
+        </div>
+    )
 }

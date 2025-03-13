@@ -94,7 +94,7 @@ export default async function DashboardList({
                                         <p className="p-6">My {type.type}</p>
                                         <Table>
                                             <TableHeader>
-                                                <TableRow className="flex gap-2 items-center justify-between px-4 border-color-border fs-caption">
+                                                <TableRow className="flex gap-2 items-center justify-between px-4 border-color-muted-text fs-caption">
                                                     <TableHead className={`w-5/12 md:w-3/12`}>Category</TableHead>
                                                     <TableHead className={`w-1/12 hidden md:block`}>Tracked</TableHead>
                                                     <TableHead className={`w-1/12 hidden md:block`}>Budgeted</TableHead>
@@ -107,7 +107,7 @@ export default async function DashboardList({
                                             <TableBody>
 
                                             {type.categoriesData.length === 0 &&
-                                                <TableRow className="flex gap-2 items-center justify-center px-6 py-4 border-color-border">
+                                                <TableRow className="flex gap-2 items-center justify-center px-6 py-4 border-color-muted-text">
                                                     <TableCell>
                                                         <p>No categories or transactions found</p>
                                                     </TableCell>
@@ -115,7 +115,7 @@ export default async function DashboardList({
                                             }
 
                                             {type.categoriesData.map((category, index) => (
-                                                <TableRow key={index} className="flex gap-2 items-center justify-between px-4 py-2 border-color-border">
+                                                <TableRow key={index} className="flex gap-2 items-center justify-between px-4 py-2 border-color-muted-text">
                                                     <TableCell className={`w-5/12 md:w-3/12`}><p className="line-clamp-1">{category.name}</p></TableCell>
                                                     <TableCell className={`w-1/12 hidden md:block`}>${category.tracked}</TableCell>
                                                     <TableCell className={`w-1/12 hidden md:block`}>${category.budgeted}</TableCell>
@@ -137,7 +137,7 @@ export default async function DashboardList({
                                             ))}
                                             </TableBody>
                                             
-                                            <TableFooter className="border-color-border">
+                                            <TableFooter className="border-color-muted-text">
                                                 <TableRow className="flex gap-2 items-center justify-between px-4 py-2">
                                                     <TableCell className={`w-5/12 md:w-3/12`}>Total</TableCell>
                                                     <TableCell className={`w-1/12 hidden md:block`}>${type.footerData.tracked}</TableCell>

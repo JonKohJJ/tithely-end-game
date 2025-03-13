@@ -10,7 +10,7 @@ export type TFetchedCardWithChildTransactionCount = TFetchedCard & {
     childTransactionsCount: number
 }
 
-// const OPERATION_DELAY = 5000
+// const OPERATION_DELAY = 2000
 // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
 
 export async function getAllCards(
