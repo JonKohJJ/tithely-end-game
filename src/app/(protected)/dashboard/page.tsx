@@ -22,6 +22,18 @@ export default async function DashboardPage({
         <MonthYearFilter />
       </PageHeader>
 
+      {/* <div className='flex flex-col gap-6 lg:flex-row'>
+
+        <div className="categories-container lg:w-[60%]">
+
+        </div>
+
+        <div className="cards-and-accounts-container lg:w-[40%]">
+
+        </div>
+
+      </div> */}
+
       <Suspense 
         fallback={
           <>
@@ -33,6 +45,8 @@ export default async function DashboardPage({
       >
         <DashboardList userId={userId} searchParams={await searchParams} />
       </Suspense>
+
+
 
     </div>
   )

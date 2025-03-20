@@ -60,7 +60,7 @@ function PricingCard({
     return (
         <div className={`
             pricing-card relative w-full border-[1px] border-color-border p-8 rounded-xl 
-            ${mostPopular || isCurrentPlan ? "border-color-muted-text" : ""}
+            ${mostPopular || isCurrentPlan ? "border-color-text" : ""}
         `}>
             
             {mostPopular && 

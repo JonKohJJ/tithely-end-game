@@ -365,8 +365,6 @@ function calculateInsightCardsValues(allTransactions: TFetchedAllTransactions) {
         DifferenceString = "You have no income yet, try adding some."
     }
 
-
-
     return { DebitAccountBalanceString, CreditCardChargesString, DifferenceString }
 }
 
