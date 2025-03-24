@@ -30,12 +30,12 @@ export const mockData: TChartBar[] = [
 export function ExpensesTrendBarChart(
 {
     // allExpensesTrendDaily,
-    // allExpensesTrendWeekly,
+    allExpensesTrendWeekly,
     allExpensesTrendMonthly,
     allExpensesTrendYearly,
 } : {
     // allExpensesTrendDaily: TChartBar[]
-    // allExpensesTrendWeekly: TChartBar[]
+    allExpensesTrendWeekly: TChartBar[]
     allExpensesTrendMonthly: TChartBar[]
     allExpensesTrendYearly: TChartBar[]
 }
@@ -75,9 +75,9 @@ export function ExpensesTrendBarChart(
                         <ExpensesChart data={allExpensesTrendDaily} showLabels={showLabels} />
                     </TabsContent> */}
 
-                    {/* <TabsContent value="weeks">
+                    <TabsContent value="weeks">
                         <ExpensesChart data={allExpensesTrendWeekly} showLabels={showLabels} />
-                    </TabsContent> */}
+                    </TabsContent>
 
                     <TabsContent value="months">
                         <ExpensesChart data={allExpensesTrendMonthly} showLabels={showLabels} />

@@ -263,6 +263,8 @@ export async function getExpensesTrendWeekly(
     // Generate data for the past 12 weeks
     for (let i = 0; i < 12; i++) {
 
+        console.log("getExpensesTrendWeekly START - ")
+
         const weekStartDate = new Date(startDate);
         weekStartDate.setDate(startDate.getDate() - i * 7);
         const weekEndDate = new Date(weekStartDate);
@@ -306,9 +308,9 @@ export async function getExpensesTrendWeekly(
             label: `W${weekNumber}\n${month}`,
             value: expenses,
         });
-    }
 
-    
+        console.log("getExpensesTrendWeekly END - ")
+    }
 
     return trendData.reverse();
 }
@@ -320,6 +322,8 @@ export async function getExpensesTrendMonthly(
 
     for (let i = 0; i < 6; i++) {
         
+        // console.log("getExpensesTrendMonthly START - ")
+
         const date = new Date()
         date.setMonth(date.getMonth() - i)
 
@@ -335,6 +339,7 @@ export async function getExpensesTrendMonthly(
             value: expenses
         })
 
+        // console.log("getExpensesTrendMonthly END - ")
     }
 
     return trendData.reverse()
@@ -348,7 +353,7 @@ export async function getExpensesTrendYearly(
 
     for (let i = 0; i < 6; i++) {
 
-        console.log("getExpensesTrendYearly START - ")
+        // console.log("getExpensesTrendYearly START - ")
         
         const date = new Date()
         const year = (date.getFullYear() - i).toFixed()
@@ -360,7 +365,7 @@ export async function getExpensesTrendYearly(
             value: expenses
         })
 
-        console.log("getExpensesTrendYearly END - ")
+        // console.log("getExpensesTrendYearly END - ")
     }
 
     return trendData.reverse()
@@ -371,7 +376,7 @@ async function getExpenseTotalByYear(
     year: string,
 ) {
 
-    console.log("getExpenseTotalByYear - ", year)
+    // console.log("getExpenseTotalByYear - ", year)
     
     const [ result ] = await db
         .select({
@@ -396,7 +401,7 @@ async function getExpenseTotalByWeek(
     endDate: string,
 ) {
 
-    // console.log(startDate, endDate)
+    console.log("getExpenseTotalByWeek - ", startDate, endDate)
 
     const [ result ] = await db
         .select({
