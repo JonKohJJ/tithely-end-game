@@ -152,7 +152,7 @@ export async function getTotalByType(
 
     if (day) {
 
-        console.log("getTotalByType HAS DAY > ", day, month, year)
+        // console.log("getTotalByType HAS DAY > ", day, month, year)
 
         const [ result ] = await db
             .select({
@@ -231,7 +231,7 @@ export async function getExpensesTrendDaily(
 
     for (let i = 0; i < 30; i++) {
 
-        console.log("getExpensesTrendDaily START --- ", i)
+        // console.log("getExpensesTrendDaily START --- ", i)
 
         const date = new Date()
         date.setDate(date.getDate() - i)
@@ -269,7 +269,7 @@ export async function getExpensesTrendWeekly(
     // Generate data for the past 12 weeks
     for (let i = 0; i < 12; i++) {
 
-        console.log("getExpensesTrendWeekly START - ")
+        // console.log("getExpensesTrendWeekly START --- ", i)
 
         const weekStartDate = new Date(startDate);
         weekStartDate.setDate(startDate.getDate() - i * 7);
@@ -315,7 +315,6 @@ export async function getExpensesTrendWeekly(
             value: expenses,
         });
 
-        console.log("getExpensesTrendWeekly END - ")
     }
 
     return trendData.reverse();
@@ -328,7 +327,7 @@ export async function getExpensesTrendMonthly(
 
     for (let i = 0; i < 6; i++) {
         
-        // console.log("getExpensesTrendMonthly START - ")
+        // console.log("getExpensesTrendMonthly START --- ", i)
 
         const date = new Date()
         date.setMonth(date.getMonth() - i)
@@ -345,7 +344,6 @@ export async function getExpensesTrendMonthly(
             value: expenses
         })
 
-        // console.log("getExpensesTrendMonthly END - ")
     }
 
     return trendData.reverse()
@@ -359,7 +357,8 @@ export async function getExpensesTrendYearly(
 
     for (let i = 0; i < 6; i++) {
 
-        // console.log("getExpensesTrendYearly START - ")
+        // console.log("getExpensesTrendYearly START --- ", i)
+        
         
         const date = new Date()
         const year = (date.getFullYear() - i).toFixed()
@@ -371,7 +370,6 @@ export async function getExpensesTrendYearly(
             value: expenses
         })
 
-        // console.log("getExpensesTrendYearly END - ")
     }
 
     return trendData.reverse()
@@ -382,7 +380,7 @@ async function getExpenseTotalByYear(
     year: string,
 ) {
 
-    // console.log("getExpenseTotalByYear - ", year)
+    // console.log("getExpenseTotalByYear > ", year)
     
     const [ result ] = await db
         .select({
@@ -407,7 +405,7 @@ async function getExpenseTotalByWeek(
     endDate: string,
 ) {
 
-    console.log("getExpenseTotalByWeek - ", startDate, endDate)
+    // console.log("getExpenseTotalByWeek > ", startDate, endDate)
 
     const [ result ] = await db
         .select({

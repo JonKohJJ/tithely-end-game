@@ -30,14 +30,14 @@ export const mockData: TChartBar[] = [
 export function ExpensesTrendBarChart(
 {
     allExpensesTrendDaily,
-    // allExpensesTrendWeekly,
-    // allExpensesTrendMonthly,
-    // allExpensesTrendYearly,
+    allExpensesTrendWeekly,
+    allExpensesTrendMonthly,
+    allExpensesTrendYearly,
 } : {
     allExpensesTrendDaily: TChartBar[]
-    // allExpensesTrendWeekly: TChartBar[]
-    // allExpensesTrendMonthly: TChartBar[]
-    // allExpensesTrendYearly: TChartBar[]
+    allExpensesTrendWeekly: TChartBar[]
+    allExpensesTrendMonthly: TChartBar[]
+    allExpensesTrendYearly: TChartBar[]
 }
 ) {
     const [showLabels, setShowLabels] = useState(true)
@@ -67,25 +67,21 @@ export function ExpensesTrendBarChart(
                         <TabsTrigger value="years">Years</TabsTrigger>
                     </TabsList>
 
-                    {/* <TabsContent value="days">
-                        <ExpensesChart data={mockData} showLabels={showLabels} />
-                    </TabsContent> */}
-
                     <TabsContent value="days">
                         <ExpensesChart data={allExpensesTrendDaily} showLabels={showLabels} />
                     </TabsContent>
 
-                    {/* <TabsContent value="weeks">
+                    <TabsContent value="weeks">
                         <ExpensesChart data={allExpensesTrendWeekly} showLabels={showLabels} />
-                    </TabsContent> */}
+                    </TabsContent>
 
-                    {/* <TabsContent value="months">
+                    <TabsContent value="months">
                         <ExpensesChart data={allExpensesTrendMonthly} showLabels={showLabels} />
-                    </TabsContent> */}
+                    </TabsContent>
 
-                    {/* <TabsContent value="years">
+                    <TabsContent value="years">
                         <ExpensesChart data={allExpensesTrendYearly} showLabels={showLabels} />
-                    </TabsContent> */}
+                    </TabsContent>
                 </Tabs>
             </CardContent>
 
