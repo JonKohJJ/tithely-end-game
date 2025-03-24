@@ -229,7 +229,7 @@ export async function getExpensesTrendDaily(
 
     const trendData = []
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 15; i++) {
 
         console.log("getExpensesTrendDaily START --- ", i)
 
@@ -248,8 +248,6 @@ export async function getExpensesTrendDaily(
             label: `${day}\n${monthLabel}`,
             value: expenses
         });
-
-        console.log("getExpensesTrendDaily END --- ", i)
 
     }
 
