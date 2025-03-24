@@ -12,17 +12,34 @@ import { TChartBar } from "@/server/db/analytics"
 
 const chartConfig = {} satisfies ChartConfig
 
-export function ExpensesTrendBarChart({
-    allExpensesTrendDaily,
-    // allExpensesTrendWeekly
-    // allExpensesTrendMonthly,
-    // allExpensesTrendYearly,
-} : {
-    allExpensesTrendDaily: TChartBar[]
-    // allExpensesTrendWeekly: TChartBar[]
-    // allExpensesTrendMonthly: TChartBar[]
-    // allExpensesTrendYearly: TChartBar[]
-}) {
+export const mockData: TChartBar[] = [
+    { label: 'January', value: 45 },
+    { label: 'February', value: 60 },
+    { label: 'March', value: 75 },
+    { label: 'April', value: 50 },
+    { label: 'May', value: 90 },
+    { label: 'June', value: 40 },
+    { label: 'July', value: 80 },
+    { label: 'August', value: 55 },
+    { label: 'September', value: 70 },
+    { label: 'October', value: 65 },
+    { label: 'November', value: 85 },
+    { label: 'December', value: 95 },
+];
+
+export function ExpensesTrendBarChart(
+// {
+//     allExpensesTrendDaily,
+//     allExpensesTrendWeekly,
+//     allExpensesTrendMonthly,
+//     allExpensesTrendYearly,
+// } : {
+//     allExpensesTrendDaily: TChartBar[]
+//     allExpensesTrendWeekly: TChartBar[]
+//     allExpensesTrendMonthly: TChartBar[]
+//     allExpensesTrendYearly: TChartBar[]
+// }
+) {
     const [showLabels, setShowLabels] = useState(true)
 
     return (
@@ -51,8 +68,12 @@ export function ExpensesTrendBarChart({
                     </TabsList>
 
                     <TabsContent value="days">
-                        <ExpensesChart data={allExpensesTrendDaily} showLabels={showLabels} />
+                        <ExpensesChart data={mockData} showLabels={showLabels} />
                     </TabsContent>
+
+                    {/* <TabsContent value="days">
+                        <ExpensesChart data={allExpensesTrendDaily} showLabels={showLabels} />
+                    </TabsContent> */}
 
                     {/* <TabsContent value="weeks">
                         <ExpensesChart data={allExpensesTrendWeekly} showLabels={showLabels} />

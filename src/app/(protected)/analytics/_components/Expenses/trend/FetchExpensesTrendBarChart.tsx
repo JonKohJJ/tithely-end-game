@@ -1,6 +1,5 @@
 import React from 'react'
 import { ExpensesTrendBarChart } from './ExpensesTrendBarChart'
-import { getExpensesTrendDaily, TChartBar } from '@/server/db/analytics'
 
 export default async function FetchExpensesTrendBarChart({
     userId
@@ -8,9 +7,11 @@ export default async function FetchExpensesTrendBarChart({
     userId: string
 }) {
 
+    console.log(userId)
+
     let errorMessage: null | string = null
 
-    let allExpensesTrendDaily: TChartBar[] = []
+    // let allExpensesTrendDaily: TChartBar[] = []
     // let allExpensesTrendWeekly: TChartBar[] = []
     // let allExpensesTrendMonthly: TChartBar[] = []
     // let allExpensesTrendYearly: TChartBar[] = []
@@ -19,7 +20,7 @@ export default async function FetchExpensesTrendBarChart({
     // Fetch data here to make suspense work
     try {
         
-        allExpensesTrendDaily = await getExpensesTrendDaily(userId)
+        // allExpensesTrendDaily = await getExpensesTrendDaily(userId)
         // allExpensesTrendWeekly = await getExpensesTrendWeekly(userId)
         // allExpensesTrendMonthly = await getExpensesTrendMonthly(userId)
         // allExpensesTrendYearly = await getExpensesTrendYearly(userId)
@@ -39,7 +40,7 @@ export default async function FetchExpensesTrendBarChart({
                 : (
                     <div className={`FetchExpensesTrendBarChart`}>
                         <ExpensesTrendBarChart 
-                            allExpensesTrendDaily={allExpensesTrendDaily}
+                            // allExpensesTrendDaily={allExpensesTrendDaily}
                             // allExpensesTrendWeekly={allExpensesTrendWeekly}
                             // allExpensesTrendMonthly={allExpensesTrendMonthly}
                             // allExpensesTrendYearly={allExpensesTrendYearly}
