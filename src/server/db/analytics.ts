@@ -152,7 +152,7 @@ export async function getTotalByType(
 
     if (day) {
 
-        console.log("getTotalByType HAS DAY --- ", day)
+        console.log("getTotalByType HAS DAY > ", day, month, year)
 
         const [ result ] = await db
             .select({
@@ -175,7 +175,7 @@ export async function getTotalByType(
 
     } else {
 
-        console.log("getTotalByType NO DAY --- ")
+        // console.log("getTotalByType NO DAY > ")
 
         const [ result ] = await db
             .select({

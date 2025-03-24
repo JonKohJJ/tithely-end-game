@@ -1,6 +1,6 @@
 import React from 'react'
 import { ExpensesTrendBarChart } from './ExpensesTrendBarChart'
-import { getExpensesTrendDaily, getExpensesTrendMonthly, getExpensesTrendYearly, TChartBar } from '@/server/db/analytics'
+import { getExpensesTrendDaily, TChartBar } from '@/server/db/analytics'
 
 export default async function FetchExpensesTrendBarChart({
     userId
@@ -12,8 +12,8 @@ export default async function FetchExpensesTrendBarChart({
 
     let allExpensesTrendDaily: TChartBar[] = []
     // let allExpensesTrendWeekly: TChartBar[] = []
-    let allExpensesTrendMonthly: TChartBar[] = []
-    let allExpensesTrendYearly: TChartBar[] = []
+    // let allExpensesTrendMonthly: TChartBar[] = []
+    // let allExpensesTrendYearly: TChartBar[] = []
     
 
     // Fetch data here to make suspense work
@@ -21,8 +21,8 @@ export default async function FetchExpensesTrendBarChart({
         
         allExpensesTrendDaily = await getExpensesTrendDaily(userId)
         // allExpensesTrendWeekly = await getExpensesTrendWeekly(userId)
-        allExpensesTrendMonthly = await getExpensesTrendMonthly(userId)
-        allExpensesTrendYearly = await getExpensesTrendYearly(userId)
+        // allExpensesTrendMonthly = await getExpensesTrendMonthly(userId)
+        // allExpensesTrendYearly = await getExpensesTrendYearly(userId)
 
     } catch (error) {
         if (error instanceof Error) {
@@ -41,8 +41,8 @@ export default async function FetchExpensesTrendBarChart({
                         <ExpensesTrendBarChart 
                             allExpensesTrendDaily={allExpensesTrendDaily}
                             // allExpensesTrendWeekly={allExpensesTrendWeekly}
-                            allExpensesTrendMonthly={allExpensesTrendMonthly}
-                            allExpensesTrendYearly={allExpensesTrendYearly}
+                            // allExpensesTrendMonthly={allExpensesTrendMonthly}
+                            // allExpensesTrendYearly={allExpensesTrendYearly}
                         />
                     </div>
                 )
