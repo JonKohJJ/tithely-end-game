@@ -13,15 +13,15 @@ import { TChartBar } from "@/server/db/analytics"
 const chartConfig = {} satisfies ChartConfig
 
 export function ExpensesTrendBarChart({
-    allExpensesTrendMonthly,
-    allExpensesTrendYearly,
     allExpensesTrendDaily,
-    allExpensesTrendWeekly
+    // allExpensesTrendWeekly
+    // allExpensesTrendMonthly,
+    // allExpensesTrendYearly,
 } : {
-    allExpensesTrendMonthly: TChartBar[]
-    allExpensesTrendYearly: TChartBar[]
     allExpensesTrendDaily: TChartBar[]
-    allExpensesTrendWeekly: TChartBar[]
+    // allExpensesTrendWeekly: TChartBar[]
+    // allExpensesTrendMonthly: TChartBar[]
+    // allExpensesTrendYearly: TChartBar[]
 }) {
     const [showLabels, setShowLabels] = useState(true)
 
@@ -54,7 +54,7 @@ export function ExpensesTrendBarChart({
                         <ExpensesChart data={allExpensesTrendDaily} showLabels={showLabels} />
                     </TabsContent>
 
-                    <TabsContent value="weeks">
+                    {/* <TabsContent value="weeks">
                         <ExpensesChart data={allExpensesTrendWeekly} showLabels={showLabels} />
                     </TabsContent>
 
@@ -64,7 +64,7 @@ export function ExpensesTrendBarChart({
 
                     <TabsContent value="years">
                         <ExpensesChart data={allExpensesTrendYearly} showLabels={showLabels} />
-                    </TabsContent>
+                    </TabsContent> */}
                 </Tabs>
             </CardContent>
 
@@ -131,7 +131,7 @@ function ExpensesChart({
                         <LabelList
                             position="top"
                             fill="var(--color-text)"
-                            formatter={(value: number) => `$${value}`}
+                            formatter={(value: number) => (value > 0 ? `$${value}` : `$${value}`)}
                         />
                     )}
                 </Bar>
