@@ -28,17 +28,17 @@ export const mockData: TChartBar[] = [
 ];
 
 export function ExpensesTrendBarChart(
-// {
-//     allExpensesTrendDaily,
-//     allExpensesTrendWeekly,
-//     allExpensesTrendMonthly,
-//     allExpensesTrendYearly,
-// } : {
-//     allExpensesTrendDaily: TChartBar[]
-//     allExpensesTrendWeekly: TChartBar[]
-//     allExpensesTrendMonthly: TChartBar[]
-//     allExpensesTrendYearly: TChartBar[]
-// }
+{
+    // allExpensesTrendDaily,
+    // allExpensesTrendWeekly,
+    allExpensesTrendMonthly,
+    // allExpensesTrendYearly,
+} : {
+    // allExpensesTrendDaily: TChartBar[]
+    // allExpensesTrendWeekly: TChartBar[]
+    allExpensesTrendMonthly: TChartBar[]
+    // allExpensesTrendYearly: TChartBar[]
+}
 ) {
     const [showLabels, setShowLabels] = useState(true)
 
@@ -77,13 +77,13 @@ export function ExpensesTrendBarChart(
 
                     {/* <TabsContent value="weeks">
                         <ExpensesChart data={allExpensesTrendWeekly} showLabels={showLabels} />
-                    </TabsContent>
+                    </TabsContent> */}
 
                     <TabsContent value="months">
                         <ExpensesChart data={allExpensesTrendMonthly} showLabels={showLabels} />
                     </TabsContent>
 
-                    <TabsContent value="years">
+                    {/* <TabsContent value="years">
                         <ExpensesChart data={allExpensesTrendYearly} showLabels={showLabels} />
                     </TabsContent> */}
                 </Tabs>
