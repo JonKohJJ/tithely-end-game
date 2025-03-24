@@ -29,13 +29,13 @@ export const mockData: TChartBar[] = [
 
 export function ExpensesTrendBarChart(
 {
-    // allExpensesTrendDaily,
-    allExpensesTrendWeekly,
+    allExpensesTrendDaily,
+    // allExpensesTrendWeekly,
     allExpensesTrendMonthly,
     allExpensesTrendYearly,
 } : {
-    // allExpensesTrendDaily: TChartBar[]
-    allExpensesTrendWeekly: TChartBar[]
+    allExpensesTrendDaily: TChartBar[]
+    // allExpensesTrendWeekly: TChartBar[]
     allExpensesTrendMonthly: TChartBar[]
     allExpensesTrendYearly: TChartBar[]
 }
@@ -67,17 +67,17 @@ export function ExpensesTrendBarChart(
                         <TabsTrigger value="years">Years</TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="days">
-                        <ExpensesChart data={mockData} showLabels={showLabels} />
-                    </TabsContent>
-
                     {/* <TabsContent value="days">
-                        <ExpensesChart data={allExpensesTrendDaily} showLabels={showLabels} />
+                        <ExpensesChart data={mockData} showLabels={showLabels} />
                     </TabsContent> */}
 
-                    <TabsContent value="weeks">
-                        <ExpensesChart data={allExpensesTrendWeekly} showLabels={showLabels} />
+                    <TabsContent value="days">
+                        <ExpensesChart data={allExpensesTrendDaily} showLabels={showLabels} />
                     </TabsContent>
+
+                    {/* <TabsContent value="weeks">
+                        <ExpensesChart data={allExpensesTrendWeekly} showLabels={showLabels} />
+                    </TabsContent> */}
 
                     <TabsContent value="months">
                         <ExpensesChart data={allExpensesTrendMonthly} showLabels={showLabels} />

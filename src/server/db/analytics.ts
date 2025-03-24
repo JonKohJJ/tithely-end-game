@@ -152,6 +152,8 @@ export async function getTotalByType(
 
     if (day) {
 
+        console.log("getTotalByType HAS DAY --- ", day)
+
         const [ result ] = await db
             .select({
                 total: sum(TransactionsTable.transactionAmount)
@@ -172,6 +174,8 @@ export async function getTotalByType(
             : Number(result.total)
 
     } else {
+
+        console.log("getTotalByType NO DAY --- ")
 
         const [ result ] = await db
             .select({
@@ -227,6 +231,8 @@ export async function getExpensesTrendDaily(
 
     for (let i = 0; i < 30; i++) {
 
+        console.log("getExpensesTrendDaily START --- ", i)
+
         const date = new Date()
         date.setDate(date.getDate() - i)
 
@@ -242,6 +248,8 @@ export async function getExpensesTrendDaily(
             label: `${day}\n${monthLabel}`,
             value: expenses
         });
+
+        console.log("getExpensesTrendDaily END --- ", i)
 
     }
 
