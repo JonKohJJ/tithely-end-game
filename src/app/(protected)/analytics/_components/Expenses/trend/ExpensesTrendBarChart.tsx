@@ -32,12 +32,12 @@ export function ExpensesTrendBarChart(
     // allExpensesTrendDaily,
     // allExpensesTrendWeekly,
     allExpensesTrendMonthly,
-    // allExpensesTrendYearly,
+    allExpensesTrendYearly,
 } : {
     // allExpensesTrendDaily: TChartBar[]
     // allExpensesTrendWeekly: TChartBar[]
     allExpensesTrendMonthly: TChartBar[]
-    // allExpensesTrendYearly: TChartBar[]
+    allExpensesTrendYearly: TChartBar[]
 }
 ) {
     const [showLabels, setShowLabels] = useState(true)
@@ -83,9 +83,9 @@ export function ExpensesTrendBarChart(
                         <ExpensesChart data={allExpensesTrendMonthly} showLabels={showLabels} />
                     </TabsContent>
 
-                    {/* <TabsContent value="years">
+                    <TabsContent value="years">
                         <ExpensesChart data={allExpensesTrendYearly} showLabels={showLabels} />
-                    </TabsContent> */}
+                    </TabsContent>
                 </Tabs>
             </CardContent>
 
