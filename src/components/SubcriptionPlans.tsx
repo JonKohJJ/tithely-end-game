@@ -38,10 +38,16 @@ function PricingCard({
     isPopular,
 
     // Features
-    canAccessDashboardPage,
-    canAccessAnalyticsPage,
     canAccessCardsPage,
     canAccessAccountsPage,
+
+    // Analytics Page
+    canViewExpenses_Actual, 
+    canViewExpenses_Budget, 
+    canViewExpenses_Trend, 
+    //
+    canViewSavings_Goals, 
+    canViewSavings_Growth, 
 
     maxNumberOfCategories,
     maxNumberOfTransactions,
@@ -77,11 +83,18 @@ function PricingCard({
             </div>
 
             <div className="features flex flex-col gap-2">
-                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canAccessDashboardPage}>Access dashboard page</Feature>
+                {/* <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canAccessDashboardPage}>Access dashboard page</Feature> */}
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfCategories}>max categories</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfTransactions}>max transactions</Feature>
                 <div className="py-1"></div>
-                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canAccessAnalyticsPage}>Access analytics page</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Actual}>Track Actual Expenses</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Budget}>View Budgeted Expenses</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Trend}>Track Expenses Trend</Feature>
+                <div className="py-1"></div>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewSavings_Growth}>View Savings Growth</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewSavings_Goals}>View Savings Goals</Feature>
+                <div className="py-1"></div>
+                {/* <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canAccessAnalyticsPage}>Access analytics page</Feature> */}
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canAccessCardsPage}>Access cards page</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canAccessAccountsPage}>Access accounts page</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfCards}>max cards</Feature>
