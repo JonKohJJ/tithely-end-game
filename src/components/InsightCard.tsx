@@ -14,7 +14,7 @@ export function InsightCard({
 
 }) {
     return (
-        <Card className="w-full flex flex-col gap-6 justify-between border-[1px] border-color-border !shadow-none rounded-xl">
+        <Card className="w-full flex flex-col gap-2 justify-between border-[1px] border-color-border !shadow-none rounded-xl">
             <CardHeader>
 
                 <CardTitle className="flex gap-2 items-center justify-between">

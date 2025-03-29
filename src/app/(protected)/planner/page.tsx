@@ -53,7 +53,6 @@ export default async function PlannerPage() {
                 <HasPermission
                     permission={canAccessCardsPage}
                     renderFallback
-                    fallbackActionText='manage your cards'
                 >
                     <Suspense fallback={<CarouselLoadingSkeleton />}>
                         <CardList userId={userId} />
@@ -68,7 +67,6 @@ export default async function PlannerPage() {
                 <HasPermission
                     permission={canAccesssAccountsPage}
                     renderFallback
-                    fallbackActionText='manage your accounts'
                 >
                     <Suspense fallback={<CarouselLoadingSkeleton />}>
                         <AccountList userId={userId} />

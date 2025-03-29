@@ -6,6 +6,7 @@ export const CategorySchema = z
         categoryBudget: z.number().positive(),
         categoryType: z.enum(["Income", "Savings", "Expenses"]),
         expenseMethod: z.enum(["Fixed", "Variable"]).nullable(),
+        savingGoal: z.number().nullable(),
     })
     .superRefine((CategorySchema, ctx) => {
         if (
@@ -28,6 +29,18 @@ export const CategorySchema = z
             //   message: "Expense Method must be 'Fixed' or 'Variable' when categoryType is 'Expenses'",
             message: "Required",
               path: ["expenseMethod"]
+            })
+        }
+
+        if (
+            CategorySchema.categoryType === "Savings" && 
+            CategorySchema.savingGoal === null
+        ) {
+            ctx.addIssue({
+              code: "custom",
+            //   message: "Expense Method must be 'Fixed' or 'Variable' when categoryType is 'Expenses'",
+            message: "Saving Goal Required",
+              path: ["savingGoal"]
             })
         }
     })

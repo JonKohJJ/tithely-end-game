@@ -21,18 +21,6 @@ export type TFetchedAllCategories = {
     sum: number;
 }[]
 
-export type TFetchedAllExpensesBudget = {
-    expenseName: string
-    expenseBudget: number
-    expenseBudgetPercentage: number
-    fill: string
-    categoryId: string
-}
-export type TFetchedAllExpensesActual = TFetchedAllExpensesBudget & {
-    expenseActual: number
-    expenseActualPercentage: number
-}
-
 // const OPERATION_DELAY = 2000
 // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
 

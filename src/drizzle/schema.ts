@@ -10,7 +10,7 @@ const updatedAt = timestamp("updated_at", { withTimezone: true })
   .defaultNow()
   .$onUpdate(() => new Date())
 
-export const TierEnum = pgEnum("subscription_tier_28", ["Free", "Pro Monthly", "Pro Lifetime"])
+export const TierEnum = pgEnum("subscription_tier_30", ["Free", "Pro Monthly", "Pro Lifetime"])
 
 export const UserSubscriptionTable = pgTable(
   'user_subscriptions', 
@@ -26,8 +26,8 @@ export const UserSubscriptionTable = pgTable(
   },
 ).enableRLS()
 
-export const TypeEnum = pgEnum("type_28", ["Income", "Savings", "Expenses"])
-export const ExpenseMethodEnum = pgEnum("expense_type_28", ["Fixed", "Variable"])
+export const TypeEnum = pgEnum("type_30", ["Income", "Savings", "Expenses"])
+export const ExpenseMethodEnum = pgEnum("expense_method_30", ["Fixed", "Variable"])
 
 export const CategoriesTable = pgTable(
   'user_categories',
@@ -38,6 +38,7 @@ export const CategoriesTable = pgTable(
     categoryBudget: doublePrecision("category_budget").notNull(),
     categoryType: TypeEnum("category_type").notNull(),
     expenseMethod: ExpenseMethodEnum("expense_method"),
+    savingGoal: doublePrecision("saving_goal"),
     createdAt,
   },
   (table) => {
@@ -45,11 +46,12 @@ export const CategoriesTable = pgTable(
       check("Category Type is Expense / Value expected", sql`${table.categoryType} != 'Expenses' OR ${table.expenseMethod} IS NOT NULL`),
       check("Category Type is Income / NULL expected", sql`${table.categoryType} != 'Income' OR ${table.expenseMethod} IS NULL`),
       check("Category Type is Savings / NULL expected", sql`${table.categoryType} != 'Savings' OR ${table.expenseMethod} IS NULL`),
+      check("Category Type is Savings / Savings goal value expected", sql`${table.categoryType} != 'Savings' OR ${table.savingGoal} IS NOT NULL`),
     ]
   }
 ).enableRLS()
 
-export const CreditOrDebitEnum = pgEnum("credit_debit_28", ["Credit", "Debit"])
+export const CreditOrDebitEnum = pgEnum("credit_debit_30", ["Credit", "Debit"])
 
 export const TransactionsTable = pgTable(
   'user_transactions',

@@ -11,12 +11,14 @@ export default function NoPermissionCard({
         <Card className="shadow-none border-color-border h-full flex flex-col items-center justify-center text-center">
             <CardHeader>
                 <CardTitle>
-                    <p className="fs-h3">Permission Denied</p>
+                    <p className="fs-h3">❗Access Denied❗</p>
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <CardDescription>
-                    <p className="px-10">You do not have permission to {fallbackActionText}. Ugrade your account to access this feature.</p>
+                    <p className="px-10">
+                        {fallbackActionText && `You do not have permission to ${fallbackActionText}.`} Ugrade your account to access this feature.
+                    </p>
                 </CardDescription>
             </CardContent>
             <CardFooter>

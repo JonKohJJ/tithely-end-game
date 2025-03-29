@@ -4,18 +4,16 @@ import { db } from "@/drizzle/db"
 import { CategoriesTable, TransactionsTable } from "@/drizzle/schema"
 import { and, asc, eq, sql, sum } from "drizzle-orm"
 
-// const OPERATION_DELAY = 1000
+// const OPERATION_DELAY = 50000
 // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
 
 export type TChartBar = {
     label: string
     value: number
 }
-
 const allocatedColors = [
     "#0047FF", // Deep Electric Blue  
     "#FF8C00", // Dark Fiery Orange  
-    "#5A189A", // Royal Purple  
     "#009E60", // Strong Emerald Green  
     "#D00000", // Intense Crimson Red  
     "#0081A7", // Bold Teal  
@@ -23,12 +21,24 @@ const allocatedColors = [
     "#1B1B3A", // Midnight Navy  
     "#008F11", // Vibrant Neon Green  
     "#B00020", // Dark Cherry Red  
+    "#5A189A", // Royal Purple
     "#FFB000", // Deep Golden Yellow  
     "#00509D", // Cobalt Blue  
     "#B61A6D", // Vivid Plum (Replaces Striking Magenta)  
     "#7D00FF", // Electric Violet  
     "#007F5F", // Rich Deep Green  
 ]
+export type TFetchedAllExpensesBudget = {
+    expenseName: string
+    expenseBudget: number
+    expenseBudgetPercentage: number
+    fill: string
+    categoryId: string
+}
+export type TFetchedAllExpensesActual = TFetchedAllExpensesBudget & {
+    expenseActual: number
+    expenseActualPercentage: number
+}
 
 // Expenses Budget
 export async function getAllExpenseBudget(
@@ -227,6 +237,8 @@ export async function getExpensesTrendDaily(
     userId: string,
 ) {
 
+    // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
+
     const trendData = []
 
     for (let i = 0; i < 30; i++) {
@@ -423,6 +435,289 @@ async function getExpenseTotalByWeek(
     return result.total === null 
         ? 0 
         : Number(result.total)
+}
+
+
+
+// Savings Growth Data
+export type TSavingGrowth = {
+    totalSavingsAmount: number,
+    past12MonthsData: TChartBar[],
+    savingRate: string,
+}
+export async function getSavingsGrowthData(
+    userId: string
+): Promise<TSavingGrowth> {
+
+    // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
+
+    const totalSavingsAmount = await getTotalSavings(userId)
+    const past12MonthsData = await getPast12MonthsTotalSavedAmountByMonth(userId)
+    const savingRate = await getSavingRate(userId)
+
+    return {
+        totalSavingsAmount,
+        past12MonthsData,
+        savingRate,
+    }
+    
+}
+async function getTotalSavings(
+    userId: string
+) {
+    
+    const [ result ] = await db
+        .select({
+            total: sum(TransactionsTable.transactionAmount)
+        })
+        .from(TransactionsTable)
+        .where(
+            and(
+                eq(TransactionsTable.clerkUserId, userId),
+                eq(TransactionsTable.transactionType, "Savings"),
+            )
+        )
+
+    return result.total === null 
+        ? 0 
+        : Number(result.total)
+
+}
+async function getPast12MonthsTotalSavedAmountByMonth(
+    userId: string
+): Promise<TChartBar[]> {
+
+    const past12MonthsData = []
+
+    for (let i = 0; i < 12; i++) {
+        // Start with a fresh date each iteration to avoid mutation issues
+        const date = new Date();
+        
+        // Set the date to the first day of the month to prevent overflow
+        date.setDate(1);
+    
+        // Move to the correct month
+        date.setMonth(date.getMonth() - i);
+    
+        const month = date.getMonth() + 1; // Month is 0-indexed
+        const year = date.getFullYear();
+    
+        // console.log(month, year);
+    
+        const totalSavedAmountByMonth = await getTotalSavedAmountByMonth(userId, month, year);
+    
+        const monthLabel = date.toLocaleString("en-US", { month: "short" });
+        const yearLabel = date.getFullYear().toString().slice(-2);
+    
+        past12MonthsData.push({
+            label: `${monthLabel}\n'${yearLabel}`,
+            value: totalSavedAmountByMonth
+        });
+    }
+    
+
+    return past12MonthsData.reverse()
+
+}
+async function getTotalSavedAmountByMonth(
+    userId: string,
+    month: number,
+    year: number,
+) {
+    
+    const [ result ] = await db
+        .select({
+            total: sum(TransactionsTable.transactionAmount)
+        })
+        .from(TransactionsTable)
+        .where(
+            and(
+                eq(TransactionsTable.clerkUserId, userId),
+                eq(TransactionsTable.transactionType, "Savings"),
+                sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
+                sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`,
+            )
+        )
+
+    return result.total === null 
+        ? 0 
+        : Number(result.total)
+
+}
+async function getSavingRate(
+    userId: string
+): Promise<string> {
+
+    const totalActualIncome = await getTotalActualIncome(userId)
+    const totalActualSavings = await getTotalActualSavings(userId)
+    const totalBudgetedIncome = await getTotalBudgetedIncome(userId)
+    const totalBudgetedSavings = await getTotalBudgetedSavings(userId)
+
+    if (totalActualIncome <= 0) {
+        return "You have no actual income, try adding some."
+    }
+
+    if (totalBudgetedIncome <= 0) {
+        return "You have no budgeted income, try adding some."
+    }
+
+    const actualSavingsRate = ((totalActualSavings / totalActualIncome) * 100).toFixed(2)
+    const targetSavingsRate = ((totalBudgetedSavings / totalBudgetedIncome) * 100).toFixed(2)
+    const trendIndicator = actualSavingsRate >= targetSavingsRate ? "✅" : "❗";
+
+    return `${actualSavingsRate}%${trendIndicator} / Target: ${targetSavingsRate}% 🎯`;
+
+}
+async function getTotalActualSavings(
+    userId: string
+) {
+
+    const [ result ] = await db
+        .select({
+            total: sum(TransactionsTable.transactionAmount)
+        })
+        .from(TransactionsTable)
+        .where(
+            and(
+                eq(TransactionsTable.clerkUserId, userId),
+                eq(TransactionsTable.transactionType, "Savings")
+            )
+        )
+
+    return result.total === null 
+        ? 0 
+        : Number(result.total)
+    
+}
+async function getTotalActualIncome(
+    userId: string
+) {
+
+    const [ result ] = await db
+        .select({
+            total: sum(TransactionsTable.transactionAmount)
+        })
+        .from(TransactionsTable)
+        .where(
+            and(
+                eq(TransactionsTable.clerkUserId, userId),
+                eq(TransactionsTable.transactionType, "Income")
+            )
+        )
+
+    return result.total === null 
+        ? 0 
+        : Number(result.total)
+    
+}
+async function getTotalBudgetedSavings(
+    userId: string
+) {
+
+    const [ result ] = await db
+        .select({
+            total: sum(CategoriesTable.categoryBudget)
+        })
+        .from(CategoriesTable)
+        .where(
+            and(
+                eq(CategoriesTable.clerkUserId, userId),
+                eq(CategoriesTable.categoryType, "Savings")
+            )
+        )
+
+    return result.total === null 
+        ? 0 
+        : Number(result.total)
+    
+}
+async function getTotalBudgetedIncome(
+    userId: string
+) {
+
+    const [ result ] = await db
+        .select({
+            total: sum(CategoriesTable.categoryBudget)
+        })
+        .from(CategoriesTable)
+        .where(
+            and(
+                eq(CategoriesTable.clerkUserId, userId),
+                eq(CategoriesTable.categoryType, "Income")
+            )
+        )
+
+    return result.total === null 
+        ? 0 
+        : Number(result.total)
+    
+}
+
+// Savings Goal
+export type TSavingGoal = {
+    categoryId: string
+    categoryName: string
+    totalSavedAmount: number
+    savingGoal: number
+    fill: string
+}
+export async function getSavingsGoalsData(
+    userId: string
+): Promise<TSavingGoal[]> {
+
+    // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
+
+    const allSavingsGoals = await db
+        .select({
+            categoryId: CategoriesTable.categoryId,
+            categoryName: CategoriesTable.categoryName,
+            savingGoal: CategoriesTable.savingGoal
+        })
+        .from(CategoriesTable)
+        .where(
+            and(
+                eq(CategoriesTable.clerkUserId, userId),
+                eq(CategoriesTable.categoryType, "Savings")
+            )
+        )
+        .orderBy(asc(CategoriesTable.createdAt))
+
+    
+    // Calculate total saved amount & add color (fill)
+    const allSavingsGoalsWithTracked = await Promise.all(
+        allSavingsGoals.map(async (item, index) => {
+
+            const totalSavedAmount = await getTotalSavedAmountByCategory(item.categoryId)
+
+            return ({
+                ...item,
+                totalSavedAmount: totalSavedAmount,
+                savingGoal: item.savingGoal === null ? 0 : item.savingGoal,
+                fill: allocatedColors[index % allocatedColors.length]
+            })
+        })
+    )
+
+    return allSavingsGoalsWithTracked
+}
+export async function getTotalSavedAmountByCategory(
+    categoryId: string,
+): Promise<number> {
+
+    const [ result ] = await db
+        .select({
+            totalSavedAmount: sum(TransactionsTable.transactionAmount)
+        })
+        .from(TransactionsTable)
+        .where(
+            and(
+                eq(TransactionsTable.transactionCategoryIdFK, categoryId)
+            )
+        )
+
+    return result.totalSavedAmount === null 
+        ? 0 
+        : Number(result.totalSavedAmount)
 }
 
 

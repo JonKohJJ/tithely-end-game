@@ -1,20 +1,19 @@
-import { TFetchedAllExpensesBudget } from "@/server/db/categories"
-import ExpensesBudgetPieChart from "./ExpensesBudgetPieChart"
-import { getAllExpenseBudget } from "@/server/db/analytics"
+import { getSavingsGoalsData, TSavingGoal } from "@/server/db/analytics"
+import SavingsGoals from "./SavingsGoals"
 
-export default async function FetchExpensesBudgetPieChart({
+export default async function FetchSavingsGoalsData({
     userId
 } : {
     userId: string
 }) {
 
     let errorMessage: null | string = null
-    let allExpensesBudget: TFetchedAllExpensesBudget[] = []
+    let allSavingsGoalsData: TSavingGoal[] = []
 
     // Fetch data here to make suspense work
     try {
 
-        allExpensesBudget = await getAllExpenseBudget(userId)
+        allSavingsGoalsData = await getSavingsGoalsData(userId)
 
     } catch (error) {
         if (error instanceof Error) {
@@ -30,9 +29,9 @@ export default async function FetchExpensesBudgetPieChart({
                     <p>Oh no! Something went wrong. ISSUE: {errorMessage}</p>
                 )
                 : (
-                    <div className={`FetchExpensesBudgetPieChart`}>
-                        <ExpensesBudgetPieChart 
-                            allExpensesBudget={allExpensesBudget}
+                    <div className={`FetchSavingsGoalsData`}>
+                        <SavingsGoals 
+                            allSavingsGoalsData={allSavingsGoalsData} 
                         />
                     </div>
                 )

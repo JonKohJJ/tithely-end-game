@@ -98,7 +98,10 @@ export default async function CategoryList({
                                                     <TableRow key={category.categoryId} className="w-full flex border-b-[1px] border-color-muted-text">
                                                         <TableCell className={`w-9/12`}>
                                                             { category.expenseMethod === null
-                                                                ? <p className="line-clamp-1">{category.categoryName}</p>
+                                                                ? <p className="line-clamp-1">
+                                                                    {category.categoryName}
+                                                                    {category.savingGoal && ` / Goal: $${(category.savingGoal).toLocaleString()}`}
+                                                                </p>
                                                                 : category.expenseMethod === "Fixed"
                                                                     ? <span className="flex gap-2 items-center"><LocateFixed className="w-4 h-4" /><p className="line-clamp-1">{category.categoryName}</p></span>
                                                                     : <span className="flex gap-2 items-center"><TrendingUpDown className="w-4 h-4" /><p className="line-clamp-1">{category.categoryName}</p></span> 

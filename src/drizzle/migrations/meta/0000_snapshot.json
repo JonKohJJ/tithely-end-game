@@ -1,5 +1,5 @@
 {
-  "id": "e3626afe-21ec-45ad-b840-f438dbe81f30",
+  "id": "58913199-9873-49fd-9ec6-535756d24d36",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -137,15 +137,21 @@
         },
         "category_type": {
           "name": "category_type",
-          "type": "type_28",
+          "type": "type_29",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "expense_method": {
           "name": "expense_method",
-          "type": "expense_type_28",
+          "type": "expense_type_29",
           "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "saving_goal": {
+          "name": "saving_goal",
+          "type": "double precision",
           "primaryKey": false,
           "notNull": false
         },
@@ -174,6 +180,10 @@
         "Category Type is Savings / NULL expected": {
           "name": "Category Type is Savings / NULL expected",
           "value": "\"user_categories\".\"category_type\" != 'Savings' OR \"user_categories\".\"expense_method\" IS NULL"
+        },
+        "Category Type is Savings / Savings goal value expected": {
+          "name": "Category Type is Savings / Savings goal value expected",
+          "value": "\"user_categories\".\"category_type\" != 'Savings' OR \"user_categories\".\"saving_goal\" IS NOT NULL"
         }
       },
       "isRLSEnabled": true
@@ -203,7 +213,7 @@
         },
         "transaction_type": {
           "name": "transaction_type",
-          "type": "type_28",
+          "type": "type_29",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -240,7 +250,7 @@
         },
         "transaction_credit_debit": {
           "name": "transaction_credit_debit",
-          "type": "credit_debit_28",
+          "type": "credit_debit_type_29",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -357,7 +367,7 @@
         },
         "tier": {
           "name": "tier",
-          "type": "subscription_tier_28",
+          "type": "subscription_tier_type_29",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -395,24 +405,24 @@
     }
   },
   "enums": {
-    "public.credit_debit_28": {
-      "name": "credit_debit_28",
+    "public.credit_debit_type_29": {
+      "name": "credit_debit_type_29",
       "schema": "public",
       "values": [
         "Credit",
         "Debit"
       ]
     },
-    "public.expense_type_28": {
-      "name": "expense_type_28",
+    "public.expense_type_29": {
+      "name": "expense_type_29",
       "schema": "public",
       "values": [
         "Fixed",
         "Variable"
       ]
     },
-    "public.subscription_tier_28": {
-      "name": "subscription_tier_28",
+    "public.subscription_tier_type_29": {
+      "name": "subscription_tier_type_29",
       "schema": "public",
       "values": [
         "Free",
@@ -420,8 +430,8 @@
         "Pro Lifetime"
       ]
     },
-    "public.type_28": {
-      "name": "type_28",
+    "public.type_29": {
+      "name": "type_29",
       "schema": "public",
       "values": [
         "Income",

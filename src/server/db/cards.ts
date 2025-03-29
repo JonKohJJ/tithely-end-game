@@ -171,9 +171,9 @@ export async function getAllCardNames(
 export async function getChildTransactionsCount(userId: string, cardId: string) {
 
     const [ result ] = await db
-        .select(
-            { count: count() }
-        )
+        .select({ 
+            count: count(),
+        })
         .from(TransactionsTable)
         .where(
             and(

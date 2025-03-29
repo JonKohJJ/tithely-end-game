@@ -133,12 +133,14 @@ function OfficialCategoryForm({
             categoryName: categoryTobeEdited.categoryName,
             categoryBudget: categoryTobeEdited.categoryBudget,
             expenseMethod: categoryTobeEdited.expenseMethod,
+            savingGoal: categoryTobeEdited.savingGoal,
         }
         : {
             categoryType: undefined,
             categoryName: "",
             categoryBudget: 0,
             expenseMethod: null,
+            savingGoal: null,
         }
     })
 
@@ -151,6 +153,9 @@ function OfficialCategoryForm({
     useEffect(() => {
         if (selectedCategoryType !== "Expenses") {
             setValue("expenseMethod", null)
+        }
+        if (selectedCategoryType !== "Savings") {
+            setValue("savingGoal", null)
         }
     }, [selectedCategoryType, setValue])
 
@@ -167,6 +172,7 @@ function OfficialCategoryForm({
         } else {
             toast({ title: "Error", description: response.dbResponseMessage });
         }
+
     }
 
     return (
@@ -222,7 +228,7 @@ function OfficialCategoryForm({
                     name="categoryBudget"
                     render={({ field }) => (
                         <FormItem className="grid grid-cols-4 items-center gap-x-4">
-                            <FormLabel className="text-right"><p>Budget</p></FormLabel>
+                            <FormLabel className="text-right"><p>Monthly Budget</p></FormLabel>
                             <FormControl>
                                 <Input 
                                     {...field} 
@@ -240,7 +246,9 @@ function OfficialCategoryForm({
                     name="expenseMethod"
                     render={({ field }) => (
                         <FormItem className="grid grid-cols-4 items-center gap-x-4">
-                            <FormLabel className="text-right"><p>Expense Method</p></FormLabel>
+                            <FormLabel className="text-right">
+                                <p className={selectedCategoryType !== "Savings" ? "text-color-muted-text" : "text-color-text"}>Expense Method</p>
+                            </FormLabel>
                             <FormControl>
                                 <Select
                                     value={field.value || ""}
@@ -262,6 +270,30 @@ function OfficialCategoryForm({
                             <FormMessage className=" col-span-4 text-right text-red-500"/>  
                         </FormItem>
                     )}
+                />
+                <FormField
+                    control={control}
+                    name="savingGoal"
+                    render={({ field }) => {
+                        // console.log(field)
+                        return (
+                            <FormItem className="grid grid-cols-4 items-center gap-x-4">
+                                <FormLabel className="text-right">
+                                    <p className={selectedCategoryType !== "Savings" ? "text-color-muted-text" : "text-color-text"}>Overall Saving Goal</p>
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field} 
+                                        disabled={selectedCategoryType !== "Savings" || formState.isSubmitting} 
+                                        className="col-span-3 !m-0 border-color-border shadow-none" 
+                                        onChange={(e) => field.onChange(parseFloat(e.target.value) || "")}
+                                        value={field.value ?? ""}
+                                    />
+                                </FormControl>
+                                <FormMessage className=" col-span-4 text-right text-red-500"/>  
+                            </FormItem>
+                        )
+                    }}
                 />
                 <MyButton type="submit" additionalClasses="mt-4 w-1/4 ml-auto" disabled={formState.isSubmitting}>
                     {formState.isSubmitting

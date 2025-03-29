@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server"
 import { revalidatePath } from "next/cache"
 import { TDatabaseResponse } from "../db/categories"
 import { canCreateAccount } from "../permissions"
-import { AccountSchema, TInsertAccount } from "@/zod/Accounts"
+import { AccountSchema, TInsertAccount } from "@/zod/accounts"
 import { 
     addAccount as addAccountDb,
     updateAccount as updateAccountDb,

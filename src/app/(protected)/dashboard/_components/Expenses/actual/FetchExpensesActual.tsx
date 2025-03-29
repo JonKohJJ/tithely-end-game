@@ -1,6 +1,5 @@
-import { TFetchedAllExpensesActual } from "@/server/db/categories"
 import ExpensesActual from "./ExpensesActual"
-import { getAllExpenseActual, getAvailableFunds, getTotalByCreditOrDebit, getTotalByType } from "@/server/db/analytics"
+import { getAllExpenseActual, getAvailableFunds, getTotalByCreditOrDebit, getTotalByType, TFetchedAllExpensesActual } from "@/server/db/analytics"
 import { InsightCard } from "@/components/InsightCard"
 import { PiggyBank, CreditCard, HandCoins } from "lucide-react"
 
@@ -48,13 +47,13 @@ export default async function FetchExpensesActual({
 
                         <div className="insight-cards-container flex gap-4 flex-col lg:flex-row">
                             <InsightCard 
-                                title="Available Funds" 
+                                title="Total Available Funds" 
                                 description="Ensure you have enough balance to cover your credit card payments." 
                                 content={`$${availableFunds}`}
                                 icon={<PiggyBank className="w-4 h-4 text-neutral-500" />}
                             />
                             <InsightCard 
-                                title="Credit Card Spending" 
+                                title="Total Card Spending" 
                                 description="Keep an eye on your charges to stay within budget." 
                                 content={`$${totalCreditCardSpending}`}
                                 icon={<CreditCard className="w-4 h-4 text-neutral-500" />}

@@ -2,7 +2,7 @@ import { db } from "@/drizzle/db";
 import { AccountsTable, TransactionsTable } from "@/drizzle/schema"
 import { eq, count, asc, and } from "drizzle-orm";
 import { TDatabaseResponse } from "./categories";
-import { TInsertAccount } from "@/zod/Accounts";
+import { TInsertAccount } from "@/zod/accounts";
 import { getTransactionsIdByAccountId, resetTransactionAccountId } from "./transactions";
 
 export type TFetchedAccount = typeof AccountsTable.$inferSelect

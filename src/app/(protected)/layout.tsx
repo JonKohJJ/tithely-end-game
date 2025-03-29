@@ -20,7 +20,7 @@ export default async function ProtectedLayout({
       <ProtectedNavBar />
       <SidebarInset>
         <ProtectedHeader />
-        <div className='protected-layout flex justify-center w-full h-full'>
+        <div className='protected-layout flex justify-center w-full h-full mb-36'>
           <div className='w-full p-6 max-w-[1500px]'>
               {children}
               <Toaster />

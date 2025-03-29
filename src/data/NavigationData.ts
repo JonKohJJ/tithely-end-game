@@ -1,6 +1,5 @@
 import {
   LayoutDashboard,
-  ChartNoAxesCombined,
   ArrowRightLeft,
   LucideProps,
   CaseUpper,
@@ -18,12 +17,6 @@ export const NavigationData = [
         name: "Dashboard",
         url: "/dashboard",
         icon: LayoutDashboard,
-      },
-      {
-        name: "Analytics",
-        url: "/analytics",
-        icon: ChartNoAxesCombined,
-        isDisabled: true
       },
     ],
   },

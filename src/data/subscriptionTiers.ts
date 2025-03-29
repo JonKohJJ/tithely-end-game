@@ -9,10 +9,18 @@ export type TSubscriptionTier = {
   isLifetimePlan?:          boolean
   isPopular?:               boolean
 
-  canAccessDashboardPage:   boolean
-  canAccessAnalyticsPage:   boolean
+  // Categories Page
   canAccessCardsPage:       boolean
   canAccessAccountsPage:    boolean
+
+  // Analytics Page
+  canViewExpenses_Actual:   boolean
+  canViewExpenses_Budget:   boolean
+  canViewExpenses_Trend:    boolean
+  //
+  canViewSavings_Goals:     boolean
+  canViewSavings_Growth:    boolean
+
 
   maxNumberOfCategories:    number
   maxNumberOfTransactions:  number
@@ -27,10 +35,15 @@ export const SubscriptionTiers = {
     name: "Free",
     priceInCents: 0,
 
-    canAccessDashboardPage: true,
-    canAccessAnalyticsPage: false,
     canAccessCardsPage: false,
     canAccessAccountsPage: false,
+
+    canViewExpenses_Actual:   true,
+    canViewExpenses_Budget:   false,
+    canViewExpenses_Trend:    false,
+
+    canViewSavings_Goals:     false,
+    canViewSavings_Growth:    false,
 
     maxNumberOfCategories: 6,
     maxNumberOfTransactions: 100,
@@ -45,10 +58,15 @@ export const SubscriptionTiers = {
     originalPriceInCents: 3000,
     isMonthlyPlan: true,
 
-    canAccessDashboardPage: true,
-    canAccessAnalyticsPage: true,
     canAccessCardsPage: true,
     canAccessAccountsPage: true,
+
+    canViewExpenses_Actual:   true,
+    canViewExpenses_Budget:   true,
+    canViewExpenses_Trend:    true,
+
+    canViewSavings_Goals:     true,
+    canViewSavings_Growth:    true,
 
     maxNumberOfCategories: 12,
     maxNumberOfTransactions: 300,
@@ -64,10 +82,15 @@ export const SubscriptionTiers = {
     isLifetimePlan: true,
     isPopular: true,
 
-    canAccessDashboardPage: true,
-    canAccessAnalyticsPage: true,
     canAccessCardsPage: true,
     canAccessAccountsPage: true,
+
+    canViewExpenses_Actual:   true,
+    canViewExpenses_Budget:   true,
+    canViewExpenses_Trend:    true,
+
+    canViewSavings_Goals:     true,
+    canViewSavings_Growth:    true,
 
     maxNumberOfCategories: 15,
     maxNumberOfTransactions: 1000,

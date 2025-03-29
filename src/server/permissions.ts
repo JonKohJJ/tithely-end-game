@@ -4,12 +4,35 @@ import { getCategoriesCount } from "./db/categories"
 import { getUserSubscriptionTier } from "./db/subscription"
 import { getTransactionsCount } from "./db/transactions"
 
-export async function canAccessAnalyticsPage(userId: string | null) {
+
+// Dashboard Page
+export async function canViewExpenses_Actual(userId: string | null) {
     if (userId === null) return false
     const tier = await getUserSubscriptionTier(userId)
-    return tier.canAccessAnalyticsPage
+    return tier.canViewExpenses_Actual
+}
+export async function canViewExpenses_Budget(userId: string | null) {
+    if (userId === null) return false
+    const tier = await getUserSubscriptionTier(userId)
+    return tier.canViewExpenses_Budget
+}
+export async function canViewExpenses_Trend(userId: string | null) {
+    if (userId === null) return false
+    const tier = await getUserSubscriptionTier(userId)
+    return tier.canViewExpenses_Trend
+}
+export async function canViewSavings_Goals(userId: string | null) {
+    if (userId === null) return false
+    const tier = await getUserSubscriptionTier(userId)
+    return tier.canViewSavings_Goals
+}
+export async function canViewSavings_Growth(userId: string | null) {
+    if (userId === null) return false
+    const tier = await getUserSubscriptionTier(userId)
+    return tier.canViewSavings_Growth
 }
 
+// Categories Page
 export async function canAccessCardsPage(userId: string | null) {
     if (userId === null) return false
     const tier = await getUserSubscriptionTier(userId)
