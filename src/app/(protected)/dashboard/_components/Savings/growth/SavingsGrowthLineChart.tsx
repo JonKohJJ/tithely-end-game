@@ -34,23 +34,27 @@ export function SavingsGrowthLineChart({
 
                     <div>
                         <p>Change from Last Month</p>
-                        <div className="flex gap-3">
 
-                            <div className={`fs-h2 ${isPositiveChange ? "text-green-500" : "text-red-500"}`}>
-                                {isPositiveChange ? "+" : "-"}
-                                ${Math.abs(savingsDifferenceAmount).toLocaleString()}
+                        {savingsDifferenceAmount === 0
+                            ? <p className="fs-h3">No change</p>
+                            : 
+                            <div className="flex gap-3">
+                                <div className={`fs-h2 ${isPositiveChange ? "text-green-500" : "text-red-500"}`}>
+                                    {isPositiveChange ? "+" : "-"}
+                                    ${Math.abs(savingsDifferenceAmount).toLocaleString()}
+                                </div>
+    
+                                <div className={`flex items-center ${isPositiveChange ? "text-green-500" : "text-red-500"}`}>
+                                    {isPositiveChange ? (
+                                        <ArrowUpRight className="h-4 w-4 mr-1" />
+                                    ) : (
+                                        <ArrowDownRight className="h-4 w-4 mr-1" />
+                                    )}
+                                    {Math.abs(savingsDifferencePercent).toFixed(1)}%
+                                </div>
                             </div>
+                        }
 
-                            <div className={`flex items-center ${isPositiveChange ? "text-green-500" : "text-red-500"}`}>
-                                {isPositiveChange ? (
-                                    <ArrowUpRight className="h-4 w-4 mr-1" />
-                                ) : (
-                                    <ArrowDownRight className="h-4 w-4 mr-1" />
-                                )}
-                                {Math.abs(savingsDifferencePercent).toFixed(1)}%
-                            </div>
-
-                        </div>
                     </div>
 
                     <div>
@@ -118,7 +122,11 @@ function calculateSavingsDifference(
 
     const savingsDifferenceAmount = totalSavingsThisMonth - totalSavingsLastMonth
     const isPositiveChange = savingsDifferenceAmount > 0
-    const savingsDifferencePercent = (savingsDifferenceAmount / totalSavingsThisMonth) * 100
+    const savingsDifferencePercent = isNaN((savingsDifferenceAmount / totalSavingsThisMonth) * 100) 
+        ? 0 
+        : (savingsDifferenceAmount / totalSavingsThisMonth) * 100
+
+    console.log(savingsDifferenceAmount, isPositiveChange, savingsDifferencePercent)
 
     return {
         savingsDifferenceAmount,

@@ -1,4 +1,4 @@
-import SubcriptionPlans from "@/components/SubcriptionPlans";
+import SubcriptionPlans from "@/components/SubscriptionPlans";
 import { getUserSubscriptionTier } from "@/server/db/subscription";
 import { currentUser } from "@clerk/nextjs/server";
 

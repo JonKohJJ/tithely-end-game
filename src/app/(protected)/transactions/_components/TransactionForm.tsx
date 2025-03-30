@@ -205,8 +205,8 @@ export default function TransactionForm({
 
                                             <PopoverContent className="w-auto p-0 bg-color-bg border-color-border" align="start">
                                                 <Calendar className="calendar"
-                                                    mode="single"
-                                                    selected={field.value ? new Date(`${field.value}T00:00:00`) : undefined}
+                                                    mode="single" 
+                                                    selected={field.value ? new Date(`${field.value}T00:00:00`) : new Date()} 
                                                     onSelect={(date) => {
                                                         if (date) {
                                                             // Adjust for local timezone

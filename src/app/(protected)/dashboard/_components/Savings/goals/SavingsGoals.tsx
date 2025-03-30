@@ -1,7 +1,8 @@
 import MyButton from '@/components/MyButton'
 import { Card } from '@/components/ui/card'
 import { TSavingGoal } from '@/server/db/analytics'
-import { ChevronRight, PiggyBank } from 'lucide-react'
+import { ArrowRight, ChevronRight, PiggyBank } from 'lucide-react'
+import Link from 'next/link'
 
 export default function SavingsGoals({
     allSavingsGoalsData
@@ -11,51 +12,60 @@ export default function SavingsGoals({
 
     return (
         <div className='flex flex-col gap-4'>
-
             <div className="grid grid-cols-4 gap-4">
-                {allSavingsGoalsData.map((goal, index) => {
-                    
-                    const percentage = (goal.totalSavedAmount / goal.savingGoal) * 100
-                    const goalDescription = generateGoalDescription(goal.totalSavedAmount, goal.savingGoal)
+                {
+                    allSavingsGoalsData.length === 0
+                        ? 
+                            <Card className="shadow-none border-color-border p-8 flex flex-col gap-8 w-full">
+                                <p>You have no current saving goals</p>
+                                <Link href='/planner' className='underline flex gap-1 items-center group'>
+                                    Add Savings Goals
+                                    <ArrowRight className='w-5 h-5 transition-transform duration-300 transform group-hover:translate-x-1' />
+                                </Link>
+                            </Card>
+                        : (
+                            <>
+                                {allSavingsGoalsData.map((goal, index) => {
+                                    const percentage = (goal.totalSavedAmount / goal.savingGoal) * 100
+                                    const goalDescription = generateGoalDescription(goal.totalSavedAmount, goal.savingGoal)
 
-                    return (
+                                    return (
+                                        <Card key={index} className="shadow-none border-color-border p-8 flex flex-col gap-8 w-full">
+                                            <div className="w-full flex flex-col items-center gap-4">
+                                                <ProgressCircle
+                                                    percentage={percentage}
+                                                    color={goal.fill}
+                                                />
 
-                        <Card key={index} className="shadow-none border-color-border p-8 flex flex-col gap-8 w-full">
-                            <div className="w-full flex flex-col items-center gap-4">
-                                <ProgressCircle
-                                    percentage={percentage}
-                                    color={goal.fill}
-                                />
+                                                <div className="flex flex-col items-center">
+                                                    <p className="fs-h3">{goal.categoryName}</p>
+                                                    <p className="text-center">{goalDescription}</p>
+                                                </div>
 
-                                <div className="flex flex-col items-center">
-                                    <p className="fs-h3">{goal.categoryName}</p>
-                                    <p className='text-center'>{goalDescription}</p>
-                                </div>
+                                                <div className="flex items-center justify-center gap-4">
+                                                    <p className="fs-h3">${goal.totalSavedAmount.toLocaleString()}</p>
+                                                    <p className="fs-h3">/</p>
+                                                    <p className="fs-h3">${goal.savingGoal.toLocaleString()}</p>
+                                                </div>
+                                            </div>
 
-                                <div className="flex items-center justify-center gap-4">
-                                    <p className="fs-h3">${goal.totalSavedAmount.toLocaleString()}</p>
-                                    <p className="fs-h3">/</p>
-                                    <p className="fs-h3">${goal.savingGoal.toLocaleString()}</p>
-                                </div>
-                            </div>
-
-                            <div className="w-full flex items-center justify-center">
-                                <MyButton additionalClasses="bg-transparent text-color-text border-none group">
-                                    <p>View Details</p>
-                                    <ChevronRight className="transform transition-transform duration-300 group-hover:translate-x-1" />
-                                </MyButton>
-                            </div>
-                        </Card>
-
-                    )}
-                )}
-
-                {Array.from({ length: (4 - (allSavingsGoalsData.length % 4)) % 4 }).map((_, index) => (
-                    <div key={`empty-${index}`} />
-                ))}
+                                            <div className="w-full flex items-center justify-center">
+                                                <MyButton additionalClasses="bg-transparent text-color-text border-none group">
+                                                    <p>View Details</p>
+                                                    <ChevronRight className="transform transition-transform duration-300 group-hover:translate-x-1" />
+                                                </MyButton>
+                                            </div>
+                                        </Card>
+                                    )
+                                })}
+                                
+                                {Array.from({ length: (4 - (allSavingsGoalsData.length % 4)) % 4 }).map((_, index) => (
+                                    <div key={`empty-${index}`} className="w-full h-full" />
+                                ))}
+                            </>
+                        )
+                }
             </div>
-
-
         </div>
     )
 }

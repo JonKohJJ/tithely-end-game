@@ -1,7 +1,7 @@
 import { getUserSubscriptionTier } from '@/server/db/subscription'
 import { auth } from '@clerk/nextjs/server'
 import PageHeader from '../_components/PageHeader'
-import SubcriptionPlans from '@/components/SubcriptionPlans'
+import SubcriptionPlans from '@/components/SubscriptionPlans'
 import { canCreateAccount, canCreateCard, canCreateCategory, canCreateTransaction } from '@/server/permissions'
 import { InsightCard } from '@/components/InsightCard'
 import { Progress } from '@/components/ui/progress'
