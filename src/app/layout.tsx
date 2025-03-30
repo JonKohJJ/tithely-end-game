@@ -14,7 +14,7 @@ const AtkinsonHyperlegibleFont = Atkinson_Hyperlegible({
 
 export const metadata: Metadata = {
   title: "Tithely End Game",
-  description: "Authored by Jonathan Koh",
+  description: "Where financial management is not just a task — it's an empowering experience.",
 };
 
 export default function RootLayout({

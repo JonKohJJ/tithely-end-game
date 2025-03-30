@@ -93,7 +93,7 @@ export default function PublicFooter() {
         
                 {/* Copyright */}
                 <div className="mt-20 md:mt-40 text-center">
-                    <p className=''>&copy; {new Date().getFullYear()} Tithely. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} Tithely. All rights reserved.</p>
                 </div>
 
             </div>

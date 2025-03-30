@@ -14,6 +14,7 @@ import {
 import Link from "next/link"
 import { NavigationData } from "@/data/NavigationData"
 import { usePathname } from "next/navigation"
+import { Sprout } from "lucide-react"
 
 export function ProtectedNavBar() {
 
@@ -23,11 +24,12 @@ export function ProtectedNavBar() {
   return (
     <Sidebar collapsible="icon" className="protect-nav-bar border-color-border bg-color-bg">
 
-      <SidebarHeader>
+      <SidebarHeader className="h-[65px]">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg">
-                <Link href="/">
+                <Link href="/" className='flex items-center'>
+                    <Sprout className='w-8 h-8' strokeWidth={2} />
                     <p className="fs-h2">Tithely</p>
                 </Link>
             </SidebarMenuButton>

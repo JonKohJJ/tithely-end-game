@@ -1,6 +1,6 @@
 import MyButton from '@/components/MyButton'
 import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs'
-import { ArrowRight, BarChart2, PieChart, Wallet } from 'lucide-react'
+import { ArrowRight, LineChart, PiggyBank, Wallet2 } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
@@ -18,7 +18,9 @@ export default function Hero() {
 
                     <div className="flex flex-col md:flex-row gap-4">
                         <MyButton additionalClasses='bg-color-bg text-color-text py-6'>
-                            Explore Features
+                            <Link href="#features">
+                                Explore Features
+                            </Link>
                         </MyButton>
                         <SignedIn>
                             <MyButton additionalClasses='py-6'>
@@ -37,18 +39,18 @@ export default function Hero() {
                         </SignedOut>
                     </div>
 
-                    <div className="flex flex-wrap justify-center gap-4">
+                    <div className="flex flex-wrap justify-center gap-6">
                         <div className="flex items-center">
-                            <PieChart className="mr-1 h-4 w-4" />
-                            Smart Analytics
+                            <LineChart className="mr-1 h-4 w-4" />
+                            Smart Expense & Budget Tracking
                         </div>
                         <div className="flex items-center">
-                            <Wallet className="mr-1 h-4 w-4" />
-                            Secure Transactions
+                            <PiggyBank className="mr-1 h-4 w-4" />
+                            Savings & Financial Growth
                         </div>
                         <div className="flex items-center">
-                            <BarChart2 className="mr-1 h-4 w-4" />
-                            Real-time Tracking
+                            <Wallet2 className="mr-1 h-4 w-4" />
+                            Seamless Money Management
                         </div>
                     </div>
 

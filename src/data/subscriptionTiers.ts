@@ -54,8 +54,8 @@ export const SubscriptionTiers = {
   },
   "Pro Monthly": {
     name: "Pro Monthly",
-    priceInCents: 2499,
-    originalPriceInCents: 3000,
+    priceInCents: 1999,
+    originalPriceInCents: 2499,
     isMonthlyPlan: true,
 
     canAccessCardsPage: true,
@@ -77,8 +77,8 @@ export const SubscriptionTiers = {
   },
   "Pro Lifetime": {
     name: "Pro Lifetime",
-    priceInCents: 25000,
-    originalPriceInCents: 30000,
+    priceInCents: 19900,
+    originalPriceInCents: 24900,
     isLifetimePlan: true,
     isPopular: true,
 

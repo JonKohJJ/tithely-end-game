@@ -11,7 +11,7 @@ type TPricingCardProps = TSubscriptionTier & {
     currentPlanName: TierNames | null
 }
 
-export default function SubcriptionPlans({
+export default function SubscriptionPlans({
     currentPlanName
 } : {
     currentPlanName: TierNames | null
@@ -76,25 +76,30 @@ function PricingCard({
             <p className="text-center fs-h3">{name}</p>
 
             <div className="flex justify-center items-baseline my-8 gap-2">
-                {originalPriceInCents && <p className="line-through text-color-muted-text">${originalPriceInCents/100}</p>}
+                {originalPriceInCents && <p className="line-through text-color-text">${originalPriceInCents/100}</p>}
                 <p className="fs-h2">${priceInCents/100}</p>
                 {isMonthlyPlan && <p>/ monthly</p>}
                 {isLifetimePlan && <p>lifetime</p>}
             </div>
 
             <div className="features flex flex-col gap-2">
-                {/* <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canAccessDashboardPage}>Access dashboard page</Feature> */}
+
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfCategories}>max categories</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfTransactions}>max transactions</Feature>
-                <div className="py-1"></div>
+
+                <div className="my-2 h-[1px] bg-color-muted-text"></div>
+
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Actual}>Track Actual Expenses</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Budget}>View Budgeted Expenses</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Trend}>Track Expenses Trend</Feature>
-                <div className="py-1"></div>
+
+                <div className="my-2 h-[1px] bg-color-muted-text"></div>
+
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewSavings_Growth}>View Savings Growth</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewSavings_Goals}>View Savings Goals</Feature>
-                <div className="py-1"></div>
-                {/* <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canAccessAnalyticsPage}>Access analytics page</Feature> */}
+
+                <div className="my-2 h-[1px] bg-color-muted-text"></div>
+
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canAccessCardsPage}>Access cards page</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canAccessAccountsPage}>Access accounts page</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfCards}>max cards</Feature>
@@ -158,7 +163,7 @@ function Feature({
             }
             <p className={(canAccess || (maxNumber && typeof maxNumber === "number") && maxNumber > 0)
                 ? "" 
-                : "text-color-muted-text line-through"
+                : "text-color-border line-through"
             }>
                 <strong>{maxNumber}</strong> {children}
             </p>

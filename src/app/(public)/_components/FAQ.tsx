@@ -10,28 +10,44 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
-    question: "What is your return policy?",
-    answer: "We offer a 30-day return policy for all unused items in their original packaging.",
+    question: "What is this application, and how does it help me?",
+    answer: "Our platform is a finance tracking and budgeting tool designed to help you monitor your income, track expenses, set savings goals, and gain insights into your financial habits."
   },
   {
-    question: "How long does shipping take?",
-    answer: "Shipping typically takes 3-5 business days for domestic orders and 7-14 days for international orders.",
+    question: "Is there a free trial available?",
+    answer: "Currently, we do not offer a free trial. However, we are developing a 'Demo Mode' that will allow users to explore the platform before subscribing."
   },
   {
-    question: "Do you offer international shipping?",
-    answer:
-      "Yes, we ship to most countries worldwide. Shipping costs and delivery times may vary depending on the destination.",
+    question: "What pricing plans do you offer?",
+    answer: "We offer both a monthly subscription plan and a one-time payment option. Please refer to the pricing section above for more details."
   },
   {
-    question: "How can I track my order?",
-    answer:
-      "Once your order is shipped, you'll receive a tracking number via email. You can use this number to track your package on our website.",
+    question: "Can I connect my bank accounts?",
+    answer: "No, at this time, our platform does not support direct bank account integration."
   },
   {
-    question: "What payment methods do you accept?",
-    answer: "We accept all major credit cards, PayPal, and Apple Pay.",
+    question: "Is my financial data secure?",
+    answer: "Absolutely. We use encryption and industry-standard security measures to ensure your financial data remains safe and private."
   },
+  {
+    question: "Can I export my financial data?",
+    answer: "Currently, exporting financial data is not available, but this feature is in development."
+  },
+  {
+    question: "How do I cancel my subscription?",
+    answer: "You can cancel your subscription anytime through your account settings. Your access to premium features will remain active until the end of the billing cycle."
+  },
+  {
+    question: "Can I access my data on multiple devices?",
+    answer: "Yes, your data syncs across all your devices, allowing you to view your financial information anywhere. However, actions such as editing or adding transactions can only be performed on larger devices."
+  },
+  {
+    question: "Do you offer customer support?",
+    answer: "For any inquiries or support, you can reach out directly to the owner at jonathan.koh75@gmail.com."
+  }
 ]
+
+
 
 interface AccordionItemProps {
   question: string

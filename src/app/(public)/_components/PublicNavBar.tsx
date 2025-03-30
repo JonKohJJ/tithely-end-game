@@ -1,7 +1,7 @@
 import MyButton from '@/components/MyButton'
 import { ThemeModeToggle } from '@/components/ThemeModeToggle'
 import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Sprout } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
@@ -11,6 +11,7 @@ export default function PublicNavBar() {
             <div className='mycontainer flex items-center justify-between'>
 
                 <Link href="/" className='flex items-center'>
+                    <Sprout className='w-8 h-8' strokeWidth={2} />
                     <p className='fs-h2'>Tithely</p>
                 </Link>
 

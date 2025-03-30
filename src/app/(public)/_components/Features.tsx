@@ -1,52 +1,66 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { BarChart3, Calendar, Clock, DollarSign, ListChecks, TrendingDown } from "lucide-react"
+import { BarChart3, ClipboardList, CreditCard, DollarSign, Edit3, PieChart, ShieldCheck, Target, TrendingUp } from "lucide-react"
 
 export default function Features() {
 
   const features = [
     {
-      icon: <ListChecks className="h-6 w-6 mb-2" />,
-      title: "Expense Categorization",
-      description: "Automatically sort transactions into categories for a clear view of where your money goes.",
+      icon: <DollarSign className="h-6 w-6 mb-2" />, 
+      title: "Monthly Expense Tracking",
+      description: "Gain insights into your actual spending habits by tracking expenses month over month."
     },
     {
-      icon: <Clock className="h-6 w-6 mb-2" />,
-      title: "Recurring Expenses",
-      description: "Track subscriptions, bills, and recurring payments to avoid surprises and plan ahead.",
+      icon: <PieChart className="h-6 w-6 mb-2" />, 
+      title: "Budget Breakdown by Category",
+      description: "Compare your original budgeted expenses with actual spending for better financial control."
     },
     {
-      icon: <TrendingDown className="h-6 w-6 mb-2" />,
-      title: "Spending Limits",
-      description: "Set monthly budgets for different categories and get alerts when you're close to overspending.",
+      icon: <BarChart3 className="h-6 w-6 mb-2" />, 
+      title: "Spending Habit Insights",
+      description: "Analyze spending patterns to make informed financial decisions and optimize expenses."
     },
     {
-      icon: <DollarSign className="h-6 w-6 mb-2" />,
-      title: "Income & Expense Tracking",
-      description: "Log and monitor all your earnings and expenses in one place for accurate financial management.",
+      icon: <TrendingUp className="h-6 w-6 mb-2" />, 
+      title: "Savings Growth Tracking",
+      description: "Monitor your savings progress over time and stay on track with your financial goals."
     },
     {
-      icon: <Calendar className="h-6 w-6 mb-2" />,
-      title: "Financial Planning",
-      description: "Plan ahead with goal-based savings and projected expense tracking.",
+      icon: <Target className="h-6 w-6 mb-2" />, 
+      title: "Goal-Based Savings",
+      description: "Set and track savings goals for different categories, ensuring every dollar has a purpose."
     },
     {
-      icon: <BarChart3 className="h-6 w-6 mb-2" />,
-      title: "Detailed Reports",
-      description: "Generate custom financial reports and summaries to track progress and make informed decisions.",
+      icon: <CreditCard className="h-6 w-6 mb-2" />, 
+      title: "Account & Card Management",
+      description: "Easily add and manage bank accounts and credit cards in one centralized dashboard."
+    },
+    {
+      icon: <ClipboardList className="h-6 w-6 mb-2" />, 
+      title: "Zero-Based Budgeting",
+      description: "Ensure every dollar is accounted for by assigning all income to savings, expenses, or investments."
+    },
+    {
+      icon: <ShieldCheck className="h-6 w-6 mb-2" />, 
+      title: "Fixed vs. Variable Expense Analysis",
+      description: "Understand and categorize your expenses into fixed and variable costs for smarter budgeting."
+    },
+    {
+      icon: <Edit3 className="h-6 w-6 mb-2" />, 
+      title: "Accurate Transaction Logging",
+      description: "Input and manage every transaction in a dedicated table, ensuring precise analytics and financial insights."
     },
   ]
   
 
   return (
-    <section className="mysection">
+    <section className="mysection" id="features">
       <div className="mycontainer">
 
         <div className="mx-auto max-w-screen-md text-center mb-12">
-          <p className="mb-4 fs-h2">Essential Tools for Smarter Money Management</p>
-          <p>Track your income, control expenses, and plan for the future with intuitive features designed to simplify budgeting and financial tracking.</p>
+          <p className="mb-4 fs-h2">Essential Features for Smarter Money Management</p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
             <Card key={index} className="border-color-border shadow-none">
               <CardHeader>
