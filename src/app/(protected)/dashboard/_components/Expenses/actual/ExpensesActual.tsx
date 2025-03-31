@@ -81,8 +81,8 @@ export default function ExpensesActual({
                                                 <p>${actualAmount} / ${budgetedAmount}</p>
                                                 <Dot className="inline h-3 w-3" />
                                                 <p>{actualPercentage > 100
-                                                    ? `$${actualAmount - budgetedAmount} exceeded`
-                                                    : `$${Math.abs(actualAmount - budgetedAmount)} remaining`
+                                                    ? `$${(actualAmount - budgetedAmount).toFixed(2)} exceeded`
+                                                    : `$${(Math.abs(actualAmount - budgetedAmount)).toFixed(2)} remaining`
                                                 }</p>
                                             </span>
                                         </div>
