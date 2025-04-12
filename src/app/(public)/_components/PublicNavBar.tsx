@@ -7,7 +7,7 @@ import React from 'react'
 
 export default function PublicNavBar() {
     return (
-        <section className='mysection border-b-[1px] border-color-border sticky top-0 bg-color-bg z-[1]'>
+        <section className='mysection border-b-[1px] border-color-muted-text sticky top-0 bg-color-bg z-[1]'>
             <div className='mycontainer flex items-center justify-between'>
 
                 <Link href="/" className='flex items-center'>

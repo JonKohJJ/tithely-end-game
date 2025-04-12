@@ -5,7 +5,7 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YA
 
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { TSavingGrowth } from "@/server/db/analytics"
-import { renderCustomLabel } from "../../Expenses/trend/ExpensesTrendBarChart"
+import { renderCustomLabel } from "../../ExpensesNew/trend/ExpensesTrendBarChart"
 
 export function SavingsGrowthLineChart({
     allSavingsGrowthData
@@ -17,8 +17,6 @@ export function SavingsGrowthLineChart({
     
     // Caculate savings change from past month
     const { savingsDifferenceAmount, isPositiveChange, savingsDifferencePercent } = calculateSavingsDifference(past12MonthsData[past12MonthsData.length - 1].value, past12MonthsData[past12MonthsData.length - 2].value)
-
-    console.log(past12MonthsData)
 
     return (
         <Card className={`shadow-none border-color-border pt-12`}>
@@ -125,8 +123,6 @@ function calculateSavingsDifference(
     const savingsDifferencePercent = isNaN((savingsDifferenceAmount / totalSavingsThisMonth) * 100) 
         ? 0 
         : (savingsDifferenceAmount / totalSavingsThisMonth) * 100
-
-    console.log(savingsDifferenceAmount, isPositiveChange, savingsDifferencePercent)
 
     return {
         savingsDifferenceAmount,

@@ -1,70 +1,65 @@
-import MyButton from '@/components/MyButton'
-import { Card } from '@/components/ui/card'
-import { TSavingGoal } from '@/server/db/analytics'
-import { ArrowRight, ChevronRight, PiggyBank } from 'lucide-react'
-import Link from 'next/link'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { TFetchedSaving } from '@/server/db/savings'
+import { PiggyBank } from 'lucide-react'
+import SavingForm from './SavingForm'
 
 export default function SavingsGoals({
-    allSavingsGoalsData
+    allSavings,
+    maxNumberOfSavings,
 } : {
-    allSavingsGoalsData: TSavingGoal[]
+    allSavings: TFetchedSaving[]
+    maxNumberOfSavings: number
 }) {
 
     return (
         <div className='flex flex-col gap-4'>
             <div className="grid grid-cols-4 gap-4">
-                {
-                    allSavingsGoalsData.length === 0
-                        ? 
-                            <Card className="shadow-none border-color-border p-8 flex flex-col gap-8 w-full">
-                                <p>You have no current saving goals</p>
-                                <Link href='/planner' className='underline flex gap-1 items-center group'>
-                                    Add Savings Goals
-                                    <ArrowRight className='w-5 h-5 transition-transform duration-300 transform group-hover:translate-x-1' />
-                                </Link>
-                            </Card>
-                        : (
-                            <>
-                                {allSavingsGoalsData.map((goal, index) => {
-                                    const percentage = (goal.totalSavedAmount / goal.savingGoal) * 100
-                                    const goalDescription = generateGoalDescription(goal.totalSavedAmount, goal.savingGoal)
 
-                                    return (
-                                        <Card key={index} className="shadow-none border-color-border p-8 flex flex-col gap-8 w-full">
-                                            <div className="w-full flex flex-col items-center gap-4">
-                                                <ProgressCircle
-                                                    percentage={percentage}
-                                                    color={goal.fill}
-                                                />
+                {allSavings.map((saving, index) => {
 
-                                                <div className="flex flex-col items-center">
-                                                    <p className="fs-h3">{goal.categoryName}</p>
-                                                    <p className="text-center">{goalDescription}</p>
-                                                </div>
+                    const percentage = (saving.totalSavedAmount / saving.savingGoal) * 100
+                    const savingBreakdown = generateSavingBreakdown(saving.totalSavedAmount, saving.savingGoal)
 
-                                                <div className="flex items-center justify-center gap-4">
-                                                    <p className="fs-h3">${goal.totalSavedAmount.toLocaleString()}</p>
-                                                    <p className="fs-h3">/</p>
-                                                    <p className="fs-h3">${goal.savingGoal.toLocaleString()}</p>
-                                                </div>
-                                            </div>
+                    return (
+                        <Card key={index} className="shadow-none border-color-border">
 
-                                            <div className="w-full flex items-center justify-center">
-                                                <MyButton additionalClasses="bg-transparent text-color-text border-none group">
-                                                    <p>View Details</p>
-                                                    <ChevronRight className="transform transition-transform duration-300 group-hover:translate-x-1" />
-                                                </MyButton>
-                                            </div>
-                                        </Card>
-                                    )
-                                })}
-                                
-                                {Array.from({ length: (4 - (allSavingsGoalsData.length % 4)) % 4 }).map((_, index) => (
-                                    <div key={`empty-${index}`} className="w-full h-full" />
-                                ))}
-                            </>
-                        )
-                }
+                            <CardHeader className='relative'>
+                                <SavingForm savingTobeEdited={saving} />
+                                <ProgressCircle
+                                    percentage={percentage}
+                                    color={saving.fill}
+                                />
+                            </CardHeader>
+
+                            <CardContent>
+                                <div className="flex flex-col items-center mb-6">
+                                    <p className="fs-h3">{saving.savingName}</p>
+                                    <p>{saving.savingDescription}</p>
+                                </div>
+
+                                <div className="flex items-center justify-center gap-2 fs-h3">
+                                    <p>${saving.totalSavedAmount.toLocaleString()}</p>
+                                    <p>/</p>
+                                    <p>${saving.savingGoal.toLocaleString()}</p>
+                                </div>
+
+                                <div className="flex flex-col items-center">
+                                    <p>Monthly Contribution: ${saving.savingMonthlyContribution.toLocaleString()}</p>
+                                </div>
+                            </CardContent>
+
+                            <CardFooter className='text-center'>
+                                <p>{savingBreakdown}</p>
+                            </CardFooter>
+
+                        </Card>
+                    )
+                })}
+
+                {Array.from({ length: allSavings.length === 0 ? maxNumberOfSavings : (maxNumberOfSavings - (allSavings.length % maxNumberOfSavings)) % maxNumberOfSavings }).map((_, index) => (
+                    <div key={`empty-${index}`} className="w-full h-full border border-dashed border-color-border rounded-xl min-h-[500px]" />
+                ))}
+
             </div>
         </div>
     )
@@ -130,7 +125,7 @@ function ProgressCircle({
     )
 }
 
-function generateGoalDescription(
+function generateSavingBreakdown(
     totalSavedAmount : number, 
     savingGoal: number
 ) {

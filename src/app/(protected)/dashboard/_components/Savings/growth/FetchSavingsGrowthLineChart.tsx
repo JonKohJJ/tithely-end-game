@@ -1,4 +1,4 @@
-import { getSavingsGrowthData, TSavingGrowth } from "@/server/db/analytics"
+import { getSavingsGrowthData, TSavingGrowth } from "@/server/db/savings"
 import { SavingsGrowthLineChart } from "./SavingsGrowthLineChart"
 
 export default async function FetchSavingsGrowthLineChart({

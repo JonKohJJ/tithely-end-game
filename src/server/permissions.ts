@@ -1,25 +1,18 @@
 import { getAccountsCount } from "./db/accounts"
 import { getCardsCount } from "./db/cards"
-import { getCategoriesCount } from "./db/categories"
+import { getExpensesCount } from "./db/expenses"
+import { getIncomeCount } from "./db/income"
+import { getSavingsCount } from "./db/savings"
 import { getUserSubscriptionTier } from "./db/subscription"
 import { getTransactionsCount } from "./db/transactions"
 
 
-// Dashboard Page
-export async function canViewExpenses_Actual(userId: string | null) {
+// Dashboard Views
+
+export async function canViewIncome_Streams(userId: string | null) {
     if (userId === null) return false
     const tier = await getUserSubscriptionTier(userId)
-    return tier.canViewExpenses_Actual
-}
-export async function canViewExpenses_Budget(userId: string | null) {
-    if (userId === null) return false
-    const tier = await getUserSubscriptionTier(userId)
-    return tier.canViewExpenses_Budget
-}
-export async function canViewExpenses_Trend(userId: string | null) {
-    if (userId === null) return false
-    const tier = await getUserSubscriptionTier(userId)
-    return tier.canViewExpenses_Trend
+    return tier.canViewIncome_Streams
 }
 export async function canViewSavings_Goals(userId: string | null) {
     if (userId === null) return false
@@ -31,76 +24,128 @@ export async function canViewSavings_Growth(userId: string | null) {
     const tier = await getUserSubscriptionTier(userId)
     return tier.canViewSavings_Growth
 }
-
-// Categories Page
-export async function canAccessCardsPage(userId: string | null) {
+export async function canViewExpenses_Budget(userId: string | null) {
     if (userId === null) return false
     const tier = await getUserSubscriptionTier(userId)
-    return tier.canAccessCardsPage
+    return tier.canViewExpenses_Budget
 }
-
-export async function canAccesssAccountsPage(userId: string | null) {
+export async function canViewExpenses_Insights(userId: string | null) {
     if (userId === null) return false
     const tier = await getUserSubscriptionTier(userId)
-    return tier.canAccessAccountsPage
+    return tier.canViewExpenses_Insights
+}
+export async function canViewExpenses_Actual(userId: string | null) {
+    if (userId === null) return false
+    const tier = await getUserSubscriptionTier(userId)
+    return tier.canViewExpenses_Actual
+}
+export async function canViewExpenses_Trend(userId: string | null) {
+    if (userId === null) return false
+    const tier = await getUserSubscriptionTier(userId)
+    return tier.canViewExpenses_Trend
+}
+export async function canViewCards(userId: string | null) {
+    if (userId === null) return false
+    const tier = await getUserSubscriptionTier(userId)
+    return tier.canViewCards
+}
+export async function canViewAccounts(userId: string | null) {
+    if (userId === null) return false
+    const tier = await getUserSubscriptionTier(userId)
+    return tier.canViewAccounts
+}
+export async function canViewTransactions(userId: string | null) {
+    if (userId === null) return false
+    const tier = await getUserSubscriptionTier(userId)
+    return tier.canViewTransactions
 }
 
-export async function canCreateCategory(userId: string | null) {
+
+
+// Can Create?
+
+export async function canCreateIncomes(userId: string | null) {
     if (userId === null) return { 
-        canCreate: false, 
-        maxNumberOfCategories: 0, 
-        categoriesCount: 0 
+        canCreateIncome: false, 
+        maxNumberOfIncome: 0, 
+        incomeCount: 0 
     }
-    const { maxNumberOfCategories } = await getUserSubscriptionTier(userId)
-    const categoriesCount = await getCategoriesCount(userId)
+    const { maxNumberOfIncome } = await getUserSubscriptionTier(userId)
+    const incomeCount = await getIncomeCount(userId)
     return { 
-        canCreate: categoriesCount < maxNumberOfCategories,
-        maxNumberOfCategories,
-        categoriesCount
+        canCreateIncome: incomeCount < maxNumberOfIncome,
+        maxNumberOfIncome,
+        incomeCount
     }
 }
-
-export async function canCreateTransaction(userId: string | null) {
+export async function canCreateSavings(userId: string | null) {
     if (userId === null) return { 
-        canCreate: false, 
-        maxNumberOfTransactions: 0, 
-        transactionsCount: 0 
+        canCreateSaving: false, 
+        maxNumberOfSavings: 0, 
+        savingsCount: 0 
     }
-    const { maxNumberOfTransactions } = await getUserSubscriptionTier(userId)
-    const transactionsCount = await getTransactionsCount(userId)
+    const { maxNumberOfSavings } = await getUserSubscriptionTier(userId)
+    const savingsCount = await getSavingsCount(userId)
     return { 
-        canCreate: transactionsCount < maxNumberOfTransactions,
-        maxNumberOfTransactions,
-        transactionsCount
+        canCreateSaving: savingsCount < maxNumberOfSavings,
+        maxNumberOfSavings,
+        savingsCount
     }
 }
-
-export async function canCreateCard(userId: string | null) {
+export async function canCreateExpenses(userId: string | null) {
     if (userId === null) return { 
-        canCreate: false, 
+        canCreateExpense: false, 
+        maxNumberOfExpenses: 0, 
+        expensesCount: 0 
+    }
+    const { maxNumberOfExpenses } = await getUserSubscriptionTier(userId)
+    const expensesCount = await getExpensesCount(userId)
+    return { 
+        canCreateExpense: expensesCount < maxNumberOfExpenses,
+        maxNumberOfExpenses,
+        expensesCount
+    }
+}
+export async function canCreateCards(userId: string | null) {
+    if (userId === null) return { 
+        canCreateCard: false, 
         maxNumberOfCards: 0, 
         cardsCount: 0 
     }
     const { maxNumberOfCards } = await getUserSubscriptionTier(userId)
     const cardsCount = await getCardsCount(userId)
     return { 
-        canCreate: cardsCount < maxNumberOfCards,
+        canCreateCard: cardsCount < maxNumberOfCards,
         maxNumberOfCards,
         cardsCount
     }
 }
-
-export async function canCreateAccount(userId: string | null) {
+export async function canCreateAccounts(userId: string | null) {
     if (userId === null) return { 
-        canCreate: false, 
+        canCreateAccount: false, 
         maxNumberOfAccounts: 0, 
         accountsCount: 0 
     }
     const { maxNumberOfAccounts } = await getUserSubscriptionTier(userId)
     const accountsCount = await getAccountsCount(userId)
     return { 
-        canCreate: accountsCount < maxNumberOfAccounts,
+        canCreateAccount: accountsCount < maxNumberOfAccounts,
         maxNumberOfAccounts,
         accountsCount
+    }
+}
+export async function canCreateTransactions(userId: string | null) {
+    if (userId === null) return { 
+        canCreateTransaction: false, 
+        maxNumberOfTransactions: 0, 
+        transactionsCount: 0 
+    }
+    const { maxNumberOfTransactions } = await getUserSubscriptionTier(userId)
+    const transactionsCount = await getTransactionsCount(userId)
+
+    return { 
+        canCreateTransaction: maxNumberOfTransactions === "Unlimited" || transactionsCount < maxNumberOfTransactions,
+        maxNumberOfTransactions,
+        transactionsCount
     }
 }

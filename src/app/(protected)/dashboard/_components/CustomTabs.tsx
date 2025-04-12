@@ -32,7 +32,7 @@ function Tabs({ defaultValue, value, onValueChange, children, className, ...prop
 
   return (
     <TabsContext.Provider value={contextValue}>
-      <div className={cn("space-y-2", className)} {...props}>
+      <div className={cn("", className)} {...props}>
         {children}
       </div>
     </TabsContext.Provider>
@@ -47,7 +47,6 @@ function TabsList({ children, className, ...props }: TabsListProps) {
   return (
     <div
       className={cn(
-        "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
         className,
       )}
       {...props}
@@ -79,7 +78,7 @@ function TabsTrigger({ value, children, className, ...props }: TabsTriggerProps)
       data-state={isActive ? "active" : "inactive"}
       onClick={() => context.onValueChange(value)}
       className={cn(
-        "px-4 py-2 border-b-[2px] border-transparent",
+        "px-4 py-4 border-b-[2px] border-transparent",
         isActive && "border-b-[2px] border-color-text rounded-none",
         className,
       )}
@@ -111,7 +110,6 @@ function TabsContent({ value, children, className, ...props }: TabsContentProps)
       role="tabpanel"
       data-state={isActive ? "active" : "inactive"}
       className={cn(
-        "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         className,
       )}
       {...props}

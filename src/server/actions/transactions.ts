@@ -1,36 +1,35 @@
 "use server"
 
-import { TInsertTransaction, TransactionSchema } from "@/zod/transactions"
-import { TDatabaseResponse } from "../db/categories"
-import { auth } from "@clerk/nextjs/server"
+import { TInsertNewTransaction, TransactionSchema } from "@/zod/transaction"
+import { TDatabaseResponse } from "../db/shared"
+import { canCreateTransactions } from "../permissions"
 import { revalidatePath } from "next/cache"
+import { auth } from "@clerk/nextjs/server"
 import {
     addTransaction as addTransactionDb,
-    updateTransaction as updatedTransactionDb,
+    updateTransaction as updateTransactionDb,
     deleteTransaction as deleteTransactionDb,
-    deleteBulkTransactions as deleteBulkTransactionsDb
+    deleteBulkTransactions as deleteBulkTransactionsDb,
 } from '../db/transactions'
-import { canCreateTransaction } from "../permissions"
 
 export async function addTransaction(
-    unsafeData: TInsertTransaction
+    unsafeData: TInsertNewTransaction
 ): Promise<TDatabaseResponse> {
 
     const { userId } = await auth()
     const { success, data } = TransactionSchema.safeParse(unsafeData)
-
-    const { canCreate } = await canCreateTransaction(userId)
-    if (!success || userId == null || !canCreate) {
+    const { canCreateTransaction } = await canCreateTransactions(userId)
+    if (!success || userId == null || !canCreateTransaction) {
         return { success: false, dbResponseMessage: "SS Validation - There was an error adding your transaction" }
     }
 
-    revalidatePath('/transactions')
+    revalidatePath('/dashboard') 
     return await addTransactionDb({ ...data, clerkUserId: userId })
 }
 
 export async function updateTransaction(
     transactionId: string,
-    unsafeData: TInsertTransaction
+    unsafeData: TInsertNewTransaction
 ) {
     const { userId } = await auth()
     const { success, data } = TransactionSchema.safeParse(unsafeData)
@@ -39,8 +38,8 @@ export async function updateTransaction(
         return { success: false, dbResponseMessage: "SS Validation - There was an error updating your transaction" }
     }
 
-    revalidatePath('/transactions') 
-    return await updatedTransactionDb(data, { transactionId, userId })
+    revalidatePath('/dashboard')
+    return await updateTransactionDb(data, { transactionId, userId })
 }
 
 export async function deleteTransaction(transactionId: string) {
@@ -50,7 +49,7 @@ export async function deleteTransaction(transactionId: string) {
         return { success: false, dbResponseMessage: "SS Validation - There was an error deleting your transaction" }
     }
 
-    revalidatePath('/transactions') 
+    revalidatePath('/dashboard') 
     return await deleteTransactionDb({ transactionId, userId })
 }
 

@@ -1,10 +1,10 @@
 import { SubscriptionTiers } from "@/data/subscriptionTiers";
 import { db } from "@/drizzle/db";
-import { CategoriesTable, UserSubscriptionTable } from "@/drizzle/schema";
+import { ExpensesTable, IncomeTable, SavingsTable, UserSubscriptionTable } from "@/drizzle/schema";
 import { eq, SQL } from "drizzle-orm";
-import { TDatabaseResponse } from "./categories";
 import { deleteAllCards } from "./cards";
 import { deleteAllAccounts } from "./accounts";
+import { TDatabaseResponse } from "./shared";
 
 export async function createUserSubscription(
     data: typeof UserSubscriptionTable.$inferInsert
@@ -23,10 +23,17 @@ export async function deleteUserSubscription(
         .delete(UserSubscriptionTable)
         .where(eq(UserSubscriptionTable.clerkUserId, clerkUserId))
 
-    // Delete user's categories, and on cascade, their transactions as well
     await db
-        .delete(CategoriesTable)
-        .where(eq(CategoriesTable.clerkUserId, clerkUserId))
+        .delete(IncomeTable)
+        .where(eq(IncomeTable.clerkUserId, clerkUserId))
+
+    await db
+        .delete(SavingsTable)
+        .where(eq(SavingsTable.clerkUserId, clerkUserId))
+
+    await db
+        .delete(ExpensesTable)
+        .where(eq(ExpensesTable.clerkUserId, clerkUserId))
 
     await deleteAllCards(clerkUserId)
     await deleteAllAccounts(clerkUserId)

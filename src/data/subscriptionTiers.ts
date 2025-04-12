@@ -2,103 +2,119 @@ export type TierNames = keyof typeof SubscriptionTiers
 export type PaidTierNames = Exclude<TierNames, "Free">
 
 export type TSubscriptionTier = {
+
+  // Tier Information
   name:                     TierNames
   priceInCents:             number
   originalPriceInCents?:    number
   isMonthlyPlan?:           boolean
   isLifetimePlan?:          boolean
   isPopular?:               boolean
+  stripePriceId:            string | undefined
 
-  // Categories Page
-  canAccessCardsPage:       boolean
-  canAccessAccountsPage:    boolean
-
-  // Analytics Page
-  canViewExpenses_Actual:   boolean
-  canViewExpenses_Budget:   boolean
-  canViewExpenses_Trend:    boolean
-  //
+  // Dashboard Views - Income
+  canViewIncome_Streams:    boolean
+  // Dashboard Views - Savings
   canViewSavings_Goals:     boolean
   canViewSavings_Growth:    boolean
+  // Dashboard Views - Expenses
+  canViewExpenses_Budget:   boolean
+  canViewExpenses_Insights: boolean
+  canViewExpenses_Actual:   boolean
+  canViewExpenses_Trend:    boolean
+  // Dashboard Views - Cards & Accounts
+  canViewCards:             boolean
+  canViewAccounts:          boolean
+  // Dashboard Views - Transactions
+  canViewTransactions:      boolean
 
-
-  maxNumberOfCategories:    number
-  maxNumberOfTransactions:  number
+  // Max Number
+  maxNumberOfIncome:        number
+  maxNumberOfSavings:       number
+  maxNumberOfExpenses:      number
   maxNumberOfCards:         number
   maxNumberOfAccounts:      number
-
-  stripePriceId:            string | undefined
+  maxNumberOfTransactions:  number | "Unlimited"
 }
 
 export const SubscriptionTiers = {
   Free: {
-    name: "Free",
-    priceInCents: 0,
+    name:                     "Free",
+    priceInCents:             0,
+    stripePriceId:            undefined,
 
-    canAccessCardsPage: false,
-    canAccessAccountsPage: false,
-
-    canViewExpenses_Actual:   true,
-    canViewExpenses_Budget:   false,
-    canViewExpenses_Trend:    false,
-
-    canViewSavings_Goals:     false,
+    canViewIncome_Streams:    true, 
+    canViewSavings_Goals:     true,
     canViewSavings_Growth:    false,
+    canViewExpenses_Budget:   true,
+    canViewExpenses_Insights: true,
+    canViewExpenses_Actual:   true,
+    canViewExpenses_Trend:    false,
+    canViewCards:             false,
+    canViewAccounts:          false,
+    canViewTransactions:      true,
 
-    maxNumberOfCategories: 6,
-    maxNumberOfTransactions: 100,
-    maxNumberOfCards: 0,
-    maxNumberOfAccounts: 0,
-
-    stripePriceId: undefined
+    maxNumberOfIncome:        1,
+    maxNumberOfSavings:       1,
+    maxNumberOfExpenses:      5,
+    maxNumberOfCards:         0,
+    maxNumberOfAccounts:      0,
+    maxNumberOfTransactions:  100,
   },
+
   "Pro Monthly": {
-    name: "Pro Monthly",
-    priceInCents: 1999,
-    originalPriceInCents: 2499,
-    isMonthlyPlan: true,
+    name:                     "Pro Monthly",
+    priceInCents:             1999,
+    originalPriceInCents:     2499,
+    isMonthlyPlan:            true,
+    stripePriceId:            process.env.STRIPE_PRO_MONTHLY_STRIPE_PRICE_ID,
 
-    canAccessCardsPage: true,
-    canAccessAccountsPage: true,
-
-    canViewExpenses_Actual:   true,
-    canViewExpenses_Budget:   true,
-    canViewExpenses_Trend:    true,
-
+    canViewIncome_Streams:    true, 
     canViewSavings_Goals:     true,
     canViewSavings_Growth:    true,
+    canViewExpenses_Budget:   true,
+    canViewExpenses_Insights: true,
+    canViewExpenses_Actual:   true,
+    canViewExpenses_Trend:    true,
+    canViewCards:             true,
+    canViewAccounts:          true,
+    canViewTransactions:      true,
 
-    maxNumberOfCategories: 12,
-    maxNumberOfTransactions: 300,
-    maxNumberOfCards: 3,
-    maxNumberOfAccounts: 3,
-
-    stripePriceId: process.env.STRIPE_PRO_MONTHLY_STRIPE_PRICE_ID,
+    maxNumberOfIncome:        2,
+    maxNumberOfSavings:       2,
+    maxNumberOfExpenses:      10,
+    maxNumberOfCards:         3,
+    maxNumberOfAccounts:      3,
+    maxNumberOfTransactions:  300,
   },
+
   "Pro Lifetime": {
-    name: "Pro Lifetime",
-    priceInCents: 19900,
-    originalPriceInCents: 24900,
-    isLifetimePlan: true,
-    isPopular: true,
+    name:                     "Pro Lifetime",
+    priceInCents:             19900,
+    originalPriceInCents:     24900,
+    isLifetimePlan:           true,
+    isPopular:                true,    
+    stripePriceId:            process.env.STRIPE_PRO_OTP_STRIPE_PRICE_ID,
 
-    canAccessCardsPage: true,
-    canAccessAccountsPage: true,
-
-    canViewExpenses_Actual:   true,
-    canViewExpenses_Budget:   true,
-    canViewExpenses_Trend:    true,
-
+    canViewIncome_Streams:    true,
     canViewSavings_Goals:     true,
     canViewSavings_Growth:    true,
+    canViewExpenses_Budget:   true,
+    canViewExpenses_Insights: true,
+    canViewExpenses_Actual:   true,
+    canViewExpenses_Trend:    true,
+    canViewCards:             true,
+    canViewAccounts:          true,
+    canViewTransactions:      true,
 
-    maxNumberOfCategories: 15,
-    maxNumberOfTransactions: 1000,
-    maxNumberOfCards: 5,
-    maxNumberOfAccounts: 5,
-
-    stripePriceId: process.env.STRIPE_PRO_OTP_STRIPE_PRICE_ID,
+    maxNumberOfIncome:        4,
+    maxNumberOfSavings:       4,
+    maxNumberOfExpenses:      5,
+    maxNumberOfCards:         5,
+    maxNumberOfAccounts:      5,
+    maxNumberOfTransactions:  "Unlimited",
   },
+
 } as const
 
 export const SubscriptionTiersInOrder = [

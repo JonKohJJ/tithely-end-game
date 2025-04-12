@@ -1,61 +1,11 @@
 import { db } from "@/drizzle/db";
 import { AccountsTable, TransactionsTable } from "@/drizzle/schema"
-import { eq, count, asc, and } from "drizzle-orm";
-import { TDatabaseResponse } from "./categories";
+import { eq, count, asc, and, sql, sum } from "drizzle-orm";
 import { TInsertAccount } from "@/zod/accounts";
+import { TSelectOption } from "@/app/(protected)/dashboard/_components/Transaction/TransactionForm";
+import { getChildTransactionsCount, TDatabaseResponse } from "./shared";
 import { getTransactionsIdByAccountId, resetTransactionAccountId } from "./transactions";
 
-export type TFetchedAccount = typeof AccountsTable.$inferSelect
-export type TFetchedAccountWithChildTransactionCount = TFetchedAccount & {
-    childTransactionsCount: number
-}
-
-// const OPERATION_DELAY = 2000
-// await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
-
-export async function getAllAccounts(
-    userId: string
-) {
-
-    // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
-
-    const allAccounts = await db
-        .select()
-        .from(AccountsTable)
-        .where(
-            eq(AccountsTable.clerkUserId, userId),
-        )
-        .orderBy(
-            asc(AccountsTable.createdAt)
-        )
-
-    // Get X transactions tied to this account
-    const allAccountsWithChildTransactionsCount = await Promise.all(
-        allAccounts.map(async (account) => {
-            const count = await getChildTransactionsCount(userId, account.accountId)
-            return {
-                ...account,
-                childTransactionsCount: count
-            }
-        })
-    )
-
-    return allAccountsWithChildTransactionsCount
-}
-
-export async function getAccountsCount(
-    userId: string
-) {
-    const [ result ] = await db
-        .select(
-            { count: count() }
-        )
-        .from(AccountsTable)
-        .where(
-            eq(AccountsTable.clerkUserId, userId)
-        )
-    return result.count
-}
 
 export async function addAccount(
     values: typeof AccountsTable.$inferInsert
@@ -79,7 +29,6 @@ export async function addAccount(
         return { success: false, dbResponseMessage: "DB ERROR - An unexpected error occurred" };
     }
 }
-
 export async function updateAccount(
     values: TInsertAccount,
     { accountId, userId } : { accountId: string, userId: string }
@@ -90,22 +39,22 @@ export async function updateAccount(
         const [updatedAccount] = await db
             .update(AccountsTable)
             .set(values)
-            .where(and(eq(AccountsTable.clerkUserId, userId), eq(AccountsTable.accountId, accountId)))
+            .where(and(
+                    eq(AccountsTable.clerkUserId, userId), 
+                    eq(AccountsTable.accountId, accountId)
+                )
+            )
             .returning()
 
         return { success: true, dbResponseMessage: `Account '${updatedAccount.accountName}' successfully updated`}
 
     } catch (error) {
-
         if (error instanceof Error) {
-            // TODO: Handle any update failures
             return { success: false, dbResponseMessage: `DB ERROR - ${error.message}` }
         }
-        
         return { success: false, dbResponseMessage: "DB ERROR - An unexpected error occurred" }
     }
 }
-
 export async function deleteAccount({
     accountId, 
     userId
@@ -120,7 +69,7 @@ export async function deleteAccount({
         const respectiveTransactions = await getTransactionsIdByAccountId(accountId, userId)
         await Promise.all(
             respectiveTransactions.map(async (transaction) => {
-                resetTransactionAccountId(transaction.id, userId)
+                await resetTransactionAccountId(transaction.id, userId)
             })
         )
         
@@ -134,17 +83,55 @@ export async function deleteAccount({
         return { success: true, dbResponseMessage: `Account '${deletedAccount.accountName}' successfully deleted`}
 
     } catch (error) {
-
         if (error instanceof Error) {
-            // TODO: Handle any delete failures
             return { success: false, dbResponseMessage: `DB ERROR - ${error.message}` }
         }
-        
         return { success: false, dbResponseMessage: "DB ERROR - An unexpected error occurred" }
-
     }
 }
 
+// const OPERATION_DELAY = 2000
+// await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
+
+export type TFetchedAccount = typeof AccountsTable.$inferSelect & {
+    accountMonthlyBalance: number
+    childTransactionCount: number
+}
+export async function getAllAccounts(
+    userId: string,
+    month: number,
+    year: number,
+): Promise<TFetchedAccount[]> {
+
+    // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
+
+    const result = await db
+        .select()
+        .from(AccountsTable)
+        .where(
+            eq(AccountsTable.clerkUserId, userId),
+        )
+        .orderBy(
+            asc(AccountsTable.createdAt)
+        )
+
+    // Calculate accountMonthlyBalance & child transaction count
+    const allAccounts = await Promise.all(
+        result.map(async (item) => {
+
+            const accountMonthlyBalance = await getAccountMonthlyBalance(item.accountId, month, year)
+            const childTransactionCount = await getChildTransactionsCount(userId, item.accountId, "Accounts")
+
+            return ({
+                ...item,
+                accountMonthlyBalance,
+                childTransactionCount,
+            })
+        })
+    )
+
+    return allAccounts
+}
 export async function getAllAccountNames(
     userId: string, 
 ) {
@@ -166,23 +153,130 @@ export async function getAllAccountNames(
     
     return allNames
 }
-
-export async function getChildTransactionsCount(userId: string, accountId: string) {
-
+export async function getAccountsCount(
+    userId: string
+) {
     const [ result ] = await db
         .select(
             { count: count() }
         )
+        .from(AccountsTable)
+        .where(
+            eq(AccountsTable.clerkUserId, userId)
+        )
+    return result.count
+}
+export async function getAccountMonthlyBalance(
+    accountId: string,
+    month: number,
+    year: number,
+): Promise<number> {
+
+    // total monthly income - total monthly savings - total monthly expenses
+    const totalMonthlyIncome = await getTotalMonthlyIncomeByAccountId(accountId, month, year)
+    const totalMonthlySavings = await getTotalMonthlySavingsByAccountId(accountId, month, year)
+    const totalMonthlyExpenses = await getTotalMonthlyExpensesByAccountId(accountId, month, year)
+
+    const accountMonthlyBalance = totalMonthlyIncome - totalMonthlySavings - totalMonthlyExpenses
+    return accountMonthlyBalance
+}
+async function getTotalMonthlyIncomeByAccountId(    
+    accountId: string,
+    month: number,
+    year: number
+) {
+
+    const [ result ] = await db
+        .select({
+            total: sum(TransactionsTable.transactionAmount)
+        })
         .from(TransactionsTable)
         .where(
             and(
-                eq(TransactionsTable.clerkUserId, userId),
-                eq(TransactionsTable.transactionAccountIdFK, accountId)
+                eq(TransactionsTable.transactionType, "Income"),
+                eq(TransactionsTable.transactionAccountIdFK, accountId),
+                sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
+                sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`
             )
         )
-    
-    return result.count
+
+    return result.total === null 
+        ? 0 
+        : Number(result.total)
 }
+async function getTotalMonthlySavingsByAccountId(    
+    accountId: string,
+    month: number,
+    year: number
+) {
+
+    const [ result ] = await db
+        .select({
+            total: sum(TransactionsTable.transactionAmount)
+        })
+        .from(TransactionsTable)
+        .where(
+            and(
+                eq(TransactionsTable.transactionType, "Savings"),
+                eq(TransactionsTable.transactionAccountIdFK, accountId),
+                sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
+                sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`
+            )
+        )
+
+    return result.total === null 
+        ? 0 
+        : Number(result.total)
+}
+async function getTotalMonthlyExpensesByAccountId(    
+    accountId: string,
+    month: number,
+    year: number
+) {
+
+    const [ result ] = await db
+        .select({
+            total: sum(TransactionsTable.transactionAmount)
+        })
+        .from(TransactionsTable)
+        .where(
+            and(
+                eq(TransactionsTable.transactionType, "Expenses"),
+                eq(TransactionsTable.transactionAccountIdFK, accountId),
+                sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
+                sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`
+            )
+        )
+
+    return result.total === null 
+        ? 0 
+        : Number(result.total)
+}
+
+
+// For Transaction Form
+export async function getAccountsDropdownOptions(
+    userId: string,
+): Promise<TSelectOption[]> {
+
+    // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
+
+    const result = await db
+        .select({
+            label: AccountsTable.accountName,
+            value: AccountsTable.accountId
+        })
+        .from(AccountsTable)
+        .where(
+            and(
+                eq(AccountsTable.clerkUserId, userId)
+            )
+        )
+        .orderBy(asc(AccountsTable.createdAt))
+
+    return result
+}
+
 
 // For user subscription cancellation
 export async function deleteAllAccounts(userId: string) {

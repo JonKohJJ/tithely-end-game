@@ -29,6 +29,8 @@ export default function SubscriptionPlans({
 }
 
 function PricingCard({
+
+    // Tier Information
     currentPlanName,
     name,
     priceInCents,
@@ -37,22 +39,33 @@ function PricingCard({
     isLifetimePlan,
     isPopular,
 
-    // Features
-    canAccessCardsPage,
-    canAccessAccountsPage,
+    // Dashboard Views - Income
+    canViewIncome_Streams, 
 
-    // Analytics Page
-    canViewExpenses_Actual, 
-    canViewExpenses_Budget, 
-    canViewExpenses_Trend, 
-    //
+    // Dashboard Views - Savings
     canViewSavings_Goals, 
     canViewSavings_Growth, 
 
-    maxNumberOfCategories,
-    maxNumberOfTransactions,
+    // Dashboard Views - Expenses
+    canViewExpenses_Budget,
+    canViewExpenses_Insights,
+    canViewExpenses_Actual,
+    canViewExpenses_Trend,
+
+    // Dashboard Views - Cards & Accounts
+    canViewCards,
+    canViewAccounts,
+
+    // Dashboard Views - Transactions
+    canViewTransactions,
+
+    // Max Number
+    maxNumberOfIncome,
+    maxNumberOfSavings,
+    maxNumberOfExpenses,
     maxNumberOfCards,
     maxNumberOfAccounts,
+    maxNumberOfTransactions,
 
 } : TPricingCardProps) {
 
@@ -84,26 +97,38 @@ function PricingCard({
 
             <div className="features flex flex-col gap-2">
 
-                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfCategories}>max categories</Feature>
-                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfTransactions}>max transactions</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewIncome_Streams}>Access Income Streams</Feature>
+                
+                <div className="my-2 h-[1px] bg-color-muted-text"></div>
+
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewSavings_Goals}>Access Savings Goals</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewSavings_Growth}>Access Savings Growth Trend</Feature>
+                
+                <div className="my-2 h-[1px] bg-color-muted-text"></div>
+
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Budget}>Access Budgeted Expenses</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Insights}>Access Expenses Insights</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Actual}>Access Actual Expenses</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Trend}>Access Expenses Trend</Feature>
 
                 <div className="my-2 h-[1px] bg-color-muted-text"></div>
 
-                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Actual}>Track Actual Expenses</Feature>
-                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Budget}>View Budgeted Expenses</Feature>
-                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Trend}>Track Expenses Trend</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewCards}>Access Cards Page</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewAccounts}>Access Accounts Page</Feature>
 
                 <div className="my-2 h-[1px] bg-color-muted-text"></div>
 
-                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewSavings_Growth}>View Savings Growth</Feature>
-                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewSavings_Goals}>View Savings Goals</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewTransactions}>Access Transactions Page</Feature>
 
                 <div className="my-2 h-[1px] bg-color-muted-text"></div>
 
-                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canAccessCardsPage}>Access cards page</Feature>
-                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canAccessAccountsPage}>Access accounts page</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfIncome}>max income streams</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfSavings}>max saving goals</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfExpenses}>max expenses</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfCards}>max cards</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfAccounts}>max accounts</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfTransactions}>max transactions</Feature>
+
             </div>
             
             <form
@@ -113,9 +138,9 @@ function PricingCard({
                     : createCheckoutSession.bind(null, name, (isLifetimePlan ? true : false))
                 }
             >
-                {currentPlanName?.includes("Lifetime") 
+                {currentPlanName?.includes("Lifetime")
                     ?   <MyButton additionalClasses="w-full py-6 mt-8"  disabled={true}>You have full access!</MyButton>
-                    :   <MyButton additionalClasses="w-full py-6 mt-8" disabled={userLoggedIn && isCurrentPlan} onClickFunction={() => {setIsRedirecting(true)}}>
+                    :   <MyButton type="submit" additionalClasses="w-full py-6 mt-8" disabled={userLoggedIn && isCurrentPlan} onClickFunction={() => {setIsRedirecting(true)}}>
                             {userLoggedIn
                                 ? (
                                     isCurrentPlan
@@ -140,7 +165,7 @@ function Feature({
 } : {
     children: ReactNode
     canAccess?: boolean
-    maxNumber?: number
+    maxNumber?: number | "Unlimited"
     isMonthlyPlan?: boolean
     isLifetimePlan?: boolean
 }) {
@@ -151,19 +176,23 @@ function Feature({
                 : (((maxNumber && typeof maxNumber === "number") && maxNumber > 0)
                     ? (
                         isMonthlyPlan
-                        ? <ArrowUp className="rotate-45" />
-                        : (
-                            isLifetimePlan
-                            ?  <ArrowUpFromDot className="rotate-45" />
-                            : <Check />
-                        )
+                            ? <ArrowUp className="rotate-45" />
+                            : (
+                                isLifetimePlan
+                                    ? <ArrowUpFromDot className="rotate-45" />
+                                    : <Check />
+                            )
                     )
-                    : <X />
+                    : maxNumber === "Unlimited"
+                        ? <ArrowUpFromDot className="rotate-45" />
+                        : <X />
                 )
             }
             <p className={(canAccess || (maxNumber && typeof maxNumber === "number") && maxNumber > 0)
                 ? "" 
-                : "text-color-border line-through"
+                : maxNumber === "Unlimited"
+                    ? ""
+                    : "text-color-border line-through"
             }>
                 <strong>{maxNumber}</strong> {children}
             </p>

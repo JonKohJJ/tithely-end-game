@@ -10,7 +10,16 @@ const updatedAt = timestamp("updated_at", { withTimezone: true })
   .defaultNow()
   .$onUpdate(() => new Date())
 
-export const TierEnum = pgEnum("subscription_tier_30", ["Free", "Pro Monthly", "Pro Lifetime"])
+  
+// Enums
+
+export const TierEnum = pgEnum("subscription_tier_36", ["Free", "Pro Monthly", "Pro Lifetime"])
+export const TypeEnum = pgEnum("type_36", ["Income", "Savings", "Expenses"])
+export const ExpenseMethodEnum = pgEnum("expense_method_36", ["Fixed", "Variable"])
+export const CreditOrDebitEnum = pgEnum("credit_debit_36", ["Credit", "Debit"])
+
+
+// Tables
 
 export const UserSubscriptionTable = pgTable(
   'user_subscriptions', 
@@ -24,57 +33,44 @@ export const UserSubscriptionTable = pgTable(
     createdAt,
     updatedAt,
   },
-).enableRLS()
+).enableRLS() 
 
-export const TypeEnum = pgEnum("type_30", ["Income", "Savings", "Expenses"])
-export const ExpenseMethodEnum = pgEnum("expense_method_30", ["Fixed", "Variable"])
-
-export const CategoriesTable = pgTable(
-  'user_categories',
+export const IncomeTable = pgTable(
+  'user_income',
   {
-    categoryId: uuid("category_id").primaryKey().defaultRandom(),
+    incomeId: uuid("income_id").primaryKey().defaultRandom(),
     clerkUserId: text("clerk_user_id").notNull(),
-    categoryName: text("category_name").notNull(),
-    categoryBudget: doublePrecision("category_budget").notNull(),
-    categoryType: TypeEnum("category_type").notNull(),
-    expenseMethod: ExpenseMethodEnum("expense_method"),
-    savingGoal: doublePrecision("saving_goal"),
+    incomeName: text("income_name").notNull(),
+    incomeMonthlyContribution: doublePrecision("income_monthly_contribution").notNull(),
     createdAt,
-  },
-  (table) => {
-    return [ 
-      check("Category Type is Expense / Value expected", sql`${table.categoryType} != 'Expenses' OR ${table.expenseMethod} IS NOT NULL`),
-      check("Category Type is Income / NULL expected", sql`${table.categoryType} != 'Income' OR ${table.expenseMethod} IS NULL`),
-      check("Category Type is Savings / NULL expected", sql`${table.categoryType} != 'Savings' OR ${table.expenseMethod} IS NULL`),
-      check("Category Type is Savings / Savings goal value expected", sql`${table.categoryType} != 'Savings' OR ${table.savingGoal} IS NOT NULL`),
-    ]
+    updatedAt,
   }
 ).enableRLS()
 
-export const CreditOrDebitEnum = pgEnum("credit_debit_30", ["Credit", "Debit"])
-
-export const TransactionsTable = pgTable(
-  'user_transactions',
+export const SavingsTable = pgTable(
+  'user_savings',
   {
-    transactionId: uuid("transaction_id").primaryKey().defaultRandom(),
+    savingId: uuid("saving_id").primaryKey().defaultRandom(),
     clerkUserId: text("clerk_user_id").notNull(),
-    transactionDate: date().notNull(),
-    transactionType: TypeEnum("transaction_type").notNull(),
-    transactionCategoryIdFK: uuid("transaction_category_id_fk").references(() => CategoriesTable.categoryId, {onDelete: 'cascade'}),
-    transactionCardIdFK: uuid("transaction_card_id_fk").references(() => CardsTable.cardId),
-    transactionAccountIdFK: uuid("transaction_account_id_fk").references(() => AccountsTable.accountId),
-    transactionAmount: doublePrecision("transaction_budget").notNull(),
-    transactionDescription: text("transaction_description").notNull(),
-    transactionCreditOrDebit: CreditOrDebitEnum("transaction_credit_debit"),
-    isClaimable: boolean(),
+    savingName: text("saving_name").notNull(),
+    savingDescription: text("saving_description").notNull(),
+    savingMonthlyContribution: doublePrecision("saving_monthly_contribution").notNull(),
+    savingGoal: doublePrecision("saving_goal").notNull(),
     createdAt,
-  },
-  (table) => {
-    return [ 
-      check("Category Type is Expense / Expenses fields (credit or debit and isclaimable) must not be null", sql`${table.transactionType} != 'Expenses' OR ${table.transactionCreditOrDebit} IS NOT NULL AND ${table.isClaimable} IS NOT NULL`),
-      check("Category Type is Income / NULL expected for Expenses fields (credit or debit and isclaimable)", sql`${table.transactionType} != 'Income' OR ${table.transactionCreditOrDebit} IS NULL AND ${table.isClaimable} IS NULL`),
-      check("Category Type is Savings / NULL expected for Expenses fields (credit or debit and isclaimable)", sql`${table.transactionType} != 'Savings' OR ${table.transactionCreditOrDebit} IS NULL AND ${table.isClaimable} IS NULL`),
-    ]
+    updatedAt,
+  }
+).enableRLS()
+
+export const ExpensesTable = pgTable(
+  'user_expenses',
+  {
+    expenseId: uuid("expense_id").primaryKey().defaultRandom(),
+    clerkUserId: text("clerk_user_id").notNull(),
+    expenseName: text("expense_name").notNull(),
+    expenseMonthlyBudget: doublePrecision("expense_monthly_budget").notNull(),
+    expenseMethod: ExpenseMethodEnum("expense_method").notNull(),
+    createdAt,
+    updatedAt,
   }
 ).enableRLS()
 
@@ -86,8 +82,8 @@ export const CardsTable = pgTable(
     cardName: text("card_name").notNull(),
     cardMinimumSpend: doublePrecision("card_minimum_spend").notNull(),
     cardMaximumBudget: doublePrecision("card_maximum_budget").notNull(),
-    cardCurrentCharge: doublePrecision("card_current_charge").notNull(),
     createdAt,
+    updatedAt,
   },
 ).enableRLS()
 
@@ -97,7 +93,89 @@ export const AccountsTable = pgTable(
     accountId: uuid("account_id").primaryKey().defaultRandom(),
     clerkUserId: text("clerk_user_id").notNull(),
     accountName: text("account_name").notNull(),
-    accountBalance: doublePrecision("account_balance").notNull(),
     createdAt,
+    updatedAt,
   },
+).enableRLS()
+
+export const TransactionsTable = pgTable(
+  'user_transactions',
+  {
+    transactionId: uuid("transaction_id").primaryKey().defaultRandom(),
+    clerkUserId: text("clerk_user_id").notNull(),
+
+    transactionDate: date().notNull(),
+    transactionType: TypeEnum("transaction_type").notNull(),
+    transactionAmount: doublePrecision("transaction_budget").notNull(),
+    transactionDescription: text("transaction_description").notNull(),
+    transactionCreditOrDebit: CreditOrDebitEnum("transaction_credit_debit"),
+    isClaimable: boolean(),
+
+    transactionIncomeIdFK: uuid("transaction_income_id_fk").references(() => IncomeTable.incomeId, {onDelete: 'cascade'}),
+    transactionSavingIdFK: uuid("transaction_saving_id_fk").references(() => SavingsTable.savingId, {onDelete: 'cascade'}),
+    transactionExpenseIdFK: uuid("transaction_expense_id_fk").references(() => ExpensesTable.expenseId, {onDelete: 'cascade'}),
+    transactionCardIdFK: uuid("transaction_card_id_fk").references(() => CardsTable.cardId),
+    transactionAccountIdFK: uuid("transaction_account_id_fk").references(() => AccountsTable.accountId),
+
+    createdAt,
+    updatedAt,
+  },
+  (table) => {
+    return [
+      check("income_requires_income_id", sql`
+        ${table.transactionType} != 'Income' OR ${table.transactionIncomeIdFK} IS NOT NULL
+      `),
+      
+      check("income_null_others", sql`
+        ${table.transactionType} != 'Income' OR (
+          ${table.transactionSavingIdFK} IS NULL AND
+          ${table.transactionExpenseIdFK} IS NULL
+        )
+      `),
+      
+      check("savings_requires_saving_id", sql`
+        ${table.transactionType} != 'Savings' OR ${table.transactionSavingIdFK} IS NOT NULL
+      `),
+      
+      check("savings_null_others", sql`
+        ${table.transactionType} != 'Savings' OR (
+          ${table.transactionIncomeIdFK} IS NULL AND
+          ${table.transactionExpenseIdFK} IS NULL
+        )
+      `),
+      
+      check("expenses_requires_expense_fields", sql`
+        ${table.transactionType} != 'Expenses' OR (
+          ${table.transactionExpenseIdFK} IS NOT NULL AND
+          ${table.transactionCreditOrDebit} IS NOT NULL AND
+          ${table.isClaimable} IS NOT NULL
+        )
+      `),
+      
+      check("expenses_null_others", sql`
+        ${table.transactionType} != 'Expenses' OR (
+          ${table.transactionIncomeIdFK} IS NULL AND
+          ${table.transactionSavingIdFK} IS NULL
+        )
+      `),
+      
+      check("income_savings_null_credit_fields", sql`
+        ${table.transactionType} IN ('Income', 'Savings') OR (
+          ${table.transactionType} = 'Expenses'
+        ) AND (
+          ${table.transactionCreditOrDebit} IS NOT NULL OR
+          ${table.isClaimable} IS NOT NULL
+        )
+      `),
+      
+      check("credit_nulls_account", sql`
+        ${table.transactionCreditOrDebit} != 'Credit' OR ${table.transactionAccountIdFK} IS NULL
+      `),
+      
+      check("debit_nulls_card", sql`
+        ${table.transactionCreditOrDebit} != 'Debit' OR ${table.transactionCardIdFK} IS NULL
+      `),
+      
+    ]
+  }
 ).enableRLS()

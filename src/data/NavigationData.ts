@@ -4,7 +4,6 @@ import {
   LucideProps,
   CaseUpper,
   BadgeDollarSign,
-  Notebook
 } from "lucide-react"
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
@@ -23,12 +22,12 @@ export const NavigationData = [
   {
     title: "Getting Started",
     subItems: [
-      {
-        name: "Planner",
-        url: "/planner",
-        icon: Notebook,
-        isDisabled: true
-      },
+      // {
+      //   name: "Planner",
+      //   url: "/planner",
+      //   icon: Notebook,
+      //   isDisabled: true
+      // },
       {
         name: "Transactions",
         url: "/transactions",

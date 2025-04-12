@@ -5,7 +5,7 @@ export default function MyButton({
     children,
     additionalClasses,
     disabled,
-    type,
+    type = "button",
     onClickFunction, 
 } : {
     children: ReactNode

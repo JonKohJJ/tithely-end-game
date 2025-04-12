@@ -1,9 +1,4 @@
 import { ReactNode } from 'react'
-import {
-  SidebarInset,
-  SidebarProvider
-} from "@/components/ui/sidebar"
-import { ProtectedNavBar } from './_components/ProtectedNavBar'
 import { Toaster } from '@/components/ui/toaster'
 import ProtectedHeader from './_components/ProtectedHeader'
 
@@ -13,20 +8,13 @@ export default async function ProtectedLayout({
   children: ReactNode 
 }) {
 
-  
-
   return (
-    <SidebarProvider>
-      <ProtectedNavBar />
-      <SidebarInset>
-        <ProtectedHeader />
-        <div className='protected-layout flex justify-center w-full h-full mb-36'>
-          <div className='w-full p-6 max-w-[1500px]'>
-              {children}
-              <Toaster />
-          </div>
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
+    <div className="protected-layout min-h-screen flex flex-col items-center">
+      <ProtectedHeader />
+      <div className="max-w-[1500px] w-full pb-24">
+        {children}
+        <Toaster />
+      </div>
+    </div>
   )
 }
