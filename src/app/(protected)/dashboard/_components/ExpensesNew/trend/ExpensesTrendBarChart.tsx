@@ -8,7 +8,7 @@ import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } f
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { TChartBar } from "@/server/db/analytics"
+import { TChartBar } from "@/server/db/expenses"
 
 const chartConfig = {} satisfies ChartConfig
 
