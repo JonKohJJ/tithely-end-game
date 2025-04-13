@@ -74,7 +74,7 @@ export default async function SubscriptionPage() {
 
     return (
         <div className="mysection subscription">
-            <div className="mycontainer">
+            <div className="mycontainer !max-w-[1500px]">
                 <div className='subscription-page flex flex-col gap-8 h-full'>
                 
                     <div className='flex flex-col'>
