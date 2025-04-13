@@ -10,7 +10,7 @@ export default function ProtectedHeader() {
 
     return (
         <section className='mysection border-b-[1px] border-color-muted-text sticky top-0 bg-color-bg z-[1]'>
-            <div className='mycontainer flex items-center justify-between !max-w-[1500px] !px-0'>
+            <div className='mycontainer flex items-center justify-between !max-w-[1500px]'>
 
                 <div className="flex items-center gap-2">
                     <Link href="/" className='flex items-center'>

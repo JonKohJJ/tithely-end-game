@@ -11,7 +11,10 @@ export default function SectionHeader({
     showFilter?: boolean
 }) {
     return (
-        <div className="section-header flex items-center justify-between w-full py-6 border-b border-color-muted-text">
+        <div className="section-header
+            py-8 flex flex-col gap-4 border-b border-color-muted-text
+            lg:flex-row lg:items-end lg:justify-between
+        ">
             <div className='flex flex-col'>
                 <p className='fs-h3'>{title}</p>
                 <p>{description}</p>

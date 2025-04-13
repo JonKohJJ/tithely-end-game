@@ -4,7 +4,7 @@ import { ArrowDownRight, ArrowUpRight } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { renderCustomLabel } from "../../ExpensesNew/trend/ExpensesTrendBarChart"
+import { renderCustomLabel } from "../../Expenses/trend/ExpensesTrendBarChart"
 import { TSavingGrowth } from "@/server/db/savings"
 
 export function SavingsGrowthLineChart({

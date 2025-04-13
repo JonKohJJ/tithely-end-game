@@ -56,7 +56,7 @@ export default function IncomeForm({
                 {incomeTobeEdited ? (
                     <ButtonToEditDeleteIncome setDialogMode={setDialogMode} />
                 ) : (
-                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')}>
+                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')} additionalClasses="hidden lg:flex">
                         <HandCoins />
                         <p>Add Income Stream</p>
                     </MyButton>
@@ -209,7 +209,7 @@ function ButtonToEditDeleteIncome({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="!p-0 h-[unset] notactive border-none">
+                <Button variant="ghost" className="!p-0 h-[unset] notactive border-none hidden lg:flex">
                     <span className="sr-only">Open menu</span>
                     <MoreHorizontal />
                 </Button>

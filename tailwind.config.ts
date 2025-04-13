@@ -14,7 +14,10 @@ export default {
         "color-text": "var(--color-text)",
         "color-border": "var(--color-border)",
         "color-muted-text": "var(--color-muted-text)"
-      }
+      },
+      display: {
+        inherit: 'inherit',
+      },
   	},
   },
   plugins: [require("tailwindcss-animate")],

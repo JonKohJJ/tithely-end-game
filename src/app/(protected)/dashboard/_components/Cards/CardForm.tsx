@@ -56,7 +56,7 @@ export default function IncomeForm({
                 {cardTobeEdited ? (
                     <ButtonToEditDeleteCard setDialogMode={setDialogMode} />
                 ) : (
-                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')}>
+                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')} additionalClasses="hidden lg:flex">
                         <CreditCard />
                         <p>Add Card</p>
                     </MyButton>
@@ -227,7 +227,7 @@ function ButtonToEditDeleteCard({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="!p-0 h-[unset] notactive border-none">
+                <Button variant="ghost" className="!p-0 h-[unset] notactive border-none hidden lg:flex">
                     <span className="sr-only">Open menu</span>
                     <MoreHorizontal />
                 </Button>

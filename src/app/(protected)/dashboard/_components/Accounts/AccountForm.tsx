@@ -64,7 +64,7 @@ export default function AccountForm({
                 {accountTobeEdited ? (
                     <ButtonToEditDeleteAccount setDialogMode={setDialogMode} />
                 ) : (
-                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')}>
+                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')} additionalClasses="hidden lg:flex">
                         <Landmark />
                         <p>Add Account</p>
                     </MyButton>
@@ -192,7 +192,7 @@ function ButtonToEditDeleteAccount({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="!p-0 h-[unset] notactive border-none hidden md:block">
+                <Button variant="ghost" className="!p-0 h-[unset] notactive border-none hidden lg:flex">
                     <span className="sr-only">Open menu</span>
                     <MoreHorizontal />
                 </Button>

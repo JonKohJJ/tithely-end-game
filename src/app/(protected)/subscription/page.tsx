@@ -73,49 +73,53 @@ export default async function SubscriptionPage() {
     ]
 
     return (
-        <div className='subscription-page flex flex-col gap-8 h-full'>
-        
-            <div className='flex flex-col'>
-                <Link href="/dashboard" className='pt-6 flex items-center gap-1 group'>
-                    <ArrowLeft className='w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1'/>
-                    Back to Dashboard
-                </Link>
-                <SectionHeader title='Your Subscription' description='Manage your subscription and plan' />
-            </div>
+        <div className="mysection subscription">
+            <div className="mycontainer">
+                <div className='subscription-page flex flex-col gap-8 h-full'>
+                
+                    <div className='flex flex-col'>
+                        <Link href="/dashboard" className='pt-6 flex items-center gap-1 group'>
+                            <ArrowLeft className='w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1'/>
+                            Back to Dashboard
+                        </Link>
+                        <SectionHeader title='Your Subscription' description='Manage your subscription and plan' />
+                    </div>
 
-            <div className="subscription-insight-cards grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4">
-                {subscriptionInsightItems.map((item, index) => (
-                    <InsightCard
-                        key={index}
-                        title={item.title}
-                        description={item.description}
-                        content={
-                            <div className="flex flex-col gap-2">
-                                {item.maxCount !== "Unlimited"
-                                    ? item.maxCount === 0
-                                        ? <p>Can’t add {item.itemLabel.toLowerCase()} on this plan.</p>
-                                        : <>
-                                            <p>{item.count} / {item.maxCount} {item.itemLabel} created</p>
-                                            <Progress
-                                                value={(item.count / item.maxCount) * 100}
-                                                className="bg-color-muted-text"
-                                                additionalClasses="bg-color-text"
-                                            />
-                                        </>
-                                    : <p>You can create unlimited {item.itemLabel.toLowerCase()}.</p>
+                    <div className="subscription-insight-cards grid grid-cols-1 lg:grid-cols-3 lg:grid-rows-2 gap-4">
+                        {subscriptionInsightItems.map((item, index) => (
+                            <InsightCard
+                                key={index}
+                                title={item.title}
+                                description={item.description}
+                                content={
+                                    <div className="flex flex-col gap-2">
+                                        {item.maxCount !== "Unlimited"
+                                            ? item.maxCount === 0
+                                                ? <p>Can’t add {item.itemLabel.toLowerCase()} on this plan.</p>
+                                                : <>
+                                                    <p>{item.count} / {item.maxCount} {item.itemLabel} created</p>
+                                                    <Progress
+                                                        value={(item.count / item.maxCount) * 100}
+                                                        className="bg-color-muted-text"
+                                                        additionalClasses="bg-color-text"
+                                                    />
+                                                </>
+                                            : <p>You can create unlimited {item.itemLabel.toLowerCase()}.</p>
+                                        }
+                                    </div>
                                 }
-                            </div>
-                        }
-                        icon={item.icon}
-                    />
-                ))}
-            </div>
+                                icon={item.icon}
+                            />
+                        ))}
+                    </div>
 
-            <div className="mt-4">
-                <p className='fs-h3 mb-4'>Your Subscription Plan</p>
-                <SubcriptionPlans currentPlanName={name} />
+                    <div className="mt-4">
+                        <p className='fs-h3 mb-4'>Your Subscription Plan</p>
+                        <SubcriptionPlans currentPlanName={name} />
+                    </div>
+                    
+                </div>
             </div>
-            
         </div>
     )
 }

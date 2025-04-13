@@ -57,7 +57,7 @@ export default function ExpenseForm({
                 {expenseTobeEdited ? (
                     <ButtonToEditDeleteExpense setDialogMode={setDialogMode} />
                 ) : (
-                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')}>
+                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')} additionalClasses="hidden lg:flex">
                         <DollarSign />
                         <p>Add Expense</p>
                     </MyButton>
@@ -244,7 +244,7 @@ function ButtonToEditDeleteExpense({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="!p-0 h-[unset] notactive border-none">
+                <Button variant="ghost" className="!p-0 h-[unset] notactive border-none hidden lg:flex">
                     <span className="sr-only">Open menu</span>
                     <MoreHorizontal />
                 </Button>

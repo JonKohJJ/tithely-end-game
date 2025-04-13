@@ -13,7 +13,7 @@ const AtkinsonHyperlegibleFont = Atkinson_Hyperlegible({
 })
 
 export const metadata: Metadata = {
-  title: "Tithely End Game",
+  title: "Tithely ©",
   description: "Where financial management is not just a task — it's an empowering experience.",
 };
 

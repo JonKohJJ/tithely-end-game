@@ -381,7 +381,7 @@ export default function AllTransactions({
                 return (
                   <DropdownMenu>
     
-                      <DropdownMenuTrigger asChild className="hidden md:flex !border-0 !shadow-none">
+                      <DropdownMenuTrigger asChild className="!border-0 !shadow-none hidden lg:flex">
                           <Button variant="ghost" className="h-8 w-8 p-0 notactive">
                               <span className="sr-only">Open menu</span>
                               <MoreHorizontal className="h-4 w-4" />
@@ -450,7 +450,7 @@ export default function AllTransactions({
     
 
             {/* Filters Row */}
-            <div className="hidden md:flex md:items-center justify-between">
+            <div className="hidden lg:flex lg:justify-between">
     
                 <div className="flex gap-2 items-center">
                     <Input
@@ -536,6 +536,7 @@ export default function AllTransactions({
                                         setIsAdding(true)
                                         setEditingRowId(null)
                                     }}
+                                    additionalClasses="hidden lg:flex"
                                 >
                                     <Plus />
                                     <p>Add</p>
@@ -661,7 +662,7 @@ export default function AllTransactions({
     
 
             {/* Table Footer - Pagination & X number of Rows Selected */}
-            <div className="hidden md:flex md:items-center md:justify-end md:space-x-2 fs-caption">
+            <div className="fs-caption hidden lg:flex lg:justify-between lg:space-x-2 ">
     
                 <div className="flex-1 text-muted-foreground flex gap-2">
                     <span>

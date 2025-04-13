@@ -56,7 +56,7 @@ export default function SavingForm({
                 {savingTobeEdited ? (
                     <ButtonToEditDeleteSaving setDialogMode={setDialogMode} />
                 ) : (
-                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')}>
+                    <MyButton onClickFunction={() => setDialogMode('AddOrEdit')} additionalClasses="hidden lg:flex">
                         <PiggyBank />
                         <p>Add Saving Goal</p>
                     </MyButton>
@@ -251,7 +251,7 @@ function ButtonToEditDeleteSaving({
         <div className="absolute right-6 z-10">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="!p-0 h-[unset] notactive border-none">
+                    <Button variant="ghost" className="!p-0 h-[unset] notactive border-none hidden lg:flex">
                         <span className="sr-only">Open menu</span>
                         <MoreHorizontal />
                     </Button>

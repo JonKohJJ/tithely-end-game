@@ -18,7 +18,7 @@ export default function SubscriptionPlans({
 }) {
 
     return (
-        <div className='subscription-plans flex flex-col md:flex-row gap-4'>
+        <div className='subscription-plans flex flex-col lg:flex-row gap-4'>
             {SubscriptionTiersInOrder.map(tier => {
                 return (
                     <PricingCard key={tier.name} {...tier} currentPlanName={currentPlanName} />
@@ -78,7 +78,7 @@ function PricingCard({
 
     return (
         <div className={`
-            pricing-card relative w-full border-[1px] border-color-border p-8 rounded-xl 
+            pricing-card relative w-full border-[1px] border-color-border p-8 rounded-xl
             ${mostPopular || isCurrentPlan ? "border-color-text" : ""}
         `}>
             
@@ -95,32 +95,32 @@ function PricingCard({
                 {isLifetimePlan && <p>lifetime</p>}
             </div>
 
-            <div className="features flex flex-col gap-2">
+            <div className="features flex flex-col gap-2 items-center lg:items-start">
 
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewIncome_Streams}>Access Income Streams</Feature>
                 
-                <div className="my-2 h-[1px] bg-color-muted-text"></div>
+                <div className="my-2 w-full h-[1px] bg-color-muted-text"></div>
 
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewSavings_Goals}>Access Savings Goals</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewSavings_Growth}>Access Savings Growth Trend</Feature>
                 
-                <div className="my-2 h-[1px] bg-color-muted-text"></div>
+                <div className="my-2 w-full h-[1px] bg-color-muted-text"></div>
 
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Budget}>Access Budgeted Expenses</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Insights}>Access Expenses Insights</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Actual}>Access Actual Expenses</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewExpenses_Trend}>Access Expenses Trend</Feature>
 
-                <div className="my-2 h-[1px] bg-color-muted-text"></div>
+                <div className="my-2 w-full h-[1px] bg-color-muted-text"></div>
 
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewCards}>Access Cards Page</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewAccounts}>Access Accounts Page</Feature>
 
-                <div className="my-2 h-[1px] bg-color-muted-text"></div>
+                <div className="my-2 w-full h-[1px] bg-color-muted-text"></div>
 
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewTransactions}>Access Transactions Page</Feature>
 
-                <div className="my-2 h-[1px] bg-color-muted-text"></div>
+                <div className="my-2 w-full h-[1px] bg-color-muted-text"></div>
 
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfIncome}>max income streams</Feature>
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} maxNumber={maxNumberOfSavings}>max saving goals</Feature>
