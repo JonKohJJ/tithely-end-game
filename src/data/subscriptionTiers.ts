@@ -109,7 +109,7 @@ export const SubscriptionTiers = {
 
     maxNumberOfIncome:        4,
     maxNumberOfSavings:       4,
-    maxNumberOfExpenses:      5,
+    maxNumberOfExpenses:      15,
     maxNumberOfCards:         5,
     maxNumberOfAccounts:      5,
     maxNumberOfTransactions:  "Unlimited",
