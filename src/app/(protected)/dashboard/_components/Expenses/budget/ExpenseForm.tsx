@@ -180,7 +180,16 @@ function OfficialExpenseForm({
                                     {...field} 
                                     disabled={formState.isSubmitting} 
                                     className="col-span-3 !m-0 border-color-border shadow-none"
-                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || "")}
+                                    onChange={(e) => {
+                                        const inputValue = e.target.value
+                                        if (/^\d*\.?\d{0,2}$/.test(inputValue)) {
+                                            field.onChange(inputValue)
+                                        }
+                                    }}
+                                    onBlur={() => {
+                                        const value = Number(field.value).toFixed(2)
+                                        field.onChange(Number(value))
+                                    }}
                                 />
                             </FormControl>
                             <FormMessage className=" col-span-4 text-right text-red-500"/>  
