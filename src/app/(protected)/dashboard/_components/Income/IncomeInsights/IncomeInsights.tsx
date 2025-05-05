@@ -28,7 +28,7 @@ export default function IncomeInsights({
 
 
     return (
-        <div className="IncomeInsights h-full flex flex-col gap-4 lg:flex-row">
+        <div className="IncomeInsights !h-full flex flex-col gap-4 lg:flex-row">
             <InsightCard 
                 title="Zero-Based Indicator" 
                 description="Ensure all income is accounted for." 

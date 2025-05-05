@@ -33,11 +33,11 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import TransactionForm, { TSelectOption } from "./TransactionForm"
 import { deleteBulkTransactions, deleteTransaction } from "@/server/actions/transactions"
 import { toast } from "@/hooks/use-toast"
 import Link from "next/link"
 import { TransactionCreditOrDebitOptions, TransactionTypeOptions } from "@/zod/transaction"
+import TransactionForm, { TSelectOption } from "./TransactionForm"
 
 export const LOCAL_STORAGE_PAGESIZE_KEY = "TITHELY_TRANSACTION_DATATABLE_PAGE_SIZE"
 
@@ -73,6 +73,8 @@ export default function AllTransactions({
     maxNumberOfAccounts, 
 
 }: TDataTableProps<TFetchedTransaction>) {
+
+    const storedPageSize = Number(localStorage.getItem(LOCAL_STORAGE_PAGESIZE_KEY)) || 10
 
     // Managed States
     const [sorting, setSorting] = useState<SortingState>([])
@@ -433,7 +435,11 @@ export default function AllTransactions({
             sorting,
             columnFilters,
             columnVisibility,
-            rowSelection
+            rowSelection,
+            pagination: {
+                pageSize: storedPageSize,
+                pageIndex: 0,
+            },
         },
     })
 

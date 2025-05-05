@@ -6,10 +6,10 @@ import { LOCAL_STORAGE_PAGESIZE_KEY } from "./AllTransactions";
 
 export default function TransactionSkeleton() {
 
-    const [pageSize, setPageSize] = useState<number | null>(null);
+    const [pageSize, setPageSize] = useState<number | null>(null)
 
     useEffect(() => {
-        const storedPageSize = localStorage.getItem(LOCAL_STORAGE_PAGESIZE_KEY);
+        const storedPageSize = localStorage.getItem(LOCAL_STORAGE_PAGESIZE_KEY)
         if (storedPageSize) {
             setPageSize(Number(storedPageSize))
         } else {

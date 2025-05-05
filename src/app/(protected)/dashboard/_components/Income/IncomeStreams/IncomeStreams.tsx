@@ -31,7 +31,7 @@ export default function IncomeStreams({
                 }
             </div>
 
-            <div className="divider h-[1px] bg-color-border w-full"></div>
+            <div className="divider w-full h-[1px] bg-color-border"></div>
 
             <div className="income-total flex justify-between">
                 <p>Total</p>

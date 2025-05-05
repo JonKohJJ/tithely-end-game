@@ -133,7 +133,10 @@ export async function getAllTransactions(
                 sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`
             )
         )
-        .orderBy(desc(TransactionsTable.createdAt))
+        .orderBy(
+            desc(TransactionsTable.transactionDate),
+            desc(TransactionsTable.createdAt),
+        )
 
     return allTransactions
 }
