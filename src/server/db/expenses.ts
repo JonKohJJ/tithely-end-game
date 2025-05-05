@@ -4,6 +4,7 @@ import { eq, and, asc, count, sum, sql } from "drizzle-orm";
 import { TInsertExpense } from "@/zod/expenses";
 import { TSelectOption } from "@/app/(protected)/dashboard/_components/Transaction/TransactionTable/TransactionForm";
 import { getChildTransactionsCount, TDatabaseResponse, allocatedColors } from "./shared";
+import { roundTo } from "@/app/(protected)/dashboard/_components/Expenses/insights/FetchExpensesInsights";
 
 
 export async function addExpense(
@@ -398,7 +399,7 @@ export async function getAvailableFunds(
     const availableFunds = income - savings - expensesDebit
 
     return availableFunds > 0 
-        ? availableFunds
+        ? roundTo(availableFunds, 2)
         : 0
 
 }

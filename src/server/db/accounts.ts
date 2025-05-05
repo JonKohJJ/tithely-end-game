@@ -5,6 +5,7 @@ import { TInsertAccount } from "@/zod/accounts";
 import { TSelectOption } from "@/app/(protected)/dashboard/_components/Transaction/TransactionTable/TransactionForm";
 import { getChildTransactionsCount, TDatabaseResponse } from "./shared";
 import { getTransactionsIdByAccountId, resetTransactionAccountId } from "./transactions";
+import { roundTo } from "@/app/(protected)/dashboard/_components/Expenses/insights/FetchExpensesInsights";
 
 
 export async function addAccount(
@@ -178,7 +179,7 @@ export async function getAccountMonthlyBalance(
     const totalMonthlyExpenses = await getTotalMonthlyExpensesByAccountId(accountId, month, year)
 
     const accountMonthlyBalance = totalMonthlyIncome - totalMonthlySavings - totalMonthlyExpenses
-    return accountMonthlyBalance
+    return roundTo(accountMonthlyBalance, 2)
 }
 async function getTotalMonthlyIncomeByAccountId(    
     accountId: string,

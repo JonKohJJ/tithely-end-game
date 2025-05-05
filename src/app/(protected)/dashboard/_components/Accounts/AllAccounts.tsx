@@ -32,16 +32,16 @@ function generateAccountDescription(
     accountMonthlyBalance: number
 ): string {
     if (accountMonthlyBalance < 0) {
-        return `You’ve overspent by $${Math.abs(accountMonthlyBalance)}. Top up your account by this amount to settle the balance.`;
+        return `You’ve overspent by $${Math.abs(accountMonthlyBalance)}. Top up your account by this amount to settle the balance.`
     }
 
     if (accountMonthlyBalance === 0) {
-        return `Balance is at exactly 0.`;
+        return `Balance is at exactly 0.`
     }
 
     if (accountMonthlyBalance > 0) {
-        return `Great job! You’ve saved $${accountMonthlyBalance} remaining in this account.`;
+        return `All good! $${accountMonthlyBalance} remaining in this account.`
     }
 
-    return ''; // fallback (shouldn't be hit)
+    return ''
 }
