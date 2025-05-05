@@ -2,7 +2,7 @@ import { db } from "@/drizzle/db";
 import { CardsTable, TransactionsTable } from "@/drizzle/schema"
 import { eq, count, asc, and, sum, sql } from "drizzle-orm";
 import { TInsertCard } from "@/zod/cards";
-import { TSelectOption } from "@/app/(protected)/dashboard/_components/Transaction/TransactionForm";
+import { TSelectOption } from "@/app/(protected)/dashboard/_components/Transaction/TransactionTable/TransactionForm";
 import { getChildTransactionsCount, TDatabaseResponse } from "./shared";
 import { getTransactionsIdByCardId, resetTransactionCardId } from "./transactions";
 
@@ -96,7 +96,7 @@ export async function deleteCard({
     }
 }
 
-// const OPERATION_DELAY = 2000
+// const OPERATION_DELAY = 5000
 // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
 
 export type TFetchedCard = typeof CardsTable.$inferSelect & {

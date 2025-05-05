@@ -2,7 +2,7 @@ import { ExpensesTable, TransactionsTable } from "@/drizzle/schema"
 import { db } from "@/drizzle/db"
 import { eq, and, asc, count, sum, sql } from "drizzle-orm";
 import { TInsertExpense } from "@/zod/expenses";
-import { TSelectOption } from "@/app/(protected)/dashboard/_components/Transaction/TransactionForm";
+import { TSelectOption } from "@/app/(protected)/dashboard/_components/Transaction/TransactionTable/TransactionForm";
 import { getChildTransactionsCount, TDatabaseResponse, allocatedColors } from "./shared";
 
 
@@ -363,6 +363,8 @@ export async function getTotalDebitByTime(
     month: number,
     year: number,
 ): Promise<number> {
+
+    // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
 
     const [ result ] = await db
         .select({

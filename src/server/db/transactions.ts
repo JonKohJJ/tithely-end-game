@@ -109,7 +109,7 @@ export async function deleteBulkTransactions({
 }
 
 
-// const OPERATION_DELAY = 2000
+// const OPERATION_DELAY = 5000
 // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
 
 export type TFetchedTransaction = typeof TransactionsTable.$inferSelect & {
@@ -195,6 +195,8 @@ export async function calculateTotalClaims(
     month: number,
     year: number,
 ): Promise<string> {
+
+    // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
 
     const [ result ] = await db
         .select({

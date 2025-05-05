@@ -2,7 +2,7 @@ import { IncomeTable } from "@/drizzle/schema";
 import { db } from "@/drizzle/db"
 import { eq, and, asc, count } from "drizzle-orm";
 import { TInsertIncome } from "@/zod/income";
-import { TSelectOption } from "@/app/(protected)/dashboard/_components/Transaction/TransactionForm";
+import { TSelectOption } from "@/app/(protected)/dashboard/_components/Transaction/TransactionTable/TransactionForm";
 import { getChildTransactionsCount, TDatabaseResponse } from "./shared";
 
 

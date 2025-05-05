@@ -2,7 +2,7 @@ import { db } from "@/drizzle/db";
 import { AccountsTable, TransactionsTable } from "@/drizzle/schema"
 import { eq, count, asc, and, sql, sum } from "drizzle-orm";
 import { TInsertAccount } from "@/zod/accounts";
-import { TSelectOption } from "@/app/(protected)/dashboard/_components/Transaction/TransactionForm";
+import { TSelectOption } from "@/app/(protected)/dashboard/_components/Transaction/TransactionTable/TransactionForm";
 import { getChildTransactionsCount, TDatabaseResponse } from "./shared";
 import { getTransactionsIdByAccountId, resetTransactionAccountId } from "./transactions";
 
@@ -90,7 +90,7 @@ export async function deleteAccount({
     }
 }
 
-// const OPERATION_DELAY = 2000
+// const OPERATION_DELAY = 5000
 // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
 
 export type TFetchedAccount = typeof AccountsTable.$inferSelect & {

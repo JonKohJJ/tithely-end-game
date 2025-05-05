@@ -22,27 +22,28 @@ export default function TransactionSkeleton() {
     }
 
     return (
-        <div className="transaction-skeleton flex flex-col gap-8">
+        <Skeleton className="transaction-skeleton flex flex-col gap-8 bg-color-muted-text p-8">
+
             <div className="filter-skeleton flex justify-between gap-2">
                 <div className="flex gap-2">
-                    <Skeleton className="h-8 w-[250px] bg-color-muted-text" />
-                    <Skeleton className="h-8 w-[100px] bg-color-muted-text" />
-                    <Skeleton className="h-8 w-[150px] bg-color-muted-text" />
-                    <Skeleton className="h-8 w-[100px] bg-color-muted-text" />
+                    <Skeleton className="h-8 w-[250px] bg-color-border" />
+                    <Skeleton className="h-8 w-[100px] bg-color-border" />
+                    <Skeleton className="h-8 w-[150px] bg-color-border" />
+                    <Skeleton className="h-8 w-[100px] bg-color-border" />
                 </div>
-                <Skeleton className="h-8 w-[50px] bg-color-muted-text" />
+                <Skeleton className="h-8 w-[50px] bg-color-border" />
             </div>
 
             <div className="table-skeleton flex flex-col gap-8">
                 {Array.from({ length: pageSize }).map((_, index) => (
                     <div key={index} className="row-skeleton flex gap-4">
-                        <Skeleton className="h-6 w-[50px] bg-color-muted-text" />
-                        <Skeleton className="h-6 w-[150px] bg-color-muted-text" />
-                        <Skeleton className="h-6 w-full bg-color-muted-text" />
-                        <Skeleton className="h-6 w-[150px] bg-color-muted-text" />
+                        <Skeleton className="h-6 w-[50px] bg-color-border" />
+                        <Skeleton className="h-6 w-[150px] bg-color-border" />
+                        <Skeleton className="h-6 w-full bg-color-border" />
+                        <Skeleton className="h-6 w-[150px] bg-color-border" />
                     </div>
                 ))}
             </div>
-        </div>
+        </Skeleton>
     );
 }

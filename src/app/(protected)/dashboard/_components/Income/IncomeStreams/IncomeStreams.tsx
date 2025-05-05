@@ -37,6 +37,7 @@ export default function IncomeStreams({
                 <p>Total</p>
                 <p className='fs-base'>${total}</p>
             </div>
+            
         </div>
     )
 }

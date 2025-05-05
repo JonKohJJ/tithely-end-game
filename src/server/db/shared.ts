@@ -16,13 +16,10 @@ export const allocatedColors = [
     "#E5007D", // Neon Fuchsia  
     "#1B1B3A", // Midnight Navy  
     "#008F11", // Vibrant Neon Green  
-    "#B00020", // Dark Cherry Red  
+    "#FF6F61", // Coral Red
     "#5A189A", // Royal Purple
-    "#FFB000", // Deep Golden Yellow  
-    "#00509D", // Cobalt Blue  
-    "#B61A6D", // Vivid Plum (Replaces Striking Magenta)  
-    "#7D00FF", // Electric Violet  
-    "#007F5F", // Rich Deep Green  
+    "#A0522D", // Sienna Brown
+    "#FFD700", // Bright Gold
 ]
 
 export async function getChildTransactionsCount(

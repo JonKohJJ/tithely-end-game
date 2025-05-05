@@ -2,7 +2,7 @@ import { IncomeTable, SavingsTable, TransactionsTable } from "@/drizzle/schema"
 import { db } from "@/drizzle/db"
 import { eq, and, asc, count, sum } from "drizzle-orm";
 import { TInsertSaving } from "@/zod/savings";
-import { TSelectOption } from "@/app/(protected)/dashboard/_components/Transaction/TransactionForm";
+import { TSelectOption } from "@/app/(protected)/dashboard/_components/Transaction/TransactionTable/TransactionForm";
 import { getTotalSavingsByTime, TChartBar } from "./expenses";
 import { getChildTransactionsCount, TDatabaseResponse, allocatedColors } from "./shared";
 

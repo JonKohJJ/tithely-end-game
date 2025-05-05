@@ -22,12 +22,18 @@ import FetchAllCards from './_components/Cards/FetchAllCards'
 import CardForm from './_components/Cards/CardForm'
 import FetchAllAccounts from './_components/Accounts/FetchAllAccounts'
 import AccountForm from './_components/Accounts/AccountForm'
-import FetchAllTransactions from './_components/Transaction/FetchAllTransactions'
+import FetchAllTransactions from './_components/Transaction/TransactionTable/FetchAllTransactions'
 import FetchExpensesInsights from './_components/Expenses/insights/FetchExpensesInsights'
 import FetchTransactionsInsights from './_components/Transaction/insights/FetchTransactionInsights'
 import Link from 'next/link'
 import FetchIncomeSankeyDiagramData from './_components/Income/SankeyDiagram/FetchIncomeSankeyDiagramData'
 import FetchIncomeInsights from './_components/Income/IncomeInsights/FetchIncomeInsights'
+import IncomeStreamsSkeleton from './_components/Income/IncomeStreams/IncomeStreamsSkeleton'
+import InsightCardSkeleton from '@/components/InsightCardSkeleton'
+import IncomeSankeyDiagramSkeleton from './_components/Income/SankeyDiagram/IncomeSankeyDiagramSkeleton'
+import TransactionSkeleton from './_components/Transaction/TransactionTable/TransactionSkeleton'
+import AllCardsSkeleton from './_components/Cards/AllCardsSkeleton'
+import AllAccountsSkeleton from './_components/Accounts/AllAccountsSkeleton'
 
 export default async function DashboardPage({
     searchParams
@@ -79,16 +85,20 @@ export default async function DashboardPage({
 
                                     <div className="flex flex-col lg:flex-row gap-4">
 
-                                        <div className="lg:w-[30%] rounded-xl border border-color-border p-6">
-                                            <Suspense fallback={<p>Loading income streams...</p>}>
+                                        <Suspense 
+                                            fallback={<IncomeStreamsSkeleton />}
+                                        >
+                                            <div className="lg:w-[30%] rounded-xl border border-color-border p-6">
                                                 <FetchIncomeStreams
                                                     userId={userId}
                                                 />
-                                            </Suspense>
-                                        </div>
+                                            </div>
+                                        </Suspense>
 
                                         <div className="lg:w-[70%] flex flex-col lg:flex-row">
-                                            <Suspense fallback={<p>Loading income insights...</p>}>
+                                            <Suspense
+                                                fallback={<InsightCardSkeleton />}
+                                            >
                                                 <FetchIncomeInsights
                                                     userId={userId}
                                                 />
@@ -105,7 +115,9 @@ export default async function DashboardPage({
                                             permission={canViewIncome_Flow} 
                                             renderFallback
                                         >
-                                            <Suspense fallback={<p>Loading Income Sankey Diagram...</p>}>
+                                            <Suspense
+                                                fallback={<IncomeSankeyDiagramSkeleton />}
+                                            >
                                                 <FetchIncomeSankeyDiagramData
                                                     userId={userId}
                                                 />
@@ -191,7 +203,7 @@ export default async function DashboardPage({
                                         <div className='expenses-insights flex flex-col'>
                                             <p className="fs-h3 mb-5">Expenses Insights</p>
                                             <Suspense
-                                                fallback={ <ExpensesActualSkeleton /> }
+                                                fallback={<InsightCardSkeleton />}
                                                 key={JSON.stringify(await searchParams)}
                                             >
                                                 <FetchExpensesInsights 
@@ -259,7 +271,9 @@ export default async function DashboardPage({
                                             permission={canViewCards}
                                             renderFallback
                                         >
-                                            <Suspense fallback={<p>Loading Cards...</p>}>
+                                            <Suspense 
+                                                fallback={<AllCardsSkeleton />}
+                                            >
                                                 <FetchAllCards
                                                     userId={userId}
                                                     searchParams={await searchParams}
@@ -284,7 +298,9 @@ export default async function DashboardPage({
                                             permission={canViewAccounts}
                                             renderFallback
                                         >
-                                            <Suspense fallback={<p>Loading Accounts...</p>}>
+                                            <Suspense 
+                                                fallback={<AllAccountsSkeleton />}
+                                            >
                                                 <FetchAllAccounts
                                                     userId={userId}
                                                     searchParams={await searchParams}
@@ -305,25 +321,33 @@ export default async function DashboardPage({
                                     showFilter={true}
                                 />
 
-                                <FetchTransactionsInsights
-                                    userId={userId}
-                                    searchParams={await searchParams}
-                                    maxNumberOfTransactions={maxNumberOfTransactions}
-                                    transactionsCount={transactionsCount}
-                                />
+                                <Suspense
+                                    fallback={<InsightCardSkeleton />}
+                                >
+                                    <FetchTransactionsInsights
+                                        userId={userId}
+                                        searchParams={await searchParams}
+                                        maxNumberOfTransactions={maxNumberOfTransactions}
+                                        transactionsCount={transactionsCount}
+                                    />
+                                </Suspense>
 
-                                <FetchAllTransactions
-                                    userId={userId}
-                                    searchParams={await searchParams}
+                                <Suspense
+                                    fallback={<TransactionSkeleton />}
+                                >
+                                    <FetchAllTransactions
+                                        userId={userId}
+                                        searchParams={await searchParams}
 
-                                    // For Add Button
-                                    canCreateTransaction={canCreateTransaction}
-                                    maxNumberOfTransactions={maxNumberOfTransactions}
+                                        // For Add Button
+                                        canCreateTransaction={canCreateTransaction}
+                                        maxNumberOfTransactions={maxNumberOfTransactions}
 
-                                    // For Transaction Form
-                                    maxNumberOfCards={maxNumberOfCards}
-                                    maxNumberOfAccounts={maxNumberOfAccounts}
-                                />
+                                        // For Transaction Form
+                                        maxNumberOfCards={maxNumberOfCards}
+                                        maxNumberOfAccounts={maxNumberOfAccounts}
+                                    />
+                                </Suspense>
                             </div>
                         </TabsContent>
 
