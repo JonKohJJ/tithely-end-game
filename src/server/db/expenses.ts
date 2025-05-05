@@ -685,3 +685,85 @@ export async function getExpensesDropdownOptions(
 
     return result
 }
+
+// For Income Tab, possibly for Expenses Tab moving forward
+export async function getAllBudgetedFixedExpenses(
+    userId: string
+): Promise<TFetchedBudgetedExpense[]> {
+
+    // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
+
+    const result = await db
+        .select()
+        .from(ExpensesTable)
+        .where(
+            and(
+                eq(ExpensesTable.clerkUserId, userId),
+                eq(ExpensesTable.expenseMethod, "Fixed")
+            )
+        )
+        .orderBy(asc(ExpensesTable.createdAt))
+
+    
+    let total = 0
+    result.map(item => { total += item.expenseMonthlyBudget })
+
+    // calculate budgeted percentage & add color (fill) & child transaction count
+    const allBudgetedFixedExpenses = await Promise.all(
+        result.map(async (item, index) => {
+
+            const childTransactionCount = await getChildTransactionsCount(userId, item.expenseId, "Expenses")
+
+            return ({
+                ...item,
+                expenseBudgetPercentage: total > 0 
+                    ? Number((Number(item.expenseMonthlyBudget) / total * 100).toFixed(0)) 
+                    : 0,
+                fill: allocatedColors[index % allocatedColors.length],
+                childTransactionCount
+            })
+        })
+    )
+
+    return allBudgetedFixedExpenses
+}
+export async function getAllBudgetedVariableExpenses(
+    userId: string
+): Promise<TFetchedBudgetedExpense[]> {
+
+    // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
+
+    const result = await db
+        .select()
+        .from(ExpensesTable)
+        .where(
+            and(
+                eq(ExpensesTable.clerkUserId, userId),
+                eq(ExpensesTable.expenseMethod, "Variable")
+            )
+        )
+        .orderBy(asc(ExpensesTable.createdAt))
+
+    
+    let total = 0
+    result.map(item => { total += item.expenseMonthlyBudget })
+
+    // calculate budgeted percentage & add color (fill) & child transaction count
+    const allBudgetedVariableExpenses = await Promise.all(
+        result.map(async (item, index) => {
+
+            const childTransactionCount = await getChildTransactionsCount(userId, item.expenseId, "Expenses")
+
+            return ({
+                ...item,
+                expenseBudgetPercentage: total > 0 
+                    ? Number((Number(item.expenseMonthlyBudget) / total * 100).toFixed(0)) 
+                    : 0,
+                fill: allocatedColors[index % allocatedColors.length],
+                childTransactionCount
+            })
+        })
+    )
+
+    return allBudgetedVariableExpenses
+}

@@ -14,6 +14,11 @@ export async function canViewIncome_Streams(userId: string | null) {
     const tier = await getUserSubscriptionTier(userId)
     return tier.canViewIncome_Streams
 }
+export async function canViewIncome_Flow(userId: string | null) {
+    if (userId === null) return false
+    const tier = await getUserSubscriptionTier(userId)
+    return tier.canViewIncome_Flow
+}
 export async function canViewSavings_Goals(userId: string | null) {
     if (userId === null) return false
     const tier = await getUserSubscriptionTier(userId)

@@ -29,7 +29,7 @@ export default async function FetchIncomeStreams({
                     <p>Oh no! Something went wrong. ISSUE: {errorMessage}</p>
                 )
                 : (
-                    <div className="FetchIncomeStreams">
+                    <div className="FetchIncomeStreams h-full">
                         <IncomeStreams
                             allIncome={allIncome}
                         />

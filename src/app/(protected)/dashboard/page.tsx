@@ -7,7 +7,7 @@ import ExpensesTrendBarChartSkeleton from './_components/Expenses/trend/Expenses
 import FetchExpensesTrendBarChart from './_components/Expenses/trend/FetchExpensesTrendBarChart'
 import FetchSavingsGrowthLineChart from './_components/Savings/growth/FetchSavingsGrowthLineChart'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './_components/CustomTabs'
-import { canCreateAccounts, canCreateCards, canCreateExpenses, canCreateIncomes, canCreateSavings, canCreateTransactions, canViewAccounts, canViewCards, canViewExpenses_Trend, canViewSavings_Growth } from '@/server/permissions'
+import { canCreateAccounts, canCreateCards, canCreateExpenses, canCreateIncomes, canCreateSavings, canCreateTransactions, canViewAccounts, canViewCards, canViewExpenses_Trend, canViewIncome_Flow, canViewSavings_Growth } from '@/server/permissions'
 import SectionHeaders from '../_components/SectionHeader'
 import SavingsGrowthLineChartSkeleton from './_components/Savings/growth/SavingsGrowthLineChartSkeleton'
 import SavingsGoalsSkeleton from './_components/Savings/goals/SavingsGoalsSkeleton'
@@ -16,8 +16,8 @@ import ExpenseForm from './_components/Expenses/budget/ExpenseForm'
 import FetchBudgetedExpenses from './_components/Expenses/budget/FetchBudgetedExpenses'
 import FetchActualExpenses from './_components/Expenses/actual/FetchActualExpenses'
 import FetchSavingsGoals from './_components/Savings/goals/FetchSavingsGoals'
-import IncomeForm from './_components/Income/IncomeForm'
-import FetchIncomeStreams from './_components/Income/FetchIncomeStreams'
+import IncomeForm from './_components/Income/IncomeStreams/IncomeForm'
+import FetchIncomeStreams from './_components/Income/IncomeStreams/FetchIncomeStreams'
 import FetchAllCards from './_components/Cards/FetchAllCards'
 import CardForm from './_components/Cards/CardForm'
 import FetchAllAccounts from './_components/Accounts/FetchAllAccounts'
@@ -26,6 +26,8 @@ import FetchAllTransactions from './_components/Transaction/FetchAllTransactions
 import FetchExpensesInsights from './_components/Expenses/insights/FetchExpensesInsights'
 import FetchTransactionsInsights from './_components/Transaction/insights/FetchTransactionInsights'
 import Link from 'next/link'
+import FetchIncomeSankeyDiagramData from './_components/Income/SankeyDiagram/FetchIncomeSankeyDiagramData'
+import FetchIncomeInsights from './_components/Income/IncomeInsights/FetchIncomeInsights'
 
 export default async function DashboardPage({
     searchParams
@@ -74,11 +76,42 @@ export default async function DashboardPage({
                                             : <p>Max {maxNumberOfIncome} income streams reached. <Link href="/subscription" className='underline'>Upgrade</Link> to add more.</p>
                                         }
                                     </div>
-                                    <Suspense fallback={<p>Loading income...</p>}>
-                                        <FetchIncomeStreams
-                                            userId={userId}
-                                        />
-                                    </Suspense>
+
+                                    <div className="flex flex-col lg:flex-row gap-4">
+
+                                        <div className="lg:w-[30%] rounded-xl border border-color-border p-6">
+                                            <Suspense fallback={<p>Loading income streams...</p>}>
+                                                <FetchIncomeStreams
+                                                    userId={userId}
+                                                />
+                                            </Suspense>
+                                        </div>
+
+                                        <div className="lg:w-[70%] flex flex-col lg:flex-row">
+                                            <Suspense fallback={<p>Loading income insights...</p>}>
+                                                <FetchIncomeInsights
+                                                    userId={userId}
+                                                />
+                                            </Suspense>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div className="income-sankey-diagram mt-8">
+                                    <p className="fs-h3 mb-6">Income Allocation Flow</p>
+                                    <div>
+                                        <HasPermission 
+                                            permission={canViewIncome_Flow} 
+                                            renderFallback
+                                        >
+                                            <Suspense fallback={<p>Loading Income Sankey Diagram...</p>}>
+                                                <FetchIncomeSankeyDiagramData
+                                                    userId={userId}
+                                                />
+                                            </Suspense>
+                                        </HasPermission>
+                                    </div>
                                 </div>
 
                             </div>

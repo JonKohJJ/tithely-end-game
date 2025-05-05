@@ -41,6 +41,7 @@ function PricingCard({
 
     // Dashboard Views - Income
     canViewIncome_Streams, 
+    canViewIncome_Flow,
 
     // Dashboard Views - Savings
     canViewSavings_Goals, 
@@ -98,6 +99,7 @@ function PricingCard({
             <div className="features flex flex-col gap-2 items-center lg:items-start">
 
                 <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewIncome_Streams}>Access Income Streams</Feature>
+                <Feature isMonthlyPlan={isMonthlyPlan} isLifetimePlan={isLifetimePlan} canAccess={canViewIncome_Flow}>Access Income Flow (Sankey Diagram)</Feature>
                 
                 <div className="my-2 w-full h-[1px] bg-color-muted-text"></div>
 

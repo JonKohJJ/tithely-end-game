@@ -20,6 +20,9 @@ export default function BudgetedExpenses({
       return allExpensesBudget.reduce((acc, curr) => acc + curr.expenseMonthlyBudget, 0)
     }, [allExpensesBudget])
 
+    const allExpensesBudget_Fixed = allExpensesBudget.filter(expense => expense.expenseMethod === "Fixed")
+    const allExpensesBudget_Variable = allExpensesBudget.filter(expense => expense.expenseMethod === "Variable")
+
     return (
         <Card className={`shadow-none border-color-border h-full`}>
             <CardContent className="flex-1 p-0">
@@ -144,23 +147,56 @@ export default function BudgetedExpenses({
                 </ChartContainer>
             </CardContent>
             
-            <CardFooter className="flex flex-col gap-2">
-                {allExpensesBudget.map(expense => {
-                    return (
-                        <div key={expense.expenseId} className="flex items-center justify-between w-full">
-                            <div className="flex gap-2 items-center">
-                                <div className={`h-3 w-3 rounded-full`} style={{ backgroundColor: expense.fill }} />
-                                <p>{expense.expenseName}</p>
-                            </div>
-                            
-                            <div className="flex gap-4 items-center">
-                                <p>${expense.expenseMonthlyBudget}</p>
-                                <ExpenseForm expenseTobeEdited={expense} />
-                            </div>
-                        </div>
-                    )
-                })}
+            <CardFooter className="flex flex-col gap-10">
+                {allExpensesBudget_Fixed.length > 0
+                    ? 
+                    <ExpensesBudgetGroupSelection 
+                        title="Fixed Expenses"
+                        expenses={allExpensesBudget_Fixed}
+                    />
+                    : null
+                }
+
+                {allExpensesBudget_Variable.length > 0
+                    ? 
+                    <ExpensesBudgetGroupSelection 
+                        title="Variable Expenses"
+                        expenses={allExpensesBudget_Variable}
+                    />
+                    : null
+                }
             </CardFooter>
         </Card>
     )
 }
+
+// Reusable component to remove duplicated code
+function ExpensesBudgetGroupSelection({
+    title,
+    expenses,
+} : {
+    title: string,
+    expenses: TFetchedBudgetedExpense[]
+}) {
+    return (
+        <div className="fixed-budgeted-expenses w-full flex flex-col gap-2">
+            <p>{title}</p>
+            <div className="divider h-[1px] bg-color-muted-text w-full"></div>
+            {expenses.map(expense => {
+                return (
+                    <div key={expense.expenseId} className="flex items-center justify-between w-full">
+                        <div className="flex gap-2 items-center">
+                            <div className={`h-3 w-3 rounded-full`} style={{ backgroundColor: expense.fill }} />
+                            <p>{expense.expenseName}</p>
+                        </div>
+                        
+                        <div className="flex gap-4 items-center">
+                            <p>${expense.expenseMonthlyBudget}</p>
+                            <ExpenseForm expenseTobeEdited={expense} />
+                        </div>
+                    </div>
+                )
+            })}
+        </div>
+    )
+}   

@@ -14,6 +14,7 @@ export type TSubscriptionTier = {
 
   // Dashboard Views - Income
   canViewIncome_Streams:    boolean
+  canViewIncome_Flow:       boolean
   // Dashboard Views - Savings
   canViewSavings_Goals:     boolean
   canViewSavings_Growth:    boolean
@@ -43,7 +44,8 @@ export const SubscriptionTiers = {
     priceInCents:             0,
     stripePriceId:            undefined,
 
-    canViewIncome_Streams:    true, 
+    canViewIncome_Streams:    true,
+    canViewIncome_Flow:       false, 
     canViewSavings_Goals:     true,
     canViewSavings_Growth:    false,
     canViewExpenses_Budget:   true,
@@ -70,6 +72,7 @@ export const SubscriptionTiers = {
     stripePriceId:            process.env.STRIPE_PRO_MONTHLY_STRIPE_PRICE_ID,
 
     canViewIncome_Streams:    true, 
+    canViewIncome_Flow:       true, 
     canViewSavings_Goals:     true,
     canViewSavings_Growth:    true,
     canViewExpenses_Budget:   true,
@@ -97,6 +100,7 @@ export const SubscriptionTiers = {
     stripePriceId:            process.env.STRIPE_PRO_OTP_STRIPE_PRICE_ID,
 
     canViewIncome_Streams:    true,
+    canViewIncome_Flow:       true, 
     canViewSavings_Goals:     true,
     canViewSavings_Growth:    true,
     canViewExpenses_Budget:   true,
