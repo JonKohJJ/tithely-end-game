@@ -11,6 +11,7 @@ export default async function FetchActualExpenses({
 
     const month = Number(searchParams.month) || new Date().getMonth() + 1
     const year = Number(searchParams.year) || new Date().getFullYear()
+    const showClaimables = searchParams.showClaimables === "true" ? true : false
 
     let errorMessage: null | string = null
     let allActualExpenses: TFetchedActualExpense[] = []
@@ -18,7 +19,7 @@ export default async function FetchActualExpenses({
     // Fetch data here to make suspense work
     try {
 
-        allActualExpenses = await getAllActualExpense(userId, month, year)
+        allActualExpenses = await getAllActualExpense(userId, month, year, showClaimables)
 
     } catch (error) {
         if (error instanceof Error) {

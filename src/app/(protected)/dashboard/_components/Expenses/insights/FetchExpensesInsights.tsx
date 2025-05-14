@@ -12,6 +12,7 @@ export default async function FetchExpensesInsights({
 
     const month = Number(searchParams.month) || new Date().getMonth() + 1
     const year = Number(searchParams.year) || new Date().getFullYear()
+    const showClaimables = searchParams.showClaimables === "true" ? true : false
 
     let availableFunds: number = 0
     let totalCreditCardSpending: number = 0
@@ -24,7 +25,7 @@ export default async function FetchExpensesInsights({
     try {
 
         availableFunds = await getAvailableFunds(userId, month, year)
-        totalCreditCardSpending = await getTotalCreditByTime(userId, month, year)
+        totalCreditCardSpending = await getTotalCreditByTime(userId, month, year, showClaimables)
         totalIncome = await getTotalIncomeByTime(userId, month, year)
         billPaymentReadiness = calculateBillPaymentReadiness(availableFunds, totalCreditCardSpending, totalIncome)
 

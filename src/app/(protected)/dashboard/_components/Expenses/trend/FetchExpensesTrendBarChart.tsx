@@ -3,10 +3,14 @@ import { ExpensesTrendBarChart } from './ExpensesTrendBarChart'
 import { getExpensesTrendDaily, getExpensesTrendMonthly, getExpensesTrendWeekly, getExpensesTrendYearly, TChartBar } from '@/server/db/expenses'
 
 export default async function FetchExpensesTrendBarChart({
-    userId
+    userId,
+    searchParams
 } : {
     userId: string
+    searchParams: { [key: string]: string | string[] | undefined }
 }) {
+
+    const showClaimables = searchParams.showClaimables === "true" ? true : false
 
     let errorMessage: null | string = null
 
@@ -19,10 +23,10 @@ export default async function FetchExpensesTrendBarChart({
     // Fetch data here to make suspense work
     try {
         
-        allExpensesTrendDaily = await getExpensesTrendDaily(userId)
-        allExpensesTrendWeekly = await getExpensesTrendWeekly(userId)
-        allExpensesTrendMonthly = await getExpensesTrendMonthly(userId)
-        allExpensesTrendYearly = await getExpensesTrendYearly(userId)
+        allExpensesTrendDaily = await getExpensesTrendDaily(userId, showClaimables)
+        allExpensesTrendWeekly = await getExpensesTrendWeekly(userId, showClaimables)
+        allExpensesTrendMonthly = await getExpensesTrendMonthly(userId, showClaimables)
+        allExpensesTrendYearly = await getExpensesTrendYearly(userId, showClaimables)
 
     } catch (error) {
         if (error instanceof Error) {

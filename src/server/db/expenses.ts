@@ -178,6 +178,7 @@ export async function getAllActualExpense(
     userId: string,
     month: number,
     year: number,
+    showClaimables: boolean,
 ): Promise<TFetchedActualExpense[]> {
 
     // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
@@ -187,7 +188,7 @@ export async function getAllActualExpense(
     const allExpensesActual = await Promise.all(
         allBudgetedExpenses.map(async (item) => {
 
-            const expenseActualAmount = await calculateActualExpense(item.expenseId, month, year)
+            const expenseActualAmount = await calculateActualExpense(item.expenseId, month, year, showClaimables)
 
             const expenseActualPercentage = expenseActualAmount > 0 
                 ? Number(((expenseActualAmount / item.expenseMonthlyBudget) * 100).toFixed(1))
@@ -208,7 +209,18 @@ export async function calculateActualExpense(
     expenseId: string,
     month: number,
     year: number,
+    showClaimables: boolean,
 ): Promise<number> {
+
+    const conditions = [
+        eq(TransactionsTable.transactionExpenseIdFK, expenseId),
+        sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
+        sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`,
+    ]
+
+    if (!showClaimables) { 
+        conditions.push(eq(TransactionsTable.isClaimable, false))
+    }
 
     const [ result ] = await db
         .select({
@@ -216,11 +228,7 @@ export async function calculateActualExpense(
         })
         .from(TransactionsTable)
         .where(
-            and(
-                eq(TransactionsTable.transactionExpenseIdFK, expenseId),
-                sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
-                sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`
-            )
+            and(...conditions)
         )
 
     return result.actualExpense === null 
@@ -339,7 +347,19 @@ export async function getTotalCreditByTime(
     userId: string,
     month: number,
     year: number,
+    showClaimables: boolean,
 ): Promise<number> {
+
+    const conditions = [
+        eq(TransactionsTable.clerkUserId, userId),
+        eq(TransactionsTable.transactionCreditOrDebit, "Credit"),
+        sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
+        sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`
+    ]
+
+    if (!showClaimables) {
+        conditions.push(eq(TransactionsTable.isClaimable, false))
+    }
 
     const [ result ] = await db
         .select({
@@ -347,12 +367,7 @@ export async function getTotalCreditByTime(
         })
         .from(TransactionsTable)
         .where(
-            and(
-                eq(TransactionsTable.clerkUserId, userId),
-                eq(TransactionsTable.transactionCreditOrDebit, "Credit"),
-                sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
-                sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`
-            )
+            and(...conditions)
         )
 
     return result.totalCreditCardSpend === null 
@@ -411,6 +426,7 @@ export type TChartBar = {
 }
 export async function getExpensesTrendDaily(
     userId: string,
+    showClaimables: boolean
 ) {
 
     // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
@@ -428,7 +444,7 @@ export async function getExpensesTrendDaily(
         const month = date.getMonth() + 1
         const year = date.getFullYear()
 
-        const expenses = await getTotalExpenseByTime(userId, month, year, day)
+        const expenses = await getTotalExpenseByTime(userId, month, year, showClaimables, day)
 
         const monthLabel = date.toLocaleString("en-US", { month: "short" })
 
@@ -443,7 +459,8 @@ export async function getExpensesTrendDaily(
 
 }
 export async function getExpensesTrendWeekly(
-    userId: string
+    userId: string,
+    showClaimables: boolean
 ) {
     const trendData = []
     const now = new Date();
@@ -496,7 +513,7 @@ export async function getExpensesTrendWeekly(
         const maxWeeks = Math.ceil((lastMonday.getDate() - firstMonday.getDate()) / 7) + 1;
         weekNumber = Math.min(weekNumber, maxWeeks);
 
-        const expenses = await getTotalExpenseByWeek(userId, formattedStartDate, formattedEndDate)
+        const expenses = await getTotalExpenseByWeek(userId, formattedStartDate, formattedEndDate, showClaimables)
 
         trendData.push({
             label: `W${weekNumber}\n${month}`,
@@ -509,6 +526,7 @@ export async function getExpensesTrendWeekly(
 }
 export async function getExpensesTrendMonthly(
     userId: string,
+    showClaimables: boolean
 ) {
 
     const trendData = []
@@ -522,7 +540,7 @@ export async function getExpensesTrendMonthly(
 
         const month = date.getMonth() + 1
         const year = date.getFullYear()
-        const expenses = await getTotalExpenseByTime(userId, month, year)
+        const expenses = await getTotalExpenseByTime(userId, month, year, showClaimables)
 
         const monthLabel = date.toLocaleString("en-US", { month: "short" })
         const yearLabel = date.getFullYear().toString().slice(-2)
@@ -539,6 +557,7 @@ export async function getExpensesTrendMonthly(
 }
 export async function getExpensesTrendYearly(
     userId: string,
+    showClaimables: boolean
 ) {
 
     const trendData = []
@@ -551,7 +570,7 @@ export async function getExpensesTrendYearly(
         const date = new Date()
         const year = (date.getFullYear() - i).toFixed()
 
-        const expenses = await getTotalExpenseByYear(userId, year)
+        const expenses = await getTotalExpenseByYear(userId, year, showClaimables)
 
         trendData.push({
             label: `${year}`,
@@ -563,25 +582,35 @@ export async function getExpensesTrendYearly(
     return trendData.reverse()
 
 }
-async function getTotalExpenseByYear(
+export async function getTotalExpenseByTime(
     userId: string,
-    year: string,
-) {
+    month: number,
+    year: number,
+    showClaimables: boolean,
+    day?: number,
+): Promise<number> {
 
-    // console.log("getExpenseTotalByYear > ", year)
-    
+    const conditions = [
+        eq(TransactionsTable.clerkUserId, userId),
+        eq(TransactionsTable.transactionType, "Expenses"),
+        sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
+        sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`,
+    ]
+
+    if (day !== undefined) {
+        conditions.push(sql`EXTRACT(DAY FROM ${TransactionsTable.transactionDate}) = ${day}`)
+    }
+
+    if (!showClaimables) {
+        conditions.push(eq(TransactionsTable.isClaimable, false))
+    }
+
     const [ result ] = await db
         .select({
             total: sum(TransactionsTable.transactionAmount)
         })
         .from(TransactionsTable)
-        .where(
-            and(
-                eq(TransactionsTable.clerkUserId, userId),
-                eq(TransactionsTable.transactionType, "Expenses"),
-                sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
-            )
-        )
+        .where(and(...conditions))
 
     return result.total === null 
         ? 0 
@@ -591,9 +620,20 @@ async function getTotalExpenseByWeek(
     userId: string,
     startDate: string,
     endDate: string,
+    showClaimables: boolean,
 ) {
 
     // console.log("getExpenseTotalByWeek > ", startDate, endDate)
+
+    const conditions = [
+        eq(TransactionsTable.clerkUserId, userId),
+        eq(TransactionsTable.transactionType, "Expenses"),
+        sql`(${TransactionsTable.transactionDate} BETWEEN ${startDate} AND ${endDate})`,
+    ]
+
+    if (!showClaimables) {
+        conditions.push(eq(TransactionsTable.isClaimable, false))
+    }
 
     const [ result ] = await db
         .select({
@@ -601,69 +641,43 @@ async function getTotalExpenseByWeek(
         })
         .from(TransactionsTable)
         .where(
-            and(
-                eq(TransactionsTable.clerkUserId, userId),
-                eq(TransactionsTable.transactionType, "Expenses"),
-                sql`(${TransactionsTable.transactionDate} BETWEEN ${startDate} AND ${endDate})`
-            )
+            and(...conditions)
         )
 
     return result.total === null 
         ? 0 
         : Number(result.total)
 }
-export async function getTotalExpenseByTime(
+async function getTotalExpenseByYear(
     userId: string,
-    month: number,
-    year: number,
-    day?: number
-): Promise<number> {
+    year: string,
+    showClaimables: boolean,
+) {
 
-    if (day) {
+    // console.log("getExpenseTotalByYear > ", year)
 
-        // console.log("getTotalByType HAS DAY > ", day, month, year)
+    const conditions = [
+        eq(TransactionsTable.clerkUserId, userId),
+        eq(TransactionsTable.transactionType, "Expenses"),
+        sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
+    ]
 
-        const [ result ] = await db
-            .select({
-                total: sum(TransactionsTable.transactionAmount)
-            })
-            .from(TransactionsTable)
-            .where(
-                and(
-                    eq(TransactionsTable.clerkUserId, userId),
-                    eq(TransactionsTable.transactionType, "Expenses"),
-                    sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
-                    sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`,
-                    sql`EXTRACT(DAY FROM ${TransactionsTable.transactionDate}) = ${day}`,
-                )
-            )
-
-        return result.total === null 
-            ? 0 
-            : Number(result.total)
-
-    } else {
-
-        // console.log("getTotalByType NO DAY > ")
-
-        const [ result ] = await db
-            .select({
-                total: sum(TransactionsTable.transactionAmount)
-            })
-            .from(TransactionsTable)
-            .where(
-                and(
-                    eq(TransactionsTable.clerkUserId, userId),
-                    eq(TransactionsTable.transactionType, "Expenses"),
-                    sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
-                    sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`,
-                )
-            )
-
-        return result.total === null 
-            ? 0 
-            : Number(result.total)
+    if (!showClaimables) {
+        conditions.push(eq(TransactionsTable.isClaimable, false))
     }
+
+    const [ result ] = await db
+        .select({
+            total: sum(TransactionsTable.transactionAmount)
+        })
+        .from(TransactionsTable)
+        .where(
+            and(...conditions)
+        )
+
+    return result.total === null 
+        ? 0 
+        : Number(result.total)
 }
 
 // For Transaction Form

@@ -102,6 +102,7 @@ export async function getAllAccounts(
     userId: string,
     month: number,
     year: number,
+    showClaimables: boolean,
 ): Promise<TFetchedAccount[]> {
 
     // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
@@ -120,7 +121,7 @@ export async function getAllAccounts(
     const allAccounts = await Promise.all(
         result.map(async (item) => {
 
-            const accountMonthlyBalance = await getAccountMonthlyBalance(item.accountId, month, year)
+            const accountMonthlyBalance = await getAccountMonthlyBalance(item.accountId, month, year, showClaimables)
             const childTransactionCount = await getChildTransactionsCount(userId, item.accountId, "Accounts")
 
             return ({
@@ -171,12 +172,13 @@ export async function getAccountMonthlyBalance(
     accountId: string,
     month: number,
     year: number,
+    showClaimables: boolean,
 ): Promise<number> {
 
     // total monthly income - total monthly savings - total monthly expenses
     const totalMonthlyIncome = await getTotalMonthlyIncomeByAccountId(accountId, month, year)
     const totalMonthlySavings = await getTotalMonthlySavingsByAccountId(accountId, month, year)
-    const totalMonthlyExpenses = await getTotalMonthlyExpensesByAccountId(accountId, month, year)
+    const totalMonthlyExpenses = await getTotalMonthlyExpensesByAccountId(accountId, month, year, showClaimables)
 
     const accountMonthlyBalance = totalMonthlyIncome - totalMonthlySavings - totalMonthlyExpenses
     return roundTo(accountMonthlyBalance, 2)
@@ -232,8 +234,20 @@ async function getTotalMonthlySavingsByAccountId(
 async function getTotalMonthlyExpensesByAccountId(    
     accountId: string,
     month: number,
-    year: number
+    year: number,
+    showClaimables: boolean,
 ) {
+
+    const conditions = [
+        eq(TransactionsTable.transactionType, "Expenses"),
+        eq(TransactionsTable.transactionAccountIdFK, accountId),
+        sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
+        sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`
+    ]
+
+    if (!showClaimables) {
+        conditions.push(eq(TransactionsTable.isClaimable, false))
+    }
 
     const [ result ] = await db
         .select({
@@ -241,12 +255,7 @@ async function getTotalMonthlyExpensesByAccountId(
         })
         .from(TransactionsTable)
         .where(
-            and(
-                eq(TransactionsTable.transactionType, "Expenses"),
-                eq(TransactionsTable.transactionAccountIdFK, accountId),
-                sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
-                sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`
-            )
+            and(...conditions)
         )
 
     return result.total === null 

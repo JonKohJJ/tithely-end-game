@@ -107,6 +107,7 @@ export async function getAllCards(
     userId: string,
     month: number,
     year: number,
+    showClaimables: boolean
 ): Promise<TFetchedCard[]> {
 
     // await new Promise((resolve) => setTimeout(resolve, OPERATION_DELAY))
@@ -123,7 +124,7 @@ export async function getAllCards(
     const allCards = await Promise.all(
         result.map(async (item) => {
 
-            const cardMonthlyCharge = await getCardMonthlyCharge(item.cardId, month, year)
+            const cardMonthlyCharge = await getCardMonthlyCharge(item.cardId, month, year, showClaimables)
             const childTransactionCount = await getChildTransactionsCount(userId, item.cardId, "Cards")
 
             return ({
@@ -174,7 +175,18 @@ export async function getCardMonthlyCharge(
     cardId: string,
     month: number,
     year: number,
+    showClaimables: boolean,
 ): Promise<number> {
+
+    const conditions = [
+        eq(TransactionsTable.transactionCardIdFK, cardId),
+        sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
+        sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`,
+    ]
+
+    if (!showClaimables) {
+        conditions.push(eq(TransactionsTable.isClaimable, false))
+    }
 
     const [ result ] = await db
         .select({
@@ -182,11 +194,7 @@ export async function getCardMonthlyCharge(
         })
         .from(TransactionsTable)
         .where(
-            and(
-                eq(TransactionsTable.transactionCardIdFK, cardId),
-                sql`EXTRACT(YEAR FROM ${TransactionsTable.transactionDate}) = ${year}`,
-                sql`EXTRACT(MONTH FROM ${TransactionsTable.transactionDate}) = ${month}`
-            )
+            and(...conditions)
         )
 
     return result.cardMonthlyCharge === null 

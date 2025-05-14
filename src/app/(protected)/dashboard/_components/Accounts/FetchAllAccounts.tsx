@@ -12,12 +12,13 @@ export default async function FetchAllAccounts({
 
     const month = Number(searchParams.month) || new Date().getMonth() + 1
     const year = Number(searchParams.year) || new Date().getFullYear()
+    const showClaimables = searchParams.showClaimables === "true" ? true : false
 
     let errorMessage: null | string = null
     let allAccounts: TFetchedAccount[] = []
 
     try {
-        allAccounts = await getAllAccounts(userId, month, year)
+        allAccounts = await getAllAccounts(userId, month, year, showClaimables)
 
     } catch (error) {
         if (error instanceof Error) {

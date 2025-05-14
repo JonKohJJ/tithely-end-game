@@ -268,7 +268,11 @@ export default function TransactionForm({
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormControl>
-                                                <Select value={field.value || ""} onValueChange={field.onChange}>
+                                                <Select 
+                                                    value={field.value || ""} 
+                                                    onValueChange={field.onChange}
+                                                    disabled={formState.isSubmitting}
+                                                >
                                                     <SelectTrigger className="!border-color-border shadow-none">
                                                         <SelectValue placeholder="Expense Method" />
                                                     </SelectTrigger>
@@ -353,26 +357,30 @@ export default function TransactionForm({
                                     control={control}
                                     name="transactionAccountIdFK"
                                     render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                        <Select value={field.value || ""} onValueChange={field.onChange}>
-                                            <SelectTrigger className="!border-color-border shadow-none">
-                                            <SelectValue placeholder="Accounts" />
-                                            </SelectTrigger>
-                                            <SelectContent className="bg-color-bg border-color-border">
-                                            <SelectGroup>
-                                                {accountsDropdownOptions.length > 0 
-                                                    ? accountsDropdownOptions.map(option => (
-                                                        <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
-                                                    ))
-                                                    : <p className="p-2">No Accounts Found</p>
-                                                }
-                                            </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
+                                        <FormItem>
+                                            <FormControl>
+                                            <Select 
+                                                value={field.value || ""} 
+                                                onValueChange={field.onChange}
+                                                disabled={formState.isSubmitting}
+                                            >
+                                                <SelectTrigger className="!border-color-border shadow-none">
+                                                <SelectValue placeholder="Accounts" />
+                                                </SelectTrigger>
+                                                <SelectContent className="bg-color-bg border-color-border">
+                                                <SelectGroup>
+                                                    {accountsDropdownOptions.length > 0 
+                                                        ? accountsDropdownOptions.map(option => (
+                                                            <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                                                        ))
+                                                        : <p className="p-2">No Accounts Found</p>
+                                                    }
+                                                </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
                                     )}
                                 />
                             </div>
@@ -387,26 +395,30 @@ export default function TransactionForm({
                                     control={control}
                                     name="transactionCardIdFK"
                                     render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                        <Select value={field.value || ""} onValueChange={field.onChange}>
-                                            <SelectTrigger className="!border-color-border shadow-none">
-                                            <SelectValue placeholder="Cards" />
-                                            </SelectTrigger>
-                                            <SelectContent className="bg-color-bg border-color-border">
-                                            <SelectGroup>
-                                                {cardsDropdownOptions.length > 0 
-                                                    ? cardsDropdownOptions.map(option => (
-                                                        <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
-                                                    ))
-                                                    : <p className="p-2">No Cards Found</p>
-                                                }
-                                            </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
+                                        <FormItem>
+                                            <FormControl>
+                                            <Select 
+                                                value={field.value || ""} 
+                                                onValueChange={field.onChange}
+                                                disabled={formState.isSubmitting}
+                                            >
+                                                <SelectTrigger className="!border-color-border shadow-none">
+                                                <SelectValue placeholder="Cards" />
+                                                </SelectTrigger>
+                                                <SelectContent className="bg-color-bg border-color-border">
+                                                <SelectGroup>
+                                                    {cardsDropdownOptions.length > 0 
+                                                        ? cardsDropdownOptions.map(option => (
+                                                            <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                                                        ))
+                                                        : <p className="p-2">No Cards Found</p>
+                                                    }
+                                                </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
                                     )}
                                 />
                             </div>
@@ -431,7 +443,7 @@ export default function TransactionForm({
                     </div>
 
                     
-                    {/* Amount */}
+                    {/* Amount / Is Claimable */}
                     <div className="flex flex-col gap-2 w-[10%]">
                         <div className="amount">
                             <FormField
@@ -478,10 +490,10 @@ export default function TransactionForm({
                                                 <Checkbox
                                                     id="isClaimable"
                                                     checked={field.value || false}
-                                                    disabled={selectedTransactionType !== "Expenses"}
+                                                    disabled={formState.isSubmitting || selectedTransactionType !== "Expenses"}
                                                     onCheckedChange={field.onChange}
                                                 />
-                                                <label htmlFor="isClaimable">Is Claimable</label>
+                                                <label htmlFor="isClaimable" className={formState.isSubmitting ? "text-color-border" : ""}>Is Claimable</label>
                                                 </div>
                                             </FormControl>
                                             <FormMessage />

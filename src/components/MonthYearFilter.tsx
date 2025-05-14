@@ -11,8 +11,11 @@ export function MonthYearFilter() {
   const [year, setYear] = useState(Number(searchParams.get('year')) || new Date().getFullYear())
 
   useEffect(() => {
-    router.push(`?month=${month}&year=${year}`)
-  }, [month, year, router])
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('month', String(month))
+    params.set('year', String(year))
+    router.push(`?${params.toString()}`)
+  }, [month, year, router, searchParams])
 
   return (
     <div className="flex gap-2"> 

@@ -700,7 +700,7 @@ export default function AllTransactions({
                             </SelectTrigger>
 
                             <SelectContent side="top" className="bg-color-bg border-color-border fs-caption">
-                                {[10, 20, 30, 40, 50].map((pageSize) => (
+                                {[10, 20, 30, 40, 50, 100, 200, 500].map((pageSize) => (
                                     <SelectItem key={pageSize} value={`${pageSize}`} className="hover:cursor-pointer">
                                         {pageSize}
                                     </SelectItem>
