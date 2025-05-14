@@ -55,7 +55,7 @@ export default async function DashboardPage({
         <div className='dashboard-page flex flex-col gap-8 h-full'>
             <div className="mycontainer !max-w-[1500px]">
                 <div className='tabs-container'>
-                    <Tabs defaultValue="cards-and-accounts">
+                    <Tabs defaultValue="expenses">
 
                         <TabsList className='rounded-none border-b border-color-muted-text'>
                             <TabsTrigger value="income" className='fs-base'>Income</TabsTrigger>
