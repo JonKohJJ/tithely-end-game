@@ -15,7 +15,7 @@ export async function addTransaction(
             .values(values)
             .returning()
 
-        return { success: true, dbResponseMessage: `Transaction'${insertedTransaction.transactionDescription}' successfully added`}
+        return { success: true, dbResponseMessage: `Transaction '${insertedTransaction.transactionDescription}' successfully added`}
 
     } catch (error) {
         if (error instanceof Error) {

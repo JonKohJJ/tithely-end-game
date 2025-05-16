@@ -767,7 +767,7 @@ async function onDelete(transactionId: string) {
   const response = await deleteTransaction(transactionId)
 
   if (response.success) {
-      toast({title: "Sucess", description: response.dbResponseMessage})
+      toast({title: "Success", description: response.dbResponseMessage})
   } else {
       toast({ title: "Error", description: response.dbResponseMessage });
   }
@@ -782,7 +782,7 @@ async function onBulkDelete(
 
   if (response.success) {
       resetRowSelection()
-      toast({title: "Sucess", description: response.dbResponseMessage})
+      toast({title: "Success", description: response.dbResponseMessage})
   } else {
       toast({ title: "Error", description: response.dbResponseMessage });
   }

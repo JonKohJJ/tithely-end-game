@@ -50,7 +50,7 @@ export default function AccountForm({
         const response = await deleteAccount(accountToDelete.accountId)
 
         if (response.success) {
-            toast({title: "Sucess", description: response.dbResponseMessage})
+            toast({title: "Success", description: response.dbResponseMessage})
             setDialogMode(null)
             setIsDeleting(false)
         } else {
@@ -140,7 +140,7 @@ function OfficialAccountForm({
             : await addAccount(values)
 
         if (response.success) {
-            toast({title: "Sucess", description: response.dbResponseMessage})
+            toast({title: "Success", description: response.dbResponseMessage})
             setDialogMode(null)
         } else {
             toast({ title: "Error", description: response.dbResponseMessage });

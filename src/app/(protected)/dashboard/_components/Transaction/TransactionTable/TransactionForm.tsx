@@ -169,7 +169,7 @@ export default function TransactionForm({
             setEditingRowId(null)
             setAddCreditDebit(null)
 
-            toast({title: "Sucess", description: response.dbResponseMessage})
+            toast({title: "Success", description: response.dbResponseMessage})
         } else {
             toast({ title: "Error", description: response.dbResponseMessage });
         }

@@ -42,7 +42,7 @@ export default function IncomeForm({
         const response = await deleteCard(cardToDelete.cardId)
 
         if (response.success) {
-            toast({title: "Sucess", description: response.dbResponseMessage})
+            toast({title: "Success", description: response.dbResponseMessage})
             setDialogMode(null)
             setIsDeleting(false)
         } else {
@@ -136,7 +136,7 @@ function OfficialIncomeForm({
             : await addCard(values)
 
         if (response.success) {
-            toast({title: "Sucess", description: response.dbResponseMessage})
+            toast({title: "Success", description: response.dbResponseMessage})
             setDialogMode(null)
         } else {
             toast({ title: "Error", description: response.dbResponseMessage });

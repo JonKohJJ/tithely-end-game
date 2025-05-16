@@ -42,7 +42,7 @@ export default function SavingForm({
         const response = await deleteSaving(savingToDelete.savingId)
 
         if (response.success) {
-            toast({title: "Sucess", description: response.dbResponseMessage})
+            toast({title: "Success", description: response.dbResponseMessage})
             setDialogMode(null)
             setIsDeleting(false)
         } else {
@@ -138,7 +138,7 @@ function OfficialSavingForm({
             : await addSaving(values)
 
         if (response.success) {
-            toast({title: "Sucess", description: response.dbResponseMessage})
+            toast({title: "Success", description: response.dbResponseMessage})
             setDialogMode(null)
         } else {
             toast({ title: "Error", description: response.dbResponseMessage });
