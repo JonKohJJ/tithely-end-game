@@ -52,3 +52,7 @@ html {
 .indicate {
     @apply border-red-500 border-[1px]
 }
+
+.sankey-diagram-container path {
+    mix-blend-mode: normal !important;
+}

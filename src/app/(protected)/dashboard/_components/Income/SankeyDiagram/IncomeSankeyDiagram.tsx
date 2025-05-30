@@ -166,7 +166,7 @@ export default function IncomeSankeyDiagram({
     // console.log("sankeyData", sankeyData)
 
     return (
-        <div className="h-[700px] w-full">
+        <div className="h-[700px] w-full sankey-diagram-container">
             {sankeyData.nodes.length > 0 && (
                 <ResponsiveSankey
                     data={sankeyData}
