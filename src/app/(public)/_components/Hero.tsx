@@ -3,6 +3,14 @@ import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs'
 import { ArrowRight, LineChart, PiggyBank, Wallet2 } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+  } from "@/components/ui/carousel"
+import Image from 'next/image'
 
 export default function Hero() {
     return (
@@ -54,7 +62,28 @@ export default function Hero() {
                         </div>
                     </div>
 
-                    <div className="bg-color-muted-text h-[700px] w-full rounded-xl"></div>
+                    <div className="carousel-container h-full w-full rounded-xl">
+                        <Carousel className="h-full">
+                            <CarouselContent className="h-full">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                                <CarouselItem key={index} className="h-full">
+                                    <div className="relative h-full w-full p-4 bg-color-muted-text rounded-xl">
+                                        <Image
+                                            src={`/image/carousel${index + 1}.png`}
+                                            alt={`carousel image ${index + 1}`}
+                                            fill
+                                            className="!relative rounded-xl"
+                                        />
+                                    </div>
+                                </CarouselItem>
+                            ))}
+                            </CarouselContent>
+                            <CarouselPrevious />
+                            <CarouselNext />
+                        </Carousel>
+                    </div>
+
+
                 </div>
             </div>
         </section>
