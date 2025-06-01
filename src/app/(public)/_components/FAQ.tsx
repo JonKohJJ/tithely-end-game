@@ -116,7 +116,7 @@ function AccordionItem({ question, answer, isOpen, onClick }: AccordionItemProps
         style={{ maxHeight: `${height}px` }}
         className="overflow-hidden transition-all duration-300 ease-in-out"
       >
-        <div className="pb-8">
+        <div className="pb-10">
           <p className="fs-h3">{answer}</p>
         </div>
       </div>
